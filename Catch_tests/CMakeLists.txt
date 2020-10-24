@@ -1,5 +1,7 @@
 set(SOURCE_TESTS_FILES
         Reader_tests.cpp
+        Block_maker_tests.cpp
+        Vertex_location_finder_tests.cpp
         )
 
 set(HEADER_TESTS_FILES
