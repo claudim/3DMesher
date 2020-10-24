@@ -1,0 +1,19 @@
+set(SOURCE_TESTS_FILES
+        Reader_tests.cpp
+        )
+
+set(HEADER_TESTS_FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/test_config.h"
+        )
+
+
+set(CATCH_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+add_library(Catch INTERFACE)
+target_include_directories(Catch INTERFACE ${CATCH_INCLUDE_DIR})
+
+file(TO_NATIVE_PATH "${CMAKE_SOURCE_DIR}/Catch_tests/Data" TEST_DATA_DIR)
+configure_file("test_config.h.in" "test_config.h" @ONLY)
+include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+
+add_executable(Catch_tests_run ${SOURCE_TESTS_FILES}  ${HEADER_TESTS_FILES})
+target_link_libraries(Catch_tests_run 3DMesher_lib)

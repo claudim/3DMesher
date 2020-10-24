@@ -1,0 +1,9 @@
+#ifndef MESHER_TEST_CONFIG_H
+#define MESHER_TEST_CONFIG_H
+
+/**
+ * @brief data directory relative path
+ */
+const std::string data_path = "@TEST_DATA_DIR@";
+
+#endif //MESHER_TEST_CONFIG_H
