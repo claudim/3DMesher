@@ -3,6 +3,7 @@ set(SOURCE_TESTS_FILES
         Block_maker_tests.cpp
         Vertex_location_finder_tests.cpp
         Grid_maker_tests.cpp
+        External_block_remover_tests.cpp
         )
 
 set(HEADER_TESTS_FILES
