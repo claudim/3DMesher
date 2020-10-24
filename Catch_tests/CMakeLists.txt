@@ -4,6 +4,7 @@ set(SOURCE_TESTS_FILES
         Vertex_location_finder_tests.cpp
         Grid_maker_tests.cpp
         External_block_remover_tests.cpp
+        Grid_boundary_connector_tests.cpp
         )
 
 set(HEADER_TESTS_FILES
