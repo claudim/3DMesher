@@ -17,7 +17,7 @@ TEST_CASE("remove_block","[External_block_remover]"){
 
 }
 
-TEST_CASE("must_remove_esternal_block","[External_block_remover]"){
+TEST_CASE("must_remove_esternal_blocks","[External_block_remover]"){
 
     std::string fileName = data_path + "/sphere.off";
     Reader reader = Reader();
@@ -33,7 +33,7 @@ TEST_CASE("must_remove_esternal_block","[External_block_remover]"){
     REQUIRE( lcc.darts().size() == 0 );
 }
 
-TEST_CASE("must_not_remove_internal_block","[External_block_remover]"){
+TEST_CASE("must_not_remove_internal_blocks","[External_block_remover]"){
     std::string fileName = data_path + "/sphere.off";
     Reader reader = Reader();
     Polyhedron polyhedron = reader.read(fileName);
@@ -56,7 +56,7 @@ TEST_CASE("must_not_remove_internal_block","[External_block_remover]"){
 
 }
 
-TEST_CASE("must_not_remove_on_boundary_block","[External_block_remover]"){
+TEST_CASE("must_not_remove_on_boundary_blocks","[External_block_remover]"){
 
     std::string fileName = data_path + "/sphere.off";
     Reader reader = Reader();

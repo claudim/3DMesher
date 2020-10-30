@@ -5,6 +5,10 @@ set(SOURCE_TESTS_FILES
         Grid_maker_tests.cpp
         External_block_remover_tests.cpp
         Grid_boundary_connector_tests.cpp
+        OnBoundary_block_remover_tests.cpp
+        External_facet_finder_tests.cpp
+        PointNormal_boundary_intersectionPoint_finder_tests.cpp
+        InitialMesh_boundary_connector_tests.cpp
         )
 
 set(HEADER_TESTS_FILES

@@ -7,6 +7,10 @@ set(HEADER_FILES
         Grid_maker.h
         External_block_remover.h
         Grid_boundary_connector.h
+        OnBoundary_block_remover.h
+        External_facet_finder.h
+        PointNormal_boundary_intersectionPoint_finder.h
+        InitialMesh_boundary_connector.h
         )
 
 set(SOURCE_FILES
@@ -16,6 +20,10 @@ set(SOURCE_FILES
         Grid_maker.cpp
         External_block_remover.cpp
         Grid_boundary_connector.cpp
+        OnBoundary_block_remover.cpp
+        External_facet_finder.cpp
+        PointNormal_boundary_intersectionPoint_finder.cpp
+        InitialMesh_boundary_connector.cpp
         )
 
 # You get to pick a type of library, STATIC, SHARED, or MODULE. If you leave this choice off, the value of BUILD_SHARED_LIBS will be used to pick between STATIC and SHARED.

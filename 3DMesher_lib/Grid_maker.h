@@ -6,6 +6,7 @@
 #include <CGAL/Linear_cell_complex_constructors.h>
 #include <CGAL/Linear_cell_complex_operations.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+
 #include <CGAL/Polygon_mesh_processing/bbox.h>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
