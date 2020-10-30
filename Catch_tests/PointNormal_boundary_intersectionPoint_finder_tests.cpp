@@ -19,15 +19,11 @@ TEST_CASE("PointNormal_boundary_intersectionPoint_finder"){
 
     PointNormal_boundary_intersectionPoint_finder pointFinder = PointNormal_boundary_intersectionPoint_finder();
 
-
+    // if the point of internal cube is (2, 2, 2)
     Point intercectionPoint = pointFinder.findIntersecionPoint( lcc, internalBlock, polyhedron);
     REQUIRE(std::round(intercectionPoint.x()) == 0);
     REQUIRE(std::round(intercectionPoint.y()) == 0);
     REQUIRE(std::round(intercectionPoint.z()) == 0);
-
-    Point po1 = lcc.point(lcc.beta(internalBlock, 1)); // point is (2, 2, 4)
-    Point po2 = lcc.point(lcc.beta(internalBlock, 1,1)); // point is (4,2, 4)
-    Point po3 = lcc.point(lcc.beta(internalBlock, 1,1,1));
 
     // if the point of internal cube is (2, 2, 4)
     intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 1), polyhedron);
@@ -47,8 +43,28 @@ TEST_CASE("PointNormal_boundary_intersectionPoint_finder"){
     REQUIRE(std::round(intercectionPoint.y()) == 0);
     REQUIRE(std::round(intercectionPoint.z()) == 6);
 
+    // if the point of internal cube is (2, 4, 2)
+    intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1, 1, 2, 1), polyhedron);
+    REQUIRE(std::round(intercectionPoint.x()) == 0);
+    REQUIRE(std::round(intercectionPoint.y()) == 6);
+    REQUIRE(std::round(intercectionPoint.z()) == 0);
 
+    // if the point of internal cube is (2, 4, 4)
+    intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1 , 1, 2), polyhedron);
+    REQUIRE(std::round(intercectionPoint.x()) == 0);
+    REQUIRE(std::round(intercectionPoint.y()) == 6);
+    REQUIRE(std::round(intercectionPoint.z()) == 6);
 
-    PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder = PointNormal_boundary_intersectionPoint_finder();
+    // if the point of internal cube is (4, 4, 4)
+    intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1, 1, 2, 1, 1, 1), polyhedron);
+    REQUIRE(std::round(intercectionPoint.x()) == 6);
+    REQUIRE(std::round(intercectionPoint.y()) == 6);
+    REQUIRE(std::round(intercectionPoint.z()) == 6);
+
+    // if the point of internal cube is (4, 4, 2)
+    intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1, 1, 2, 1, 1), polyhedron);
+    REQUIRE(std::round(intercectionPoint.x()) == 6);
+    REQUIRE(std::round(intercectionPoint.y()) == 6);
+    REQUIRE(std::round(intercectionPoint.z()) == 0);
 
 }

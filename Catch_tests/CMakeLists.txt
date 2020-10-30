@@ -8,12 +8,11 @@ set(SOURCE_TESTS_FILES
         OnBoundary_block_remover_tests.cpp
         External_facet_finder_tests.cpp
         PointNormal_boundary_intersectionPoint_finder_tests.cpp
-        InitialMesh_boundary_connector_tests.cpp
+#        InitialMesh_boundary_connector_tests.cpp
         )
 
 set(HEADER_TESTS_FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/test_config.h"
-        )
+        "${CMAKE_CURRENT_BINARY_DIR}/test_config.h")
 
 
 set(CATCH_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
