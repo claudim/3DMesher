@@ -76,7 +76,7 @@ TEST_CASE("must_find_7_external_vertices", "[Vertex_location_finder][findExterna
     LCC_3 lcc;
     Block_maker blockMaker = Block_maker();
 
-    blockMaker.make_block(lcc, onBoundaryBasePoint, lg); // it has 7 external points, 0 internal points, 1 onBoundary point
+    blockMaker.make_cube(lcc, onBoundaryBasePoint, lg); // it has 7 external points, 0 internal points, 1 onBoundary point
 
     Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
     int number_of_external_vertices;
@@ -92,7 +92,7 @@ TEST_CASE("must_find_0_external_vertices", "[Vertex_location_finder][findExterna
     Point onBoundaryBasePoint = Point(0,0,0);  FT lg = 10;
     LCC_3 lcc;
     Block_maker blockMaker = Block_maker();
-    blockMaker.make_block(lcc, onBoundaryBasePoint, lg);
+    blockMaker.make_cube(lcc, onBoundaryBasePoint, lg);
     Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
     int number_of_external_vertices;
     vertexLocationFinder.findExternalVertices(lcc, number_of_external_vertices, 0);
@@ -108,7 +108,7 @@ TEST_CASE("must_find_3_external_vertices", "[Vertex_location_finder][findExterna
     LCC_3 lcc;
     Block_maker blockMaker = Block_maker();
 
-    blockMaker.make_block(lcc, onBoundaryBasePoint, lg); // it has 3 external points, 4 internal points, 1 onBoundary point
+    blockMaker.make_cube(lcc, onBoundaryBasePoint, lg); // it has 3 external points, 4 internal points, 1 onBoundary point
 
     Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
     int number_of_external_vertices;

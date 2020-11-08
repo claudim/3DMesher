@@ -9,6 +9,7 @@ set(SOURCE_TESTS_FILES
         External_facet_finder_tests.cpp
         PointNormal_boundary_intersectionPoint_finder_tests.cpp
         InitialMesh_boundary_connector_tests.cpp
+        Point_sorter_tests.cpp
         )
 
 set(HEADER_TESTS_FILES

@@ -17,7 +17,7 @@ TEST_CASE("hex_must_have_all_vertices_onBoundary_or_inside_boundary", "[Grid_bou
     LCC_3 lcc;
     Block_maker blockMaker = Block_maker();
 
-    Dart_handle onBoundary_block = blockMaker.make_block(lcc, onBoundaryBasePoint, lg); // it has 3 external points, 1 boundary point and 4 internal points
+    Dart_handle onBoundary_block = blockMaker.make_cube(lcc, onBoundaryBasePoint, lg); // it has 3 external points, 1 boundary point and 4 internal points
     Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
     int number_of_external_vertices;
     vertexLocationFinder.findExternalVertices(lcc, number_of_external_vertices, 0);

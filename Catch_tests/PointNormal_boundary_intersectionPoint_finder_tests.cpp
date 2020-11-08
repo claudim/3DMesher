@@ -10,7 +10,7 @@ TEST_CASE("PointNormal_boundary_intersectionPoint_finder"){
     FT internalBlockLg = 2;
     LCC_3 lcc;
     Block_maker blockMaker = Block_maker();
-    Dart_handle internalBlock = blockMaker.make_block(lcc, internalBlockBasePoint, internalBlockLg);
+    Dart_handle internalBlock = blockMaker.make_cube(lcc, internalBlockBasePoint, internalBlockLg);
 
     std::string fileName = data_path + "/cubeTest.off";
 

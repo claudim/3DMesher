@@ -32,7 +32,7 @@ class PointNormal_boundary_intersectionPoint_finder {
 
 public:
    // template<typename Point, typename Linear_cell_complex_traits, typename allocator, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
-    Point findIntersecionPoint(const LCC_3 &lcc, const Dart_handle &block_handle, const Polyhedron &polyhedron);
+    Point findIntersecionPoint(const LCC_3 &lcc, const Dart_const_handle &block_handle, const Polyhedron &polyhedron);
 };
 
 

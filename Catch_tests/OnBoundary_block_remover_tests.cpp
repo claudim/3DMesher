@@ -16,7 +16,7 @@ TEST_CASE("remove_all_onBoundary_blocks","[OnBoundary_block_remover]"){
     SECTION( "must_remove_onBoundary_block" ) {
         Point onBoundaryBasePoint = Point(-20,0,0);  FT lg = 10;
 
-        Dart_handle onBoundary_block = blockMaker.make_block(lcc, onBoundaryBasePoint, lg);
+        Dart_handle onBoundary_block = blockMaker.make_cube(lcc, onBoundaryBasePoint, lg);
 
         FT size_before_call_removeBlocks = lcc.darts().size();
         blockRemover.removeBlocks(lcc, polyhedron);
@@ -29,7 +29,7 @@ TEST_CASE("remove_all_onBoundary_blocks","[OnBoundary_block_remover]"){
     SECTION( "must_not_remove_external_block" ) {
         Point externalBasePoint = Point(-30,0,0);  FT lg = 1;
 
-        Dart_handle onBoundary_block = blockMaker.make_block(lcc, externalBasePoint, lg);
+        Dart_handle onBoundary_block = blockMaker.make_cube(lcc, externalBasePoint, lg);
 
         FT size_before_call_removeBlocks = lcc.darts().size();
         blockRemover.removeBlocks(lcc, polyhedron);
@@ -39,7 +39,7 @@ TEST_CASE("remove_all_onBoundary_blocks","[OnBoundary_block_remover]"){
 
     SECTION( "must_not_remove_internal_block" ) {
         Point internalBasePoint = Point(0,0,0);  FT lg = 1;
-        Dart_handle internal_block = blockMaker.make_block(lcc, internalBasePoint, lg);
+        Dart_handle internal_block = blockMaker.make_cube(lcc, internalBasePoint, lg);
         FT size_before_call_removeBlocks = lcc.darts().size();
         blockRemover.removeBlocks(lcc, polyhedron);
         FT size_after_call_removeBlocks = lcc.darts().size();

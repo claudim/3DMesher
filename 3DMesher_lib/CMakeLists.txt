@@ -11,6 +11,8 @@ set(HEADER_FILES
         External_facet_finder.h
         PointNormal_boundary_intersectionPoint_finder.h
         InitialMesh_boundary_connector.h
+        Writer.h
+        Point_sorter.h
         )
 
 set(SOURCE_FILES
@@ -24,6 +26,8 @@ set(SOURCE_FILES
         External_facet_finder.cpp
         PointNormal_boundary_intersectionPoint_finder.cpp
         InitialMesh_boundary_connector.cpp
+        Writer.cpp
+        Point_sorter.cpp
         )
 
 # You get to pick a type of library, STATIC, SHARED, or MODULE. If you leave this choice off, the value of BUILD_SHARED_LIBS will be used to pick between STATIC and SHARED.

@@ -15,7 +15,10 @@ typedef LCC_3::FT FT;
 
 class Block_maker {
 public:
-    Dart_handle make_block(LCC_3& lcc, const Point& basepoint, FT& lg);
+    Dart_handle make_cube(LCC_3& lcc, const Point& basepoint, FT& lg);
+
+    //template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename Point, typename Point>
+    const Dart_handle make_block(LCC_3 &lcc, const std::vector<Point> &vertices);
 };
 
 

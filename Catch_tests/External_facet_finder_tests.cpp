@@ -21,7 +21,7 @@ TEST_CASE("Must_find_external_facets","[External_facet_finder]")
         FT lg = 1;
         LCC_3 lcc;
         Block_maker blockMaker = Block_maker();
-        Dart_handle block = blockMaker.make_block(lcc, externalBasePoint, lg);
+        Dart_handle block = blockMaker.make_cube(lcc, externalBasePoint, lg);
         External_facet_finder externalCellFinder = External_facet_finder();
         std::vector<Dart_const_handle> externalFacets = externalCellFinder.find(lcc);
         REQUIRE(externalFacets.size() == 6);
@@ -47,7 +47,7 @@ static LCC_3 make_grid_3X3()
             x_min_p = 0;
             for (i = 0; i < 3; i++) {
                 Point basePoint = Point(x_min_p, y_min_p, z_min_p);
-                Dart_handle dart_handle_of_cube = blockMaker.make_block(lcc, basePoint, grid_dimension);
+                Dart_handle dart_handle_of_cube = blockMaker.make_cube(lcc, basePoint, grid_dimension);
             }
             LCC_3::Dart_range::iterator start_iterator = lcc.darts().begin();
             std::advance(start_iterator, NUMBER_OF_DARTS_PER_CUBE * j * i + add_z);

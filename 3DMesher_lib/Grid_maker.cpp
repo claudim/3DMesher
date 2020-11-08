@@ -67,7 +67,7 @@ LCC_3 Grid_maker::turn_box_into_grid(){
                         (grid_box.zmin() + (grid_dimension) / 2.0 + grid_dimension * z ) - (grid_dimension) / 2.0;
 
                 Point basePoint = Point(x_min_p, y_min_p, z_min_p);
-                Dart_handle dart_handle_of_cube = blockMaker.make_block(lcc, basePoint, grid_dimension);
+                Dart_handle dart_handle_of_cube = blockMaker.make_cube(lcc, basePoint, grid_dimension);
             }
             LCC_3::Dart_range::iterator start_iterator = lcc.darts().begin();
             std::advance(start_iterator, NUMBER_OF_DARTS_PER_CUBE * j * i + add_z);
