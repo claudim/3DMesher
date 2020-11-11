@@ -224,7 +224,7 @@ TEST_CASE("Group points by X and Y coordinate"){
     pointSorter.groupByZ(points, zGroupIterator,vector_it, vector_end_it);
 
     for(iterator2 it = zGroupIterator.begin(),it_end = zGroupIterator.end(); it != it_end;++it ){
-        
+
     }
 
 

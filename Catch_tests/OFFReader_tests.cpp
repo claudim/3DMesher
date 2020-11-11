@@ -2,7 +2,7 @@
 
 #include "../Include/catch.hpp"
 #include "test_config.h"
-#include "Reader.h"
+#include "OFF_Reader.h"
 
 typedef Polyhedron::Vertex_const_iterator Vertex_iterator;
 typedef Polyhedron::Facet_const_iterator Facet_iterator;
@@ -14,21 +14,21 @@ TEST_CASE("read_a_pyramid_from_off_file", "[Reader_test]")
 {
     std::string fileName = data_path + "/pyramid.off";
 
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     int number_of_vertices = get_polyhedron_vertices_number(polyhedron);
     int number_of_facet = get_polyhedron_facet_number(polyhedron);
 
     REQUIRE(number_of_vertices == 5);
-    REQUIRE(number_of_facet == 6); // 6 facet beacause 2 triangular facet make 1 quadrilateral facet
+    REQUIRE(number_of_facet == 6); // 6 facet because 2 triangular facet make 1 quadrilateral facet
 
 }
 
 TEST_CASE("will_throw_failureException_when_file_is_not_found", "[Reader_test]")
 {
     std::string fileName = data_path + "/ciao.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     REQUIRE_THROWS_AS( reader.read(fileName), std::ios_base::failure); //Expects that an exception of the specified type(2argument) is thrown during evaluation of the expression(1 argument).
 }
 

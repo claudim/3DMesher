@@ -1,6 +1,6 @@
 #include "../Include/catch.hpp"
 #include "test_config.h"
-#include <Reader.h>
+#include <OFF_Reader.h>
 #include "Block_maker.h"
 #include "External_facet_finder.h"
 #include "Writer.h"
@@ -17,7 +17,7 @@
 //
 //    std::string fileName = data_path + "/cubeTest.off";
 //
-//    Reader reader = Reader();
+//    OFF_Reader reader = OFF_Reader();
 //    Polyhedron polyhedron = reader.read(fileName);
 //
 //    InitialMesh_boundary_connector boundaryConnector = InitialMesh_boundary_connector();

@@ -1,5 +1,6 @@
 set(SOURCE_TESTS_FILES
-        Reader_tests.cpp
+        OFFReader_tests.cpp
+        STLReader_tests.cpp
         Block_maker_tests.cpp
         Vertex_location_finder_tests.cpp
         Grid_maker_tests.cpp

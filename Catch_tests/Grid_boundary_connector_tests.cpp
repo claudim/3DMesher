@@ -1,6 +1,6 @@
 #include "../Include/catch.hpp"
 #include "test_config.h"
-#include "Reader.h"
+#include "OFF_Reader.h"
 #include "Block_maker.h"
 #include "Vertex_location_finder.h"
 #include "Grid_boundary_connector.h"
@@ -10,7 +10,7 @@ typedef CGAL::Grid_boundary_connector Grid_boundary_connector ;
 
 TEST_CASE("hex_must_have_all_vertices_onBoundary_or_inside_boundary", "[Grid_boundary_connector]"){
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     Point onBoundaryBasePoint = Point(-20,0,0);  FT lg = 10;

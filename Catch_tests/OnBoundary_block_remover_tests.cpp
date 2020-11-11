@@ -1,13 +1,13 @@
 #include "../Include/catch.hpp"
 #include "test_config.h"
-#include <Reader.h>
+#include <OFF_Reader.h>
 #include <Block_maker.h>
 #include "OnBoundary_block_remover.h"
 
 TEST_CASE("remove_all_onBoundary_blocks","[OnBoundary_block_remover]"){
 
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
     LCC_3 lcc;
     Block_maker blockMaker = Block_maker();

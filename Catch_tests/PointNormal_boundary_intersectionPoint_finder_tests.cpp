@@ -2,7 +2,7 @@
 #include "test_config.h"
 #include "PointNormal_boundary_intersectionPoint_finder.h"
 #include <Block_maker.h>
-#include <Reader.h>
+#include <OFF_Reader.h>
 
 TEST_CASE("PointNormal_boundary_intersectionPoint_finder"){
 
@@ -14,7 +14,7 @@ TEST_CASE("PointNormal_boundary_intersectionPoint_finder"){
 
     std::string fileName = data_path + "/cubeTest.off";
 
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     PointNormal_boundary_intersectionPoint_finder pointFinder = PointNormal_boundary_intersectionPoint_finder();
