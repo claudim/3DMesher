@@ -5,7 +5,7 @@
 
 TEST_CASE("grid_x_dimension_greater_than_polyhedron_x_dimension", "[Grid_maker_test][wrap_the_object]"){
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     Grid_maker gridMaker = Grid_maker();
@@ -24,7 +24,7 @@ TEST_CASE("grid_x_dimension_greater_than_polyhedron_x_dimension", "[Grid_maker_t
 TEST_CASE("grid_y_dimension_greater_than_polyhedron_y_dimension", "[Grid_maker_test][wrap_the_object]"){
 
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     Grid_maker gridMaker = Grid_maker();
@@ -39,7 +39,7 @@ TEST_CASE("grid_y_dimension_greater_than_polyhedron_y_dimension", "[Grid_maker_t
 TEST_CASE("grid_z_dimension_greater_than_polyhedron_z_dimension", "[Grid_maker_test][wrap_the_object]"){
 
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     Grid_maker gridMaker = Grid_maker();
@@ -58,7 +58,7 @@ TEST_CASE("grid_z_dimension_greater_than_polyhedron_z_dimension", "[Grid_maker_t
 TEST_CASE("object_inside_grid", "[Grid_maker_test][wrap_the_object]"){
 
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     Grid_maker gridMaker = Grid_maker();
@@ -77,7 +77,7 @@ TEST_CASE("object_inside_grid", "[Grid_maker_test][wrap_the_object]"){
 
 TEST_CASE("must_create_27_hex_over_sphere_if_resolution_is_1", "[Grid_maker_test]"){
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     Grid_maker gridMaker = Grid_maker();
@@ -94,7 +94,7 @@ TEST_CASE("must_create_27_hex_over_sphere_if_resolution_is_1", "[Grid_maker_test
 
 TEST_CASE("must_create_108_hex_facet_over_sphere_if_resolution_is_1", "[Grid_maker_test]"){
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     Grid_maker gridMaker = Grid_maker();
@@ -111,7 +111,7 @@ TEST_CASE("must_create_108_hex_facet_over_sphere_if_resolution_is_1", "[Grid_mak
 
 TEST_CASE("must_create_64_verteces_over_sphere_if_resolution_is_1", "[Grid_maker_test]"){
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     Grid_maker gridMaker = Grid_maker();

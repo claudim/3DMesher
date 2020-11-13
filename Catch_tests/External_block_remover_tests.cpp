@@ -1,6 +1,6 @@
 #include "../Include/catch.hpp"
 #include "test_config.h"
-#include "Reader.h"
+#include "OFF_Reader.h"
 #include "External_block_remover.h"
 
 TEST_CASE("remove_block","[External_block_remover]"){
@@ -20,7 +20,7 @@ TEST_CASE("remove_block","[External_block_remover]"){
 TEST_CASE("must_remove_esternal_blocks","[External_block_remover]"){
 
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     Point externalBasePoint = Point(-35,-35,-35);  FT lg = 1;
@@ -35,7 +35,7 @@ TEST_CASE("must_remove_esternal_blocks","[External_block_remover]"){
 
 TEST_CASE("must_not_remove_internal_blocks","[External_block_remover]"){
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     Point internalBasePoint = Point(0,0,0);  FT lg = 1;
@@ -59,7 +59,7 @@ TEST_CASE("must_not_remove_internal_blocks","[External_block_remover]"){
 TEST_CASE("must_not_remove_on_boundary_blocks","[External_block_remover]"){
 
     std::string fileName = data_path + "/sphere.off";
-    Reader reader = Reader();
+    OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
 
     Point onBoundaryBasePoint = Point(-20,0,0);  FT lg = 10;
