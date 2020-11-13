@@ -10,7 +10,8 @@ set(SOURCE_TESTS_FILES
         PointNormal_boundary_intersectionPoint_finder_tests.cpp
         InitialMesh_boundary_connector_tests.cpp
         Point_sorter_tests.cpp
-        )
+        Evaluator_tests.cpp
+        MeditReader_tests.cpp)
 
 set(HEADER_TESTS_FILES
         "${CMAKE_CURRENT_BINARY_DIR}/test_config.h")
@@ -26,3 +27,4 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 add_executable(Catch_tests_run ${SOURCE_TESTS_FILES}  ${HEADER_TESTS_FILES})
 target_link_libraries(Catch_tests_run 3DMesher_lib)
+target_link_libraries(Catch_tests_run Evaluator_lib)

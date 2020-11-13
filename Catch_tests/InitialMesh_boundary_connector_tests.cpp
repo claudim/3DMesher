@@ -18,7 +18,7 @@
 //    std::string fileName = data_path + "/cubeTest.off";
 //
 //    Reader reader = Reader();
-//    Polyhedron polyhedron = reader.read(fileName);
+//    Polyhedron polyhedron = reader.readVertices(fileName);
 //
 //    InitialMesh_boundary_connector boundaryConnector = InitialMesh_boundary_connector();
 //
