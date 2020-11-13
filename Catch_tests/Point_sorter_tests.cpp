@@ -18,16 +18,14 @@ TEST_CASE("Order points by Z coordinate"){
     pointsToSort.emplace_back(p4);
 
     iterator vector_it = pointsToSort.begin(), vector_end_it = pointsToSort.end();
-   // pointSorter.quicksort( vector_it, vector_end_it);
-    pointSorter.quicksortZ( vector_it, vector_end_it);
+    std::sort(pointsToSort.begin(), pointsToSort.end(), [](Point a, Point b) {return a.z() < b.z(); });
 
-    REQUIRE(pointsToSort[0] == p4);
-    REQUIRE(pointsToSort[1] == p1);
-    REQUIRE(pointsToSort[2] == p3);
-    REQUIRE(pointsToSort[3] == p2);
+    REQUIRE(pointsToSort[0] == p1);
+    REQUIRE(pointsToSort[1] == p4);
+    REQUIRE(pointsToSort[2] == p2);
+    REQUIRE(pointsToSort[3] == p3);
 
 }
-
 
 TEST_CASE("Group points by Z coordinate"){
 
@@ -119,7 +117,6 @@ TEST_CASE("Group points by Z coordinate"){
     }
 }
 
-
 TEST_CASE("Group points by Y coordinate"){
 
     Point_sorter pointSorter;
@@ -149,8 +146,6 @@ TEST_CASE("Group points by Y coordinate"){
     REQUIRE(yGroupIterator.size() == 1);
     iterator2 firstyGroupIterator = yGroupIterator.begin();
     REQUIRE(*(*firstyGroupIterator) == *vector_it);
-
-
 
         Point p6(4, 5, 5);
         Point p7(4, 2, 6);
@@ -197,7 +192,6 @@ TEST_CASE("Group points by Y coordinate"){
 //    }
 }
 
-
 TEST_CASE("Group points by X and Y coordinate"){
     Point_sorter pointSorter;
 
@@ -223,60 +217,39 @@ TEST_CASE("Group points by X and Y coordinate"){
 
     pointSorter.groupByZ(points, zGroupIterator,vector_it, vector_end_it);
 
-    for(iterator2 it = zGroupIterator.begin(),it_end = zGroupIterator.end(); it != it_end;++it ){
-
-    }
-
-
-
     REQUIRE(zGroupIterator.size() == 3);
     iterator2 firstzGroupIterator = zGroupIterator.begin();
     REQUIRE(*(*firstzGroupIterator) == *vector_it);
     iterator2 secondzGroupIterator = ++firstzGroupIterator;
     vector_it = vector_it + 2;
     REQUIRE(*(*secondzGroupIterator) == *vector_it);
-
     iterator2 thirdzGroupIterator = ++secondzGroupIterator;
     vector_it = vector_it + 2;
     REQUIRE(*(*thirdzGroupIterator) == *vector_it);
+
+    std::vector<iterator> yGroupIterator;
+    for(iterator2 it = zGroupIterator.begin(),it2 = ++zGroupIterator.begin(), it_end = zGroupIterator.end(); it!= it_end; ++it, ++it2){
+        if(it2 != it_end) {
+            std::sort(*it, *it2, [](Point a, Point b) { return a.y() < b.y(); });
+            pointSorter.groupByY(points, yGroupIterator, *it, *it2);
+        }
+        else{
+            std::sort(*it, points.end(), [](Point a, Point b) { return a.y() < b.y(); });
+            pointSorter.groupByY(points, yGroupIterator, *it, points.end());
+        }
+    }
+    REQUIRE(yGroupIterator.size() == 3);
+    iterator2 itz = zGroupIterator.begin();
+    iterator2 ity = yGroupIterator.begin();
+    REQUIRE(*(*itz) == *(*ity));
+    itz++; ity++;
+    REQUIRE(*(*itz) == *(*ity));
+    itz++; ity++;
+    REQUIRE(*(*itz) == *(*ity));
+
 }
 
-//TEST_CASE("permutation"){
-//    LCC_3 lcc;
-//    std::vector<Point> hexahedronPoints;
-//
-//    hexahedronPoints.emplace_back(Point(6,0,0));
-//    hexahedronPoints.emplace_back(Point(4,2,2));
-//    hexahedronPoints.emplace_back(Point(6,0,6));
-//    hexahedronPoints.emplace_back(Point(4,2,4));
-//    hexahedronPoints.emplace_back(Point(6,6,6));
-//    hexahedronPoints.emplace_back(Point(4,4,4));
-//    hexahedronPoints.emplace_back(Point(6,6,0));
-//    hexahedronPoints.emplace_back(Point(2,4,4));
-//    int i=0, j=0;
-//
-//    do{
-//
-//        for(Point p : hexahedronPoints){
-//            std::cout<< p << "  ";
-//        }
-//        std::cout<< std::endl;
-//
-//        Dart_handle hex_dart = lcc.make_hexahedron(hexahedronPoints[0], hexahedronPoints[1], hexahedronPoints[2], hexahedronPoints[3], hexahedronPoints[4], hexahedronPoints[5], hexahedronPoints[6], hexahedronPoints[7]);
-//
-//        if(lcc.is_volume_combinatorial_hexahedron(hex_dart)){
-//            j++;
-//        }
-//        else{
-//            i++;
-//        }
-//    }while(std::next_permutation(hexahedronPoints.begin(), hexahedronPoints.end()));
-//    std::cout<<"i: " << i<<  ", j:"<< j<< std::endl;
-//}
-
-
-TEST_CASE("Order points in clockwise fashion on the XY plane"){
-
+TEST_CASE("Order points by Z then by Y and X"){
     Point_sorter pointSorter;
     std::vector<Point> pointsToSort;
     Point p1, p2, p3, p4;
@@ -291,7 +264,7 @@ TEST_CASE("Order points in clockwise fashion on the XY plane"){
     pointsToSort.emplace_back(p3);
     pointsToSort.emplace_back(p4);
 
-    pointSorter.clockwiseSort(pointsToSort);
+    pointSorter.sortByZYX(pointsToSort);
 
     REQUIRE(pointsToSort[0] == p1);
     REQUIRE(pointsToSort[1] == p4);
@@ -311,15 +284,13 @@ TEST_CASE("Order points in clockwise fashion on the XY plane"){
     pointsToSort2.emplace_back(p3);
     pointsToSort2.emplace_back(p4);
 
-    pointSorter.clockwiseSort(pointsToSort2);
+    pointSorter.sortByZYX(pointsToSort2);
 
     REQUIRE(pointsToSort2[0] == p1);
     REQUIRE(pointsToSort2[1] == p4);
     REQUIRE(pointsToSort2[2] == p3);
     REQUIRE(pointsToSort2[3] == p2);
 
-//    SECTION("Another vector to sort"){
-//
         p1 = Point(2, 4, 2);
         p2 = Point(4, 4, 2);
         p3 = Point(4, 2, 2);
@@ -332,13 +303,373 @@ TEST_CASE("Order points in clockwise fashion on the XY plane"){
         pointsToSort3.emplace_back(p3);
         pointsToSort3.emplace_back(p4);
 
-        pointSorter.clockwiseSort(pointsToSort3);
+        pointSorter.sortByZYX(pointsToSort3);
 
         REQUIRE(pointsToSort3[0] == p4);
         REQUIRE(pointsToSort3[1] == p3);
         REQUIRE(pointsToSort3[2] == p1);
         REQUIRE(pointsToSort3[3] == p2);
-//    }
 
 }
 
+TEST_CASE("Find and sort the southest hex facet"){
+    Point_sorter pointSorter;
+    std::vector<Point> pointsToSort;
+    std::vector<Point> southestFacetPoints;
+    Point p1, p2, p3, p4, p5, p6, p7, p8;
+
+    p1= Point(2, 4, 4);
+    p2= Point(2, 2, 4);
+    p3= Point(4, 2, 4);
+    p4= Point(4, 4, 4);
+    p5= Point(0, 0, 6);
+    p6= Point(6, 0, 6);
+    p7= Point(6, 6, 6);
+    p8= Point(0, 6, 6);
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_southest_points_facet(pointsToSort, southestFacetPoints);
+
+    REQUIRE(southestFacetPoints[0] == p2);
+    REQUIRE(southestFacetPoints[1] == p3);
+    REQUIRE(southestFacetPoints[2] == p4);
+    REQUIRE(southestFacetPoints[3] == p1);
+
+    pointsToSort.clear();
+    southestFacetPoints.clear();
+
+    p1= Point(2, 4, 2);
+    p2= Point(2, 2, 2);
+    p3= Point(4, 2, 2);
+    p4= Point(4, 4, 2);
+    p5= Point(0, 6, 0);
+    p6= Point(0, 0, 0);
+    p7= Point(6, 0, 0);
+    p8= Point(6, 6, 0);
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_southest_points_facet(pointsToSort, southestFacetPoints);
+
+    REQUIRE(southestFacetPoints[0] == p6);
+    REQUIRE(southestFacetPoints[1] == p7);
+    REQUIRE(southestFacetPoints[2] == p8);
+    REQUIRE(southestFacetPoints[3] == p5);
+
+    pointsToSort.clear();
+    southestFacetPoints.clear();
+
+    p1= Point(2, 2, 2);
+    p2= Point(2, 2, 4);
+    p3= Point(2, 4, 4);
+    p4= Point(2, 4, 2);
+    p5= Point(0, 0, 6);
+    p6= Point(0, 0, 0);
+    p7= Point(0, 6, 0);
+    p8= Point(0, 6, 6);
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_southest_points_facet(pointsToSort, southestFacetPoints);
+
+//    REQUIRE(southestFacetPoints[0] == p6);
+//    REQUIRE(southestFacetPoints[1] == p7);
+//    REQUIRE(southestFacetPoints[2] == p4);
+//    REQUIRE(southestFacetPoints[3] == p1);
+    REQUIRE(southestFacetPoints[0] == p6);
+    REQUIRE(southestFacetPoints[1] == p1);
+    REQUIRE(southestFacetPoints[2] == p4);
+    REQUIRE(southestFacetPoints[3] == p7);
+
+    pointsToSort.clear();
+    southestFacetPoints.clear();
+
+    p1= Point(2, 2, 2);
+    p2= Point(2, 2, 4);
+    p3= Point(4, 2, 2);
+    p4= Point(4, 2, 4);
+    p5= Point(0, 0, 6);
+    p6= Point(0, 0, 0);
+    p7= Point(6, 0, 0);
+    p8= Point(6, 0, 6);
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_southest_points_facet(pointsToSort, southestFacetPoints);
+
+    REQUIRE(southestFacetPoints[0] == p6);
+    REQUIRE(southestFacetPoints[1] == p7);
+    REQUIRE(southestFacetPoints[2] == p3);
+    REQUIRE(southestFacetPoints[3] == p1);
+
+    pointsToSort.clear();
+    southestFacetPoints.clear();
+
+    p1= Point(2, 4, 4);
+    p2= Point(4, 4, 4);
+    p3= Point(4, 4, 2);
+    p4= Point(2, 4, 2);
+    p5= Point(0, 6, 6);
+    p6= Point(0, 6, 0);
+    p7= Point(6, 6, 0);
+    p8= Point(6, 6, 6);
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_southest_points_facet(pointsToSort, southestFacetPoints);
+
+//    REQUIRE(southestFacetPoints[0] == p6);
+//    REQUIRE(southestFacetPoints[1] == p7);
+//    REQUIRE(southestFacetPoints[2] == p3);
+//    REQUIRE(southestFacetPoints[3] == p4);
+
+    REQUIRE(southestFacetPoints[0] == p4);
+    REQUIRE(southestFacetPoints[1] == p3);
+    REQUIRE(southestFacetPoints[2] == p7);
+    REQUIRE(southestFacetPoints[3] == p6);
+
+    pointsToSort.clear();
+    southestFacetPoints.clear();
+
+    p1= Point(4, 2, 2);
+    p2= Point(4, 2, 4);
+    p3= Point(4, 4, 4);
+    p4= Point(4, 4, 2);
+    p5= Point(6, 0, 0);
+    p6= Point(6, 6, 0);
+    p7= Point(6, 6, 6);
+    p8= Point(6, 0, 6);
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_southest_points_facet(pointsToSort, southestFacetPoints);
+
+    REQUIRE(southestFacetPoints[0] == p1);
+    REQUIRE(southestFacetPoints[1] == p5);
+    REQUIRE(southestFacetPoints[2] == p6);
+    REQUIRE(southestFacetPoints[3] == p4);
+
+}
+
+TEST_CASE("Find and sort the northest hex facet"){
+    Point_sorter pointSorter;
+    std::vector<Point> pointsToSort;
+    std::vector<Point> northestFacetPoints;
+    Point p1, p2, p3, p4, p5, p6, p7, p8;
+
+    //Top hex
+    p1= Point(2, 4, 4);
+    p2= Point(2, 2, 4);
+    p3= Point(4, 2, 4);
+    p4= Point(4, 4, 4);
+    p5= Point(0, 0, 6);
+    p6= Point(6, 0, 6);
+    p7= Point(6, 6, 6);
+    p8= Point(0, 6, 6);
+
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_northest_points_facet(pointsToSort, northestFacetPoints);
+
+    REQUIRE(northestFacetPoints[0] == p8);
+    REQUIRE(northestFacetPoints[1] == p5);
+    REQUIRE(northestFacetPoints[2] == p6);
+    REQUIRE(northestFacetPoints[3] == p7);
+
+    pointsToSort.clear();
+    northestFacetPoints.clear();
+
+    //Bottom hex
+    p1= Point(2, 4, 2);
+    p2= Point(2, 2, 2);
+    p3= Point(4, 2, 2);
+    p4= Point(4, 4, 2);
+    p5= Point(0, 6, 0);
+    p6= Point(0, 0, 0);
+    p7= Point(6, 0, 0);
+    p8= Point(6, 6, 0);
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_northest_points_facet(pointsToSort, northestFacetPoints);
+
+    REQUIRE(northestFacetPoints[0] == p1);
+    REQUIRE(northestFacetPoints[1] == p2);
+    REQUIRE(northestFacetPoints[2] == p3);
+    REQUIRE(northestFacetPoints[3] == p4);
+
+    pointsToSort.clear();
+    northestFacetPoints.clear();
+
+    //Left  hex
+    p1= Point(2, 2, 2);
+    p2= Point(2, 2, 4);
+    p3= Point(2, 4, 4);
+    p4= Point(2, 4, 2);
+    p5= Point(0, 0, 6);
+    p6= Point(0, 0, 0);
+    p7= Point(0, 6, 0);
+    p8= Point(0, 6, 6);
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_northest_points_facet(pointsToSort, northestFacetPoints);
+
+    REQUIRE(northestFacetPoints[0] == p8);
+    REQUIRE(northestFacetPoints[1] == p5);
+    REQUIRE(northestFacetPoints[2] == p2);
+    REQUIRE(northestFacetPoints[3] == p3);
+
+    pointsToSort.clear();
+    northestFacetPoints.clear();
+
+    //Front hex
+    p1= Point(2, 2, 2);
+    p2= Point(2, 2, 4);
+    p3= Point(4, 2, 2);
+    p4= Point(4, 2, 4);
+    p5= Point(0, 0, 6);
+    p6= Point(0, 0, 0);
+    p7= Point(6, 0, 0);
+    p8= Point(6, 0, 6);
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_northest_points_facet(pointsToSort, northestFacetPoints);
+
+    REQUIRE(northestFacetPoints[0] == p2);
+    REQUIRE(northestFacetPoints[1] == p5);
+    REQUIRE(northestFacetPoints[2] == p8);
+    REQUIRE(northestFacetPoints[3] == p4);
+
+    pointsToSort.clear();
+    northestFacetPoints.clear();
+
+    //Back hex
+    p1= Point(2, 4, 4);
+    p2= Point(4, 4, 4);
+    p3= Point(4, 4, 2);
+    p4= Point(2, 4, 2);
+    p5= Point(0, 6, 6);
+    p6= Point(0, 6, 0);
+    p7= Point(6, 6, 0);
+    p8= Point(6, 6, 6);
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_northest_points_facet(pointsToSort, northestFacetPoints);
+
+    REQUIRE(northestFacetPoints[0] == p5);
+    REQUIRE(northestFacetPoints[1] == p1);
+    REQUIRE(northestFacetPoints[2] == p2);
+    REQUIRE(northestFacetPoints[3] == p8);
+
+    pointsToSort.clear();
+    northestFacetPoints.clear();
+
+    //Right hex
+    p1= Point(4, 2, 2);
+    p2= Point(4, 2, 4);
+    p3= Point(4, 4, 4);
+    p4= Point(4, 4, 2);
+    p5= Point(6, 0, 0);
+    p6= Point(6, 6, 0);
+    p7= Point(6, 6, 6);
+    p8= Point(6, 0, 6);
+
+    pointsToSort.emplace_back(p1);
+    pointsToSort.emplace_back(p2);
+    pointsToSort.emplace_back(p3);
+    pointsToSort.emplace_back(p4);
+    pointsToSort.emplace_back(p5);
+    pointsToSort.emplace_back(p6);
+    pointsToSort.emplace_back(p7);
+    pointsToSort.emplace_back(p8);
+
+    pointSorter.sort_northest_points_facet(pointsToSort, northestFacetPoints);
+
+    REQUIRE(northestFacetPoints[0] == p3);
+    REQUIRE(northestFacetPoints[1] == p2);
+    REQUIRE(northestFacetPoints[2] == p8);
+    REQUIRE(northestFacetPoints[3] == p7);
+
+}
