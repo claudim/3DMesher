@@ -18,7 +18,6 @@ void MeditReader::readVertices(std::string aFileName, std::vector<std::array<dou
             break;
         if(std::regex_search(line,regex)) {
             // Output the text from the file
-            std::cout << line << std::endl;
             std::stringstream ss(line);
             double temp;
             int i = 0;
@@ -34,5 +33,8 @@ void MeditReader::readVertices(std::string aFileName, std::vector<std::array<dou
     // Close the file
     input.close();
 
+    if (vertices.empty()) {
+        std::cerr << "no vertices defined in the provided medit file";
+    }
 
 }

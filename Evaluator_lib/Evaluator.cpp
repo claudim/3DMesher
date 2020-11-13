@@ -1,17 +1,16 @@
-#include <string>
 #include <vector>
 #include "Evaluator.h"
 #include "MeditReader.h"
 
+/**
+ * Evaluate provided mesh
+ * @param vertices coordinates of vertices in the mesh
+ * @return List of metrics relative to provided mesh if valid mesh is provided,
+ */
+HexMetricVals Evaluator::evaluate(std::vector<std::array<double, 3>> vertices) {
 
-HexMetricVals Evaluator::evaluate(std::string fileName) {
-
-    MeditReader reader;
-    std::vector<std::array<double, 3>> vertices;
-    reader.readVertices(fileName, vertices);
-    const std::array<double, 3>* verticesArray = &vertices[0];
-    int request = V_HEX_JACOBIAN | V_HEX_SHAPE;
     HexMetricVals vals;
-    v_hex_quality(vertices.size(), verticesArray, request, &vals);
-    return HexMetricVals();
+    std::array<double, 3> *pArray = vertices.data();
+    v_hex_quality(vertices.size(), reinterpret_cast<const double(*)[3]>(pArray), V_HEX_ALL, &vals);
+    return vals;
 }

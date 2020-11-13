@@ -26,6 +26,9 @@ add_executable(3DMesher ${SOURCE_FILES})
 include_directories(3DMesher_lib )
 add_subdirectory(3DMesher_lib )
 
+include_directories(Evaluator_lib )
+add_subdirectory(Evaluator_lib )
+
 # Link 3DMesher_lib with 3DMesher
 target_link_libraries(3DMesher PUBLIC 3DMesher_lib)
 target_link_libraries(3DMesher PUBLIC Evaluator_lib)
@@ -33,5 +36,10 @@ target_link_libraries(3DMesher PUBLIC Evaluator_lib)
 # Link CGAL_Qt5 with your program
 target_link_libraries(3DMesher PUBLIC CGAL::CGAL_Qt5)
 
+# Find verdict
+find_package(verdict REQUIRED)
+#include( ${verdict_USE_FILE} )
+
+target_link_libraries(Evaluator_lib PUBLIC Verdict::verdict)
+
 add_subdirectory(Catch_tests )
-add_subdirectory(Evaluator_lib )
