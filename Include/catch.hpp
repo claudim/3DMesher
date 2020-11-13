@@ -14904,7 +14904,7 @@ namespace Detail {
 
             static Arch which() {
                 int one = 1;
-                // If the lowest byte we read is non-zero, we can assume
+                // If the lowest byte we readVertices is non-zero, we can assume
                 // that little endian format is used.
                 auto value = *reinterpret_cast<char*>(&one);
                 return value ? Little : Big;
