@@ -30,7 +30,6 @@ TEST_CASE("InitialMesh_boundary_connector"){
     {
         number_of_cubes++;
     }
-
     REQUIRE(number_of_cubes == 7);
 
     int number_of_facets = 0;
@@ -39,7 +38,6 @@ TEST_CASE("InitialMesh_boundary_connector"){
     {
         number_of_facets++;
     }
-
     REQUIRE( number_of_facets == 24);
 
     int number_of_edges = 0;
@@ -48,7 +46,6 @@ TEST_CASE("InitialMesh_boundary_connector"){
     {
         number_of_edges++;
     }
-
     REQUIRE( number_of_edges == 32);
 
     int number_of_vertices = 0;
@@ -57,14 +54,11 @@ TEST_CASE("InitialMesh_boundary_connector"){
     {
         number_of_vertices++;
     }
-
     REQUIRE( number_of_vertices == 16);
-    
     // const CGAL::Bbox_3 polyhedron_bbox3 = CGAL::Polygon_mesh_processing::bbox(polyhedron);
-   // const CGAL::Bbox_3 lcc_bbox3 = CGAL::Polygon_mesh_processing::bbox(lcc);
-   // const CGAL::Bbox_3 lcc_bbox3 = bbox_3(lcc.one_dart_per_cell<0,3>().begin(), lcc.one_dart_per_cell<0,3>().end());
-
-   //REQUIRE( polyhedron_bbox3 == lcc_bbox3);
+    // const CGAL::Bbox_3 lcc_bbox3 = CGAL::Polygon_mesh_processing::bbox(lcc);
+    // const CGAL::Bbox_3 lcc_bbox3 = bbox_3(lcc.one_dart_per_cell<0,3>().begin(), lcc.one_dart_per_cell<0,3>().end());
+    // REQUIRE( polyhedron_bbox3 == lcc_bbox3);
 
 }
 
