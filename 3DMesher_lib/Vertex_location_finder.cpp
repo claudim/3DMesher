@@ -65,4 +65,15 @@ void CGAL::Vertex_location_finder::findExternalVertices(const LCC_3 &lcc, int &n
     }
 }
 
+//template<typename Point>
+bool CGAL::Vertex_location_finder::is_point_too_close_to_the_boundary(const Point &point, const FT &distance) {
+    bool tooClose = false;
+    FT squareDistance = AABB_tree.squared_distance(point);
+    if(squareDistance < distance)
+    {
+        tooClose = true;
+    }
+    return tooClose;
+}
+
 

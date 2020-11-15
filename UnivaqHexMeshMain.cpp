@@ -6,6 +6,7 @@
 #include "External_block_remover.h"
 #include "Grid_boundary_connector.h"
 #include <CGAL/draw_linear_cell_complex.h>
+#include <CGAL/draw_polyhedron.h>
 #include "Writer.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
@@ -17,7 +18,8 @@ int main(int argc, char* argv[]) {
     //std::string fileName = data_path + "/cubeTest.stl";
     //const char* fname = (argc>1)?argv[1]:"sfera.off";
     //std::string fileName = data_path + "/sphere.off";
-    std::string name = "cube100x100axisAligned";
+    std::string name = "cube100x100rotated";
+   // std::string name = "cube100x100axisAligned";
     std::string fileName = data_path + "/" + name + ".stl";
 
     try {
@@ -26,6 +28,7 @@ int main(int argc, char* argv[]) {
         STL_reader reader;
         const Polyhedron polyhedron = reader.read(fileName);
 
+        //CGAL::draw(polyhedron);
         Grid_maker gridMaker = Grid_maker();
         LCC_3 hex_mesh = gridMaker.make(polyhedron);
         std::cout<<"fatto"<<std::endl;
@@ -36,7 +39,7 @@ int main(int argc, char* argv[]) {
         std::cout<<"rimossi i blocchi esterni"<<std::endl;
 
         //fit on boundary blocks to polyhedron boundary
-        Grid_boundary_connector gridBoundaryConnector;
+        CGAL::Grid_boundary_connector gridBoundaryConnector;
         gridBoundaryConnector.connect(hex_mesh, polyhedron);
 
 
@@ -50,7 +53,7 @@ int main(int argc, char* argv[]) {
         medit_file.close();
 
         //draw in cgal the final hex mesh
-        CGAL::draw(hex_mesh);
+       // CGAL::draw(hex_mesh);
 
 
     }

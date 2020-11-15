@@ -33,6 +33,7 @@ namespace CGAL {
         Vertex_location_finder(const Polyhedron &polyhedron)
                 : inside(polyhedron), AABB_tree(faces(polyhedron).first, faces(polyhedron).second, polyhedron) {
             this->polyhedron = polyhedron;
+            AABB_tree.accelerate_distance_queries();
         }
 
         //template<typename Point>
@@ -51,6 +52,9 @@ namespace CGAL {
         const Tree &getAabbTree();
 
 
+       // template<typename Point>
+        //bool is_point_too_close_to_the_boundary(const Point &point);
+       bool is_point_too_close_to_the_boundary(const Point &point, const FT &distance);
     };
 
 }

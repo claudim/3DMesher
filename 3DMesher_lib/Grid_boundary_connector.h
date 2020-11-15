@@ -16,7 +16,7 @@ typedef CGAL::AABB_face_graph_triangle_primitive<Polyhedron> Primitive;
 typedef CGAL::AABB_traits<K, Primitive> AABB_Traits;
 typedef CGAL::AABB_tree<AABB_Traits> Tree;
 
-//namespace CGAL {
+namespace CGAL {
     class Grid_boundary_connector {
 
     public:
@@ -24,7 +24,7 @@ typedef CGAL::AABB_tree<AABB_Traits> Tree;
         void connect(LCC_3 &lcc, const Polyhedron &polyhedron);
     };
 
-//}
+}
 
 
 #endif //INC_3DMESHER_GRID_BOUNDARY_CONNECTOR_H

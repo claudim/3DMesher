@@ -66,7 +66,6 @@ TEST_CASE("point_almost_onBoundary_polyhedron", "[Vertex_location_finder][is_poi
     REQUIRE(isExternalPoint == false);
 }
 
-
 TEST_CASE("must_find_7_external_vertices", "[Vertex_location_finder][findExternalVertices]"){
     std::string fileName = data_path + "/sphere.off";
     OFF_Reader reader = OFF_Reader();
@@ -114,6 +113,34 @@ TEST_CASE("must_find_3_external_vertices", "[Vertex_location_finder][findExterna
     int number_of_external_vertices;
     vertexLocationFinder.findExternalVertices(lcc, number_of_external_vertices, 0);
     REQUIRE(number_of_external_vertices == 3);
+}
+
+TEST_CASE("must find internal vertices but too close to the boundary", "[Vertex_location_finder]"){
+    OFF_Reader reader = OFF_Reader();
+    std::string fileName = data_path + "/cubeTest.off";
+    Polyhedron polyhedron = reader.read(fileName);
+
+    LCC_3 lcc;
+    Point basepoint = Point(2, 2, 2);
+    FT lg = 5;
+    Block_maker blockMaker;
+    blockMaker.make_cube(lcc, basepoint, lg);
+
+    FT number_of_too_close_points = 0;
+    Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron) ;
+    for (LCC_3::One_dart_per_cell_range<0,3>::const_iterator vertex_it = lcc.one_dart_per_cell<0,3>().begin(),
+                 vertex_end_it = lcc.one_dart_per_cell<0,3>().end(); vertex_it != vertex_end_it; ++vertex_it){
+        Point pointToTest = lcc.point(vertex_it);
+        if(vertexLocationFinder.is_point_too_close_to_the_boundary(pointToTest, 4))
+        {
+            number_of_too_close_points++;
+        }
+    }
+    REQUIRE(number_of_too_close_points == 7);
+
+
+
+
 }
 
 

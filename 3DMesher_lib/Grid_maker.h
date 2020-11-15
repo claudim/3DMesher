@@ -25,6 +25,8 @@ private:
     int resolution = 8;
 
     double grid_dimension;
+
+private:
     Bbox grid_box;
     const int NUMBER_OF_DARTS_PER_CUBE = 24;
 
@@ -48,6 +50,10 @@ public:
 
     double get_z_dimension() {
         return z_dimension;
+    }
+
+    double getGridDimension() const {
+        return grid_dimension;
     }
 
     Bbox get_bounding_box(){

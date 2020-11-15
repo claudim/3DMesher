@@ -16,10 +16,8 @@ typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
 int main(int argc, char* argv[]) {
     const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
-    //std::string fileName = data_path + "/cubeTest.stl";
-    //const char* fname = (argc>1)?argv[1]:"sfera.off";
-    //std::string fileName = data_path + "/sphere.off";
-    std::string name = "cube100x100axisAligned";
+    std::string name = "cube100x100rotated";
+    //std::string name = "sphere";
     std::string fileName = data_path + "/" + name + ".stl";
 
     try {
@@ -40,7 +38,7 @@ int main(int argc, char* argv[]) {
         std::cout<<"rimossi i blocchi esterni"<<std::endl;
 
         OnBoundary_block_remover onBoundaryBlockRemover = OnBoundary_block_remover();
-        onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron);
+        onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
         std::cout<<"rimossi i blocchi sul boundary"<<std::endl;
 
         CGAL::draw(hex_mesh);
@@ -48,7 +46,6 @@ int main(int argc, char* argv[]) {
         //connect the initial mesh to the polyhedron boundary
         InitialMesh_boundary_connector initialMeshBoundaryConnector = InitialMesh_boundary_connector();
         initialMeshBoundaryConnector.connect(hex_mesh, polyhedron);
-
 
 
         //output

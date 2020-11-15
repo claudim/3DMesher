@@ -21,9 +21,9 @@ find_package(CGAL REQUIRED COMPONENTS Core) # If the dependency is required, use
 include( ${CGAL_USE_FILE} )
 
 #set(SOURCE_FILES main.cpp)
-set(SOURCE_FILES SchneidersHexMeshMain.cpp)
+#set(SOURCE_FILES SchneidersHexMeshMain.cpp)
 #set(SOURCE_FILES DelaunayTetMeshMain.cpp)
-#set(SOURCE_FILES UnivaqHexMeshMain.cpp)
+set(SOURCE_FILES UnivaqHexMeshMain.cpp)
 add_executable(3DMesher ${SOURCE_FILES})
 
 include_directories(3DMesher_lib )

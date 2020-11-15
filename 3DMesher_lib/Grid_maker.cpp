@@ -137,3 +137,5 @@ LCC_3 Grid_maker::turn_box_into_grid(){
     lcc.display_characteristics(std::cout);
     return lcc;
 }
+
+
