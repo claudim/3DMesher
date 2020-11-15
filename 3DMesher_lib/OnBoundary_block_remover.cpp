@@ -18,6 +18,7 @@ void OnBoundary_block_remover::removeBlocks(LCC_3 &lcc, const Polyhedron &polyhe
 bool OnBoundary_block_remover::is_block_to_be_removed(const LCC_3 &lcc,
                                                       const Dart_handle& block,
                                                       const Polyhedron &polyhedron) {
+
     bool toRemove = false;
     int number_of_internal_points = 0;
     if(!lcc.is_empty()) {

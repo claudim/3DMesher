@@ -4,7 +4,8 @@
 typedef CGAL::Vertex_location_finder Vertex_location_finder ;
 
 //template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
-void CGAL::Grid_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyhedron) {
+//void CGAL::Grid_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyhedron) {
+void Grid_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyhedron) {
 //    // constructs AABB tree and computes internal KD-tree
 //    // data structure to accelerate distance queries
 //    Tree tree(faces(polyhedron).first, faces(polyhedron).second, polyhedron);

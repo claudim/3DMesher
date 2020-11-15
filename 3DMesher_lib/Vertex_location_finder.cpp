@@ -64,3 +64,5 @@ void CGAL::Vertex_location_finder::findExternalVertices(const LCC_3 &lcc, int &n
         }
     }
 }
+
+

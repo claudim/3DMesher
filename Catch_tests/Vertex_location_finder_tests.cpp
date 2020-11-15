@@ -116,3 +116,4 @@ TEST_CASE("must_find_3_external_vertices", "[Vertex_location_finder][findExterna
     REQUIRE(number_of_external_vertices == 3);
 }
 
+

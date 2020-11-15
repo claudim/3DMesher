@@ -23,6 +23,7 @@ private:
     double y_dimension;
     double z_dimension;
     int resolution = 8;
+
     double grid_dimension;
     Bbox grid_box;
     const int NUMBER_OF_DARTS_PER_CUBE = 24;

@@ -49,6 +49,8 @@ namespace CGAL {
         void findExternalVertices(const LCC_3 &lcc, int &number_of_external_vertices, const double &tolerance);
 
         const Tree &getAabbTree();
+
+
     };
 
 }

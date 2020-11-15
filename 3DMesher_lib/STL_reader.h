@@ -39,6 +39,7 @@ public:
         {
             std::cerr << "Error: Polyhedron not valid or not composed of all triangles " << std::endl;
         }
+        input.close();
         return polyhedron;
     }
 

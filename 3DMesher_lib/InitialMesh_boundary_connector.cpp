@@ -6,7 +6,7 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
 
     const std::vector<Dart_const_handle> &externalFacets = externalFacetFinder.find(lcc);
 
-    std::vector<Dart_handle> newBlocks;
+    //std::vector<Dart_handle> newBlocks;
 
     PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
 
@@ -16,11 +16,10 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
 
         for(LCC_3::Dart_of_orbit_const_range<1>::const_iterator vertexIt = lcc.darts_of_orbit<1>(facet).begin(),
                     vertexItEnd = lcc.darts_of_orbit<1>(facet).end(); vertexIt != vertexItEnd; ++vertexIt) {
-
-            const Point &p = lcc.point(vertexIt);
+            //TODO: marcare il punto per cui ho già calcolato il punto di intersezione e memorizzare questo punto trovato nella 0-cell che sto marcando. questo mi permette di risparmiare del lavoro: se è marcato, cella0 dammi tu il punto di intersezione, se non è marcato, calcolo il punto di interseione.
+            const Point p = lcc.point(vertexIt);
             Point intersectionPoint = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc, vertexIt,
                                                                                                       polyhedron);
-
             float rounded_down_x = 0;
             float rounded_down_y = 0;
             float rounded_down_z = 0;
@@ -37,6 +36,8 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
 
             hexahedronPoints.emplace_back(rounded_point);
             hexahedronPoints.push_back(lcc.point(vertexIt));
+            std::cout <<" Il punto di intersezione è : " <<rounded_point.x()<<","<<rounded_point.y()<<","<<rounded_point.z()<< std::endl;
+
         }
 
 //        std::cout<<"hexPoint size "<<hexahedronPoints.size()<<std::endl;
@@ -59,10 +60,15 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
                                                         northestFacetPoints[1],
                                                         northestFacetPoints[2],
                                                         northestFacetPoints[3]);
-        newBlocks.push_back(newHexahedron);
+        //newBlocks.push_back(newHexahedron);
 
     }
+
+    lcc.display_characteristics(std::cout);
+    std::cout<<"creati i blocchi tra init mesh e boundary"<<std::endl;
     lcc.sew3_same_facets(); // link all blocks in lcc  with same facets if they are not linked.
+    lcc.display_characteristics(std::cout);
+
 }
 
 ////template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>

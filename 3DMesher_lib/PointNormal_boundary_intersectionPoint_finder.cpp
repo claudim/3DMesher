@@ -6,17 +6,15 @@ Point PointNormal_boundary_intersectionPoint_finder::findIntersecionPoint(const 
 
                                                                           const Polyhedron &polyhedron) {
     Point intersectionPoint ;
-    Point poi = lcc.point(block_handle);
+    //Point poi = lcc.point(block_handle);
     double d = CGAL::Polygon_mesh_processing::is_outward_oriented(polyhedron)?-1:1;
     Tree tree(faces(polyhedron).begin(), faces(polyhedron).end(), polyhedron);
-    Vector v = compute_normal_of_cell_0(lcc, block_handle);
+    Vector v = this->my_compute_normal_of_cell_0(lcc, block_handle);
+    v = v/(CGAL::sqrt(v*v));
 
     Point p1 = lcc.point(block_handle);
     Ray ray = Ray(p1, d*v);
 
-//    auto point = ray.second_point();
-//    bool doIntersect = tree.do_intersect(ray);
-//    unsigned long size = tree.size();
     auto intersection = tree.first_intersection(ray);
     if(intersection)
     {

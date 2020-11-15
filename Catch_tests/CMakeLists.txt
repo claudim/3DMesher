@@ -27,3 +27,4 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 add_executable(Catch_tests_run ${SOURCE_TESTS_FILES}  ${HEADER_TESTS_FILES})
 target_link_libraries(Catch_tests_run 3DMesher_lib)
+
