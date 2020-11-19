@@ -15,7 +15,7 @@ void OnBoundary_block_remover::removeBlocks(LCC_3 &lcc, const Polyhedron &polyhe
 }
 
 
-void OnBoundary_block_remover::removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron, const FT &distance) {
+void OnBoundary_block_remover::removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron, const double &distance) {
     if(!lcc.is_empty())
     {
         for (LCC_3::One_dart_per_cell_range<3, 3>::iterator lcc_cells_iterator = lcc.one_dart_per_cell<3, 3>().begin(),
@@ -32,7 +32,7 @@ void OnBoundary_block_remover::removeBlocks(LCC_3 &lcc, const Polyhedron &polyhe
 bool OnBoundary_block_remover::is_block_to_be_removed(const LCC_3 &lcc,
                                                       const Dart_handle& block,
                                                       const Polyhedron &polyhedron,
-                                                      const FT &distance) {
+                                                      const double &distance) {
 
     bool toRemove = false;
     int number_of_internal_points = 0;
@@ -56,6 +56,26 @@ bool OnBoundary_block_remover::is_block_to_be_removed(const LCC_3 &lcc,
         toRemove = true;
     }
     return toRemove;
+
+//    bool toRemove = false;
+//    if(!lcc.is_empty()) {
+//        Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
+//        // per tutte le facce del cubo
+//        LCC_3::One_dart_per_incident_cell_const_range<2, 3>::const_iterator
+//                it = lcc.one_dart_per_incident_cell<2,3>(block).begin(),
+//                itend = lcc.one_dart_per_incident_cell<2, 3>(block).end();
+//        while ( it != itend && !toRemove) {
+//            Point barycenter = lcc.barycenter<2>(it);
+//            double distanceBarycenterPolyhedron = vertexLocationFinder.getAabbTree().squared_distance(barycenter);
+//            //Point point = lcc.point(it);
+//            distanceBarycenterPolyhedron = sqrt(distanceBarycenterPolyhedron);
+//            if ( distanceBarycenterPolyhedron < distance) {
+//                toRemove = true;
+//           }
+//            ++it;
+//        }
+//    }
+   // return toRemove;
 }
 
 //template<typename Linear_cell_complex_traits, typename allocator, typename allocator, typename Linear_cell_complex_traits>

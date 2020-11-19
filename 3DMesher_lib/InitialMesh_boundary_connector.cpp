@@ -61,7 +61,6 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
                                                         northestFacetPoints[2],
                                                         northestFacetPoints[3]);
         //newBlocks.push_back(newHexahedron);
-
     }
 
     lcc.display_characteristics(std::cout);

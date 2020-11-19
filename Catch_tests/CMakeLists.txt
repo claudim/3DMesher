@@ -1,6 +1,7 @@
 set(SOURCE_TESTS_FILES
         OFFReader_tests.cpp
         STLReader_tests.cpp
+        Features_detector_tests.cpp
         Block_maker_tests.cpp
         Vertex_location_finder_tests.cpp
         Grid_maker_tests.cpp
@@ -11,6 +12,7 @@ set(SOURCE_TESTS_FILES
         PointNormal_boundary_intersectionPoint_finder_tests.cpp
         InitialMesh_boundary_connector_tests.cpp
         Point_sorter_tests.cpp
+
         )
 
 set(HEADER_TESTS_FILES

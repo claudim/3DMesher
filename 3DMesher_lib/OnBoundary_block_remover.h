@@ -26,7 +26,7 @@ public:
     //template<typename Linear_cell_complex_traits, typename allocator, typename allocator, typename Linear_cell_complex_traits>
     void removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron);
 
-    void removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron, const FT &distance);
+    void removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron, const double &distance);
 
     void removeBlock(LCC_3& lcc, Dart_handle& blockToRemove);
 
@@ -41,7 +41,7 @@ public:
     bool is_block_to_be_removed(const LCC_3 &lcc,
                                 const Dart_handle& block,
                                 const Polyhedron &polyhedron,
-                                const FT &distance);
+                                const double &distance);
 
 
 };

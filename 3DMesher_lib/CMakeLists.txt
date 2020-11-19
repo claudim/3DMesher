@@ -3,6 +3,7 @@ project(3DMesher)
 set(HEADER_FILES
         OFF_Reader.h
         STL_reader.h
+        Features_detector.h
         Block_maker.h
         Vertex_location_finder.h
         Grid_maker.h
@@ -18,7 +19,8 @@ set(HEADER_FILES
 
 set(SOURCE_FILES
         OFF_Reader.cpp
-       # STL_reader.cpp
+        #STL_reader.cpp
+        Features_detector.cpp
         Block_maker.cpp
         Vertex_location_finder.cpp
         Grid_maker.cpp

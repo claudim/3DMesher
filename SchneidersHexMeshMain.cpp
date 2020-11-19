@@ -2,6 +2,7 @@
 //#include "test_congif.h" //TODO da aggiungere
 #include "STL_reader.h"
 #include "OFF_Reader.h"
+#include "Features_detector"
 #include "Grid_maker.h"
 #include "External_block_remover.h"
 #include "OnBoundary_block_remover.h"
@@ -17,7 +18,9 @@ typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 int main(int argc, char* argv[]) {
     const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
     std::string name = "cube100x100rotated";
+   // std::string name = "cube100x100axisAligned";
     //std::string name = "sphere";
+    //std::string fileName = data_path + "/" + name + ".off";
     std::string fileName = data_path + "/" + name + ".stl";
 
     try {
@@ -25,6 +28,9 @@ int main(int argc, char* argv[]) {
         //OFF_Reader reader;
         STL_reader reader;
         const Polyhedron polyhedron = reader.read(fileName);
+
+        Features_detector featuresDetector;
+        featuresDetector.detect(polyhedron);
 
        // CGAL::draw(polyhedron);
 
@@ -38,6 +44,7 @@ int main(int argc, char* argv[]) {
         std::cout<<"rimossi i blocchi esterni"<<std::endl;
 
         OnBoundary_block_remover onBoundaryBlockRemover = OnBoundary_block_remover();
+        //onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron);
         onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
         std::cout<<"rimossi i blocchi sul boundary"<<std::endl;
 
@@ -46,11 +53,12 @@ int main(int argc, char* argv[]) {
         //connect the initial mesh to the polyhedron boundary
         InitialMesh_boundary_connector initialMeshBoundaryConnector = InitialMesh_boundary_connector();
         initialMeshBoundaryConnector.connect(hex_mesh, polyhedron);
+        std::cout<<"valido: " << hex_mesh.is_valid()<<std::endl;
 
 
         //output
         const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
-        std::string outputFileName = out_data_path + "/" + name + ".mesh";
+        std::string outputFileName = out_data_path + "/" + name + "3.mesh";
         std::ofstream medit_file(outputFileName);
         Writer writer;
         writer.output_to_medit(medit_file,hex_mesh);

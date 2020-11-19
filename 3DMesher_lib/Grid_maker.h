@@ -22,7 +22,8 @@ private:
     double x_dimension;
     double y_dimension;
     double z_dimension;
-    int resolution = 8;
+   // int resolution = 8;
+    int resolution = 16;
 
     double grid_dimension;
 

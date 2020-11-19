@@ -47,3 +47,60 @@ TEST_CASE("remove_all_onBoundary_blocks","[OnBoundary_block_remover]"){
     }
 }
 
+
+TEST_CASE("remove blocks if have distance from polyhedron lesser than parameter","[OnBoundary_block_remover]"){
+
+    std::string fileName = data_path + "/cubeTest.off";
+    OFF_Reader reader = OFF_Reader();
+    Polyhedron polyhedron = reader.read(fileName);
+
+    LCC_3 lcc;
+    Block_maker blockMaker = Block_maker();
+    Point basePoint1 = Point(2,2,2);  FT lg1 = 2;
+    Point basepoint2 = Point(2,2,4);  FT lg = 1;
+
+    blockMaker.make_cube(lcc, basePoint1, lg1);
+    lcc.make_hexahedron(basepoint2,
+                        Traits::Construct_translated_point()
+                                (basepoint2, Traits::Vector(lg1, 0, 0)),
+                        Traits::Construct_translated_point()
+                                (basepoint2, Traits::Vector(lg1, lg1, 0)),
+                        Traits::Construct_translated_point()
+                                (basepoint2, Traits::Vector(0, lg1, 0)),
+                        Traits::Construct_translated_point()
+                                (basepoint2, Traits::Vector(0, lg1, lg)),
+                        Traits::Construct_translated_point()
+                                (basepoint2, Traits::Vector(0, 0, lg)),
+                        Traits::Construct_translated_point()
+                                (basepoint2, Traits::Vector(lg1, 0, lg)),
+                        Traits::Construct_translated_point()
+                                (basepoint2, Traits::Vector(lg1, lg1, lg)));
+
+    lcc.sew3_same_facets();
+    lcc.display_characteristics(std::cout);
+
+
+    OnBoundary_block_remover blockRemover = OnBoundary_block_remover();
+    blockRemover.removeBlocks(lcc, polyhedron, lg);
+
+    FT number_of_cubes = 0;
+    for(LCC_3::One_dart_per_cell_const_range<3,3>::const_iterator cube_it = lcc.one_dart_per_cell<3>().begin(),
+            cube_it_end = lcc.one_dart_per_cell<3>().end(); cube_it != cube_it_end; ++cube_it)
+    {
+        number_of_cubes++;
+    }
+    REQUIRE(number_of_cubes == 2);
+
+    blockRemover.removeBlocks(lcc, polyhedron, lg1);
+    number_of_cubes = 0;
+    for(LCC_3::One_dart_per_cell_const_range<3,3>::const_iterator cube_it = lcc.one_dart_per_cell<3>().begin(),
+                cube_it_end = lcc.one_dart_per_cell<3>().end(); cube_it != cube_it_end; ++cube_it)
+    {
+        number_of_cubes++;
+    }
+
+    REQUIRE(number_of_cubes == 1);
+
+
+
+}
