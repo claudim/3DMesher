@@ -36,7 +36,7 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
 
             hexahedronPoints.emplace_back(rounded_point);
             hexahedronPoints.push_back(lcc.point(vertexIt));
-            std::cout <<" Il punto di intersezione è : " <<rounded_point.x()<<","<<rounded_point.y()<<","<<rounded_point.z()<< std::endl;
+           // std::cout <<" Il punto di intersezione è : " <<rounded_point.x()<<","<<rounded_point.y()<<","<<rounded_point.z()<< std::endl;
 
         }
 

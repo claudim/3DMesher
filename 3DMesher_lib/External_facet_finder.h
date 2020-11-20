@@ -23,9 +23,14 @@ public:
     //template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
     std::vector<Dart_const_handle> find(const LCC_3 & lcc);
 
+    std::vector<Dart_handle> findFacets(LCC_3 & lcc);
+
     //template<typename Linear_cell_complex_traits, typename allocator, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
     bool is_near_cell_facet_null(const LCC_3 &lcc, const Dart_const_handle &near_cell_facet_dart_handle) const;
-};
+
+    bool is_near_cell_facet_null(const LCC_3 &lcc, const Dart_handle &near_cell_facet_dart_handle) const;
+
+    };
 
 
 
