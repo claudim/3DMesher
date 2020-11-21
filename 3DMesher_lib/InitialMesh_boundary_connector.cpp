@@ -6,8 +6,6 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
 
     const std::vector<Dart_const_handle> &externalFacets = externalFacetFinder.find(lcc);
 
-    //std::vector<Dart_handle> newBlocks;
-
     PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
 
     for( Dart_const_handle facet : externalFacets){

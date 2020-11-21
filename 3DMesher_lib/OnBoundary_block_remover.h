@@ -43,7 +43,11 @@ public:
                                 const Polyhedron &polyhedron,
                                 const double &distance);
 
+    bool is_block_too_close_to_the_boundary(const LCC_3 &lcc,const Dart_handle& block,const Polyhedron &polyhedron,const double &distance);
 
+
+    //template<typename allocator, typename allocator, typename Linear_cell_complex_traits, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
+    bool is_block_on_boundary(const LCC_3 &lcc, const Dart_handle &block, const Polyhedron &polyhedron);
 };
 
 

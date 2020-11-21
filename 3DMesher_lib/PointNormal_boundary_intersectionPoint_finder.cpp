@@ -5,7 +5,7 @@ Point PointNormal_boundary_intersectionPoint_finder::findIntersecionPoint(const 
                                                                           const Dart_const_handle &block_handle,
 
                                                                           const Polyhedron &polyhedron) {
-    Point intersectionPoint ;
+    Point intersectionPoint;
     //Point poi = lcc.point(block_handle);
     double d = CGAL::Polygon_mesh_processing::is_outward_oriented(polyhedron)?-1:1;
     Tree tree(faces(polyhedron).begin(), faces(polyhedron).end(), polyhedron);

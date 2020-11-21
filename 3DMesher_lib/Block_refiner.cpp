@@ -46,7 +46,7 @@ void Block_refiner::refineBlocks(LCC_3 &lcc, const std::vector<Point> &points, F
         for(Dart_handle facet: externalFacets)
         {
             Dart_handle blockToRefine = lcc.one_dart_per_incident_cell<3, 2, 3>(facet).begin();
-            externalFacets.emplace_back(blockToRefine);
+            externalBlocks.emplace_back(blockToRefine);
         }
         //refine every external blocks
         for(Dart_handle block: externalBlocks)

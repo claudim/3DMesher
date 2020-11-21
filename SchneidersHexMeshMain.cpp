@@ -2,12 +2,13 @@
 //#include "test_congif.h" //TODO da aggiungere
 #include "STL_reader.h"
 #include "OFF_Reader.h"
-#include "Features_detector"
+#include "Features_detector.h"
 #include "Grid_maker.h"
 #include "External_block_remover.h"
 #include "OnBoundary_block_remover.h"
 #include "External_facet_finder.h"
 #include "InitialMesh_boundary_connector.h"
+#include "Block_refiner.h"
 #include <CGAL/draw_linear_cell_complex.h>
 //#include <CGAL/draw_polyhedron.h>
 #include "Writer.h"
@@ -44,17 +45,18 @@ int main(int argc, char* argv[]) {
         std::cout<<"rimossi i blocchi esterni"<<std::endl;
 
         OnBoundary_block_remover onBoundaryBlockRemover = OnBoundary_block_remover();
-        //onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron);
+       // onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron);
         onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
         std::cout<<"rimossi i blocchi sul boundary"<<std::endl;
 
-        CGAL::draw(hex_mesh);
+       // CGAL::draw(hex_mesh);
 
         //connect the initial mesh to the polyhedron boundary
         InitialMesh_boundary_connector initialMeshBoundaryConnector = InitialMesh_boundary_connector();
         initialMeshBoundaryConnector.connect(hex_mesh, polyhedron);
         std::cout<<"valido: " << hex_mesh.is_valid()<<std::endl;
 
+       // CGAL::draw(hex_mesh);
 
         //output
         const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
@@ -66,8 +68,6 @@ int main(int argc, char* argv[]) {
 
         //draw in cgal the final hex mesh
         //CGAL::draw(hex_mesh);
-
-
     }
     catch (std::ios_base::failure e) {
         std::cerr << "Exception opening/reading/closing file\n";

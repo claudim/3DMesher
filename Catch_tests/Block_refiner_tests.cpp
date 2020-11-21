@@ -155,7 +155,7 @@ TEST_CASE("must_move_2_vertices_from_its_position_to_the_feature_vertice_positio
     Point p1 = Point(0,0,7);
     Point p2 = Point(7,7,7);
     std::vector<Point> points;
-    points.emplace_back(p1);points.emplace_back(p2);
+    points.emplace_back(p1); points.emplace_back(p2);
 
     blockRefiner.refineBlocks(lcc, points, lg);
 
@@ -177,12 +177,13 @@ TEST_CASE("must_move_2_vertices_from_its_position_to_the_feature_vertice_positio
                     vertex_cell_end_it = lcc.one_dart_per_incident_cell<0,3,3>(lcc_cells_iterator).end();
             vertex_cell_it != vertex_cell_end_it; ++vertex_cell_it)
         {
-            if(lcc.point(vertex_cell_it) == p1)
+            Point p = lcc.point(vertex_cell_it);
+            if( p == p1)
             {
                 isThereP1Point = true;
                 number_of_Found_p1Point++;
             }
-            if(lcc.point(vertex_cell_it) == p2)
+            if(p == p2)
             {
                 isThereP2Point = true;
                 number_of_Found_p2Point++;
