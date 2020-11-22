@@ -37,7 +37,7 @@ target_link_libraries(3DMesher PUBLIC 3DMesher_lib)
 # Link CGAL_Qt5 with your program
 target_link_libraries(3DMesher PUBLIC CGAL::CGAL_Qt5)
 
-target_link_libraries(3DMesher
+target_link_libraries(3DMesher_lib
         PUBLIC
         Verdict::verdict
         )
