@@ -9,12 +9,15 @@
 #include "External_facet_finder.h"
 #include "InitialMesh_boundary_connector.h"
 #include "Block_refiner.h"
+#include <verdict.h> //to include verdict library
 #include <CGAL/draw_linear_cell_complex.h>
 //#include <CGAL/draw_polyhedron.h>
 #include "Writer.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
+
+void bad_hex_remover(LCC_3 &lcc);
 
 int main(int argc, char* argv[]) {
     const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
@@ -28,7 +31,7 @@ int main(int argc, char* argv[]) {
         // read input from file
         //OFF_Reader reader;
         STL_reader reader;
-        const Polyhedron polyhedron = reader.read(fileName);
+        Polyhedron polyhedron = reader.read(fileName);
 
         Features_detector featuresDetector;
         featuresDetector.detect(polyhedron);
@@ -56,6 +59,8 @@ int main(int argc, char* argv[]) {
         initialMeshBoundaryConnector.connect(hex_mesh, polyhedron);
         std::cout<<"valido: " << hex_mesh.is_valid()<<std::endl;
 
+        bad_hex_remover(hex_mesh);
+
        // CGAL::draw(hex_mesh);
 
         //output
@@ -75,3 +80,31 @@ int main(int argc, char* argv[]) {
     return EXIT_SUCCESS;
 }
 
+void bad_hex_remover(LCC_3 &lcc){
+    std::vector<std::array<double, 3> > vertices;
+    std::array<double, 3> point;
+    std::vector<Dart_handle > bad_hexes;
+    for(LCC_3::One_dart_per_cell_range<3>::iterator hex_it = lcc.one_dart_per_cell<3>().begin(),
+            hex_it_end = lcc.one_dart_per_cell<3>().end(); hex_it != hex_it_end; ++hex_it) {
+        vertices.clear();
+        for (LCC_3::One_dart_per_incident_cell_range<0, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 3>(
+                hex_it).begin(),
+                     vertex_it_end = lcc.one_dart_per_incident_cell<0, 3>(hex_it).end();
+             vertex_it != vertex_it_end; ++vertex_it) {
+            point[0] = lcc.point(vertex_it).x();
+            point[1] = lcc.point(vertex_it).y();
+            point[2] = lcc.point(vertex_it).z();
+            vertices.emplace_back(point);
+        }
+
+        HexMetricVals vals;
+        std::array<double, 3> *pArray = vertices.data();
+        v_hex_quality(vertices.size(), reinterpret_cast<const double (*)[3]>(pArray), V_HEX_SCALED_JACOBIAN, &vals);
+        if(vals.scaled_jacobian < 0.2){
+            bad_hexes.emplace_back(hex_it);
+        }
+    }
+    for(Dart_handle bad_hex : bad_hexes){
+        lcc.remove_cell<3>(bad_hex);
+    }
+}

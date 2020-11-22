@@ -20,6 +20,8 @@ endif()
 find_package(CGAL REQUIRED COMPONENTS Core) # If the dependency is required, use REQUIRED option - if it's not found CMake will issue an error
 include( ${CGAL_USE_FILE} )
 
+find_package(verdict)
+
 #set(SOURCE_FILES main.cpp)
 set(SOURCE_FILES SchneidersHexMeshMain.cpp)
 #set(SOURCE_FILES DelaunayTetMeshMain.cpp)
@@ -34,5 +36,11 @@ target_link_libraries(3DMesher PUBLIC 3DMesher_lib)
 
 # Link CGAL_Qt5 with your program
 target_link_libraries(3DMesher PUBLIC CGAL::CGAL_Qt5)
+
+target_link_libraries(3DMesher
+        PUBLIC
+        Verdict::verdict
+        )
+
 
 add_subdirectory(Catch_tests)
