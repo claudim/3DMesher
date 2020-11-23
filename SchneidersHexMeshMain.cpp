@@ -4,8 +4,10 @@
 #include "OFF_Reader.h"
 #include "Features_detector.h"
 #include "Grid_maker.h"
-#include "External_block_remover.h"
-#include "OnBoundary_block_remover.h"
+#include "External_and_onBoundary_remover.h"
+#include "Initial_mesh_maker.h"
+//#include "External_block_remover.h"
+//#include "OnBoundary_block_remover.h"
 #include "External_facet_finder.h"
 #include "InitialMesh_boundary_connector.h"
 #include "Block_refiner.h"
@@ -43,16 +45,22 @@ int main(int argc, char* argv[]) {
         std::cout<<"fatto"<<std::endl;
 
         //detect the initial mesh
-        External_block_remover externalBlockRemover = External_block_remover();
-        externalBlockRemover.removeBlocks(hex_mesh, polyhedron);
-        std::cout<<"rimossi i blocchi esterni"<<std::endl;
+        Initial_mesh_maker<External_and_onBoundary_remover> initialMeshMaker;
+        initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
 
-        OnBoundary_block_remover onBoundaryBlockRemover = OnBoundary_block_remover();
-       // onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron);
-        onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
-        std::cout<<"rimossi i blocchi sul boundary"<<std::endl;
 
-       // CGAL::draw(hex_mesh);
+//        External_block_remover externalBlockRemover = External_block_remover();
+//        externalBlockRemover.removeBlocks(hex_mesh, polyhedron);
+//        std::cout<<"rimossi i blocchi esterni"<<std::endl;
+//
+//        OnBoundary_block_remover onBoundaryBlockRemover = OnBoundary_block_remover();
+//       // onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron);
+//        onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
+//        std::cout<<"rimossi i blocchi sul boundary"<<std::endl;
+
+
+
+        CGAL::draw(hex_mesh);
 
         //connect the initial mesh to the polyhedron boundary
         InitialMesh_boundary_connector initialMeshBoundaryConnector = InitialMesh_boundary_connector();

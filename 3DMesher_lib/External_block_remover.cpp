@@ -52,3 +52,5 @@ void External_block_remover::removeBlocks(LCC_3& lcc, const Polyhedron& polyhedr
     }
 
 }
+
+void External_block_remover::removeBlocks(LCC_3& lcc, const Polyhedron& polyhedron, const double &distance) {}

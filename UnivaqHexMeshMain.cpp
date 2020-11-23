@@ -34,9 +34,11 @@ int main(int argc, char* argv[]) {
         std::cout<<"fatto"<<std::endl;
 
         //remove external blocks
-        External_block_remover externalBlockRemover = External_block_remover();
-        externalBlockRemover.removeBlocks(hex_mesh, polyhedron);
-        std::cout<<"rimossi i blocchi esterni"<<std::endl;
+        Initial_mesh_maker<External_block_remover> initialMeshMaker;
+        initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
+//        External_block_remover externalBlockRemover = External_block_remover();
+//        externalBlockRemover.removeBlocks(hex_mesh, polyhedron);
+//        std::cout<<"rimossi i blocchi esterni"<<std::endl;
 
         //fit on boundary blocks to polyhedron boundary
         CGAL::Grid_boundary_connector gridBoundaryConnector;

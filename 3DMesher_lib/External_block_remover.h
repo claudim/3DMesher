@@ -30,6 +30,8 @@ public:
 
     void removeBlocks(LCC_3& lcc, const Polyhedron& polyhedron);
 
+    void removeBlocks(LCC_3& lcc, const Polyhedron& polyhedron, const double &distance);
+
 };
 
 

@@ -7,6 +7,8 @@ set(HEADER_FILES
         Block_maker.h
         Vertex_location_finder.h
         Grid_maker.h
+        Initial_mesh_maker.h
+        External_and_onBoundary_remover.h
         External_block_remover.h
         Grid_boundary_connector.h
         OnBoundary_block_remover.h
@@ -26,6 +28,7 @@ set(SOURCE_FILES
         Block_maker.cpp
         Vertex_location_finder.cpp
         Grid_maker.cpp
+        External_and_onBoundary_remover.cpp
         External_block_remover.cpp
         Grid_boundary_connector.cpp
         OnBoundary_block_remover.cpp
