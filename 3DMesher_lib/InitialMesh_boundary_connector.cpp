@@ -34,14 +34,10 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
 
             hexahedronPoints.emplace_back(rounded_point);
             hexahedronPoints.push_back(lcc.point(vertexIt));
-           // std::cout <<" Il punto di intersezione è : " <<rounded_point.x()<<","<<rounded_point.y()<<","<<rounded_point.z()<< std::endl;
 
         }
 
-//        std::cout<<"hexPoint size "<<hexahedronPoints.size()<<std::endl;
         std::unique(hexahedronPoints.begin(), hexahedronPoints.end());
-//        std::cout<<"hexPoint size "<<hexahedronPoints.size()<<std::endl;
-//        hexahedronPoints.size();
 
         std::vector<Point> southestFacetPoints;
         std::vector<Point> northestFacetPoints;
@@ -58,12 +54,11 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
                                                         northestFacetPoints[1],
                                                         northestFacetPoints[2],
                                                         northestFacetPoints[3]);
-        //newBlocks.push_back(newHexahedron);
     }
 
     lcc.display_characteristics(std::cout);
     std::cout<<"creati i blocchi tra init mesh e boundary"<<std::endl;
-    lcc.sew3_same_facets(); // link all blocks in lcc  with same facets if they are not linked.
+    lcc.sew3_same_facets(); // link all blocks in lcc with same facets if they are not linked.
     lcc.display_characteristics(std::cout);
 
 }

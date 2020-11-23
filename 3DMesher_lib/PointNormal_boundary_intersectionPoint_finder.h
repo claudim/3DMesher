@@ -34,6 +34,10 @@ public:
    // template<typename Point, typename Linear_cell_complex_traits, typename allocator, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
     Point findIntersecionPoint(const LCC_3 &lcc, const Dart_const_handle &block_handle, const Polyhedron &polyhedron);
 
+   /**
+    * Compute the normal of the 0-cell. For each external facets(2-cell) incident to the 0-cell, it is compute its normal. Afterwards, every normal of the 2-cell are weighed added.
+    * In this way the normal of the 0-cell is unique.
+    */
     template <class LCC = LCC_3>
     typename LCC::Vector my_compute_normal_of_cell_0
             (const LCC& lcc, typename LCC::Dart_const_handle adart)
@@ -45,13 +49,13 @@ public:
         for ( typename LCC::template One_dart_per_incident_cell_range<2,0>::
         const_iterator it(lcc, adart); it.cont(); ++it )
         {
+            //compute normal only for the external 2-cell
             if(lcc.beta(it, 3) == lcc.null_dart_handle) {
                 normal = typename LCC::Traits::Construct_sum_of_vectors()
                         (normal, CGAL::compute_normal_of_cell_2(lcc, it));
                 ++nb;
             }
         }
-
         if ( nb<2 ) return normal;
         return (typename LCC::Traits::Construct_scaled_vector()(normal, 1.0/nb));
     }

@@ -3,7 +3,6 @@
 //template<typename Point, typename Linear_cell_complex_traits, typename allocator, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
 Point PointNormal_boundary_intersectionPoint_finder::findIntersecionPoint(const LCC_3 &lcc,
                                                                           const Dart_const_handle &block_handle,
-
                                                                           const Polyhedron &polyhedron) {
     Point intersectionPoint;
     //Point poi = lcc.point(block_handle);
