@@ -13,6 +13,7 @@ set(SOURCE_TESTS_FILES
         InitialMesh_boundary_connector_tests.cpp
         Point_sorter_tests.cpp
         Block_refiner_tests.cpp
+        Bad_hex_finder_tests.cpp
         )
 
 set(HEADER_TESTS_FILES
