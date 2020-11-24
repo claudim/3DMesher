@@ -168,7 +168,143 @@ TEST_CASE("Test over the computation of the normal function2"){
 //        Ray ray = Ray(p1, d*v);
 //    }
 
+}
+
+TEST_CASE("must find the same intersection point for the same point which is incident to 2 adjacent facets") {
+    std::string fileName = data_path + "/hexTest.off";
+    OFF_Reader reader = OFF_Reader();
+    Polyhedron polyhedron = reader.read(fileName);
+
+    Point internalBlockBasePoint = Point(2, 2, 2);
+    Point internalAdjacentBlockBasePoint = Point(4, 2, 2);
+    FT internalBlockLg = 2;
+    LCC_3 lcc;
+    Block_maker blockMaker = Block_maker();
+    Dart_handle internalBlock = blockMaker.make_cube(lcc, internalBlockBasePoint, internalBlockLg);
+    Dart_handle internalAdjacentBlock = blockMaker.make_cube(lcc, internalAdjacentBlockBasePoint, internalBlockLg);
+    lcc.sew3_same_facets();
+
+    // detect top facet dart of internalBlock cube
+    Dart_handle topFacetBlock = lcc.beta(internalBlock, 2, 1, 1, 1, 2);
+    // detect top facet dart of internalAdjacentBlock cube
+    Dart_handle topFacetAdjacentBlock = lcc.beta(internalAdjacentBlock, 2, 1, 1, 1, 2);
+
+    Point commonPoint1 = Point(4, 2, 4);
+    Point commonPoint2 = Point(4, 4, 4);
+
+    // find the intersection point of the 2 points in common of the top facet
+    PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
+    Point blockIntersectionPoint1;
+    Point blockIntersectionPoint2;
+    for (LCC_3::One_dart_per_incident_cell_range<0, 2, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 2, 3>(
+            topFacetBlock).begin(),
+                 vertex_end_it = lcc.one_dart_per_incident_cell<0, 2, 3>(topFacetBlock).end();
+         vertex_it != vertex_end_it; ++vertex_it) {
+        if (lcc.point(vertex_it) == commonPoint1) {
+            blockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                                      vertex_it,
+                                                                                                      polyhedron);
+        }
+
+        if (lcc.point(vertex_it) == commonPoint2) {
+            blockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                                      vertex_it,
+                                                                                                      polyhedron);
+        }
+    }
+
+    //  find the intersection point of the 2 points in common of the adjacent top facet
+    Point adjacentBlockIntersectionPoint1;
+    Point adjacentBlockIntersectionPoint2;
+    for (LCC_3::One_dart_per_incident_cell_range<0, 2, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 2, 3>(
+            topFacetAdjacentBlock).begin(),
+                 vertex_end_it = lcc.one_dart_per_incident_cell<0, 2, 3>(topFacetAdjacentBlock).end();
+         vertex_it != vertex_end_it; ++vertex_it) {
+        if (lcc.point(vertex_it) == commonPoint1) {
+            adjacentBlockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                                              vertex_it,
+                                                                                                              polyhedron);
+        }
+
+        if (lcc.point(vertex_it) == commonPoint2) {
+            adjacentBlockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                                              vertex_it,
+                                                                                                              polyhedron);
+        }
+    }
+
+//    std::cout<<"Point1: " <<blockIntersectionPoint1<<std::endl;
+//    std::cout<<"Point2: " <<blockIntersectionPoint2<<std::endl;
+    REQUIRE(blockIntersectionPoint1 == adjacentBlockIntersectionPoint1);
+    REQUIRE(blockIntersectionPoint2 == adjacentBlockIntersectionPoint2);
+}
 
 
+TEST_CASE("must find the same intersection point for the same point which is incident to 2 adjacent facets second version") {
+    std::string fileName = data_path + "/hexTest.off";
+    OFF_Reader reader = OFF_Reader();
+    Polyhedron polyhedron = reader.read(fileName);
 
+    Point internalBlockBasePoint = Point(1, 1, 1);
+    Point internalAdjacentBlockBasePoint = Point(3, 1, 1);
+    FT internalBlockLg = 2;
+    LCC_3 lcc;
+    Block_maker blockMaker = Block_maker();
+    Dart_handle internalBlock = blockMaker.make_cube(lcc, internalBlockBasePoint, internalBlockLg);
+    Dart_handle internalAdjacentBlock = blockMaker.make_cube(lcc, internalAdjacentBlockBasePoint, internalBlockLg);
+    lcc.sew3_same_facets();
+
+    // detect top facet dart of internalBlock cube
+    Dart_handle topFacetBlock = lcc.beta(internalBlock, 2, 1, 1, 1, 2);
+    // detect top facet dart of internalAdjacentBlock cube
+    Dart_handle topFacetAdjacentBlock = lcc.beta(internalAdjacentBlock, 2, 1, 1, 1, 2);
+
+    Point commonPoint1 = Point(3, 1, 3);
+    Point commonPoint2 = Point(3, 3, 3);
+
+    // find the intersection point of the 2 points in common of the top facet
+    PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
+    Point blockIntersectionPoint1;
+    Point blockIntersectionPoint2;
+    for (LCC_3::One_dart_per_incident_cell_range<0, 2, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 2, 3>(
+            topFacetBlock).begin(),
+                 vertex_end_it = lcc.one_dart_per_incident_cell<0, 2, 3>(topFacetBlock).end();
+         vertex_it != vertex_end_it; ++vertex_it) {
+        if (lcc.point(vertex_it) == commonPoint1) {
+            blockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                                      vertex_it,
+                                                                                                      polyhedron);
+        }
+
+        if (lcc.point(vertex_it) == commonPoint2) {
+            blockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                                      vertex_it,
+                                                                                                      polyhedron);
+        }
+    }
+
+    //  find the intersection point of the 2 points in common of the adjacent top facet
+    Point adjacentBlockIntersectionPoint1;
+    Point adjacentBlockIntersectionPoint2;
+    for (LCC_3::One_dart_per_incident_cell_range<0, 2, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 2, 3>(
+            topFacetAdjacentBlock).begin(),
+                 vertex_end_it = lcc.one_dart_per_incident_cell<0, 2, 3>(topFacetAdjacentBlock).end();
+         vertex_it != vertex_end_it; ++vertex_it) {
+        if (lcc.point(vertex_it) == commonPoint1) {
+            adjacentBlockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                                              vertex_it,
+                                                                                                              polyhedron);
+        }
+
+        if (lcc.point(vertex_it) == commonPoint2) {
+            adjacentBlockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                                              vertex_it,
+                                                                                                              polyhedron);
+        }
+    }
+
+//    std::cout<<"Point1: " <<blockIntersectionPoint1<<std::endl;
+//    std::cout<<"Point2: " <<blockIntersectionPoint2<<std::endl;
+    REQUIRE(blockIntersectionPoint1 == adjacentBlockIntersectionPoint1);
+    REQUIRE(blockIntersectionPoint2 == adjacentBlockIntersectionPoint2);
 }

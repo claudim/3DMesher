@@ -18,27 +18,23 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
             const Point p = lcc.point(vertexIt);
             Point intersectionPoint = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc, vertexIt,
                                                                                                       polyhedron);
-            float rounded_down_x = 0;
-            float rounded_down_y = 0;
-            float rounded_down_z = 0;
-            if( !(intersectionPoint.x() > -0.001 && intersectionPoint.x() < 0.001))
-                rounded_down_x = intersectionPoint.x();
-
-            if( !(intersectionPoint.y() > -0.001 && intersectionPoint.y() < 0.001))
-                rounded_down_y = intersectionPoint.y();
-
-            if( !(intersectionPoint.z() > -0.001 && intersectionPoint.z() < 0.001))
-                rounded_down_z = intersectionPoint.z();
-
-            Point rounded_point = Point(rounded_down_x, rounded_down_y, rounded_down_z);
-
-
-            //hexahedronPoints.emplace_back(rounded_point);
-            //hexahedronPoints.push_back(lcc.point(vertexIt));
-            intersectionPoint = Point(std::round(intersectionPoint.x()), std::round(intersectionPoint.y()),  std::round(intersectionPoint.z())) ;
+//            float rounded_down_x = 0;
+//            float rounded_down_y = 0;
+//            float rounded_down_z = 0;
+//            if( !(intersectionPoint.x() > -0.001 && intersectionPoint.x() < 0.001))
+//                rounded_down_x = intersectionPoint.x();
+//
+//            if( !(intersectionPoint.y() > -0.001 && intersectionPoint.y() < 0.001))
+//                rounded_down_y = intersectionPoint.y();
+//
+//            if( !(intersectionPoint.z() > -0.001 && intersectionPoint.z() < 0.001))
+//                rounded_down_z = intersectionPoint.z();
+//
+//            Point rounded_point = Point(rounded_down_x, rounded_down_y, rounded_down_z);
+//
+//            hexahedronPoints.emplace_back(rounded_point);
             hexahedronPoints.emplace_back(intersectionPoint);
             hexahedronPoints.push_back(lcc.point(vertexIt));
-
         }
 
         std::unique(hexahedronPoints.begin(), hexahedronPoints.end());

@@ -61,6 +61,11 @@ public:
     }
 
 
+    /**
+     * @brief Remove blocks with more than 4 external facets from the lcc.
+     *
+     * @param lcc The mesh to improve.
+     */
     void refine(LCC_3 &lcc) {
         std::vector<Dart_handle> cubes_with_more_than_4_external_facets;
         bool cubes_with_more_than_4_external_facets_not_found = true;
