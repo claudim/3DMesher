@@ -18,3 +18,25 @@ void Features_detector::detect(Polyhedron &polyhedron){
     CGAL::Polygon_mesh_processing::detect_vertex_incident_patches(polyhedron, pid, vip, eif);
 
 }
+
+void Features_detector::detect(Polyhedron &polyhedron, std::vector<Point> &featuresPoints){
+
+    typedef boost::property_map<Polyhedron, CGAL::edge_is_feature_t>::type EIFMap;
+    this->detect(polyhedron);
+    EIFMap eif = get(CGAL::edge_is_feature, polyhedron);
+    //VIMap vip = get(CGAL::vertex_incident_patches_t<int>(), polyhedron);
+    //Vpmap vpmap = get(CGAL::vertex_point, polyhedron);
+    for (Edge_descriptor e : edges(polyhedron)) //For all stl borders edges
+    {   if (get(eif, e))
+        {
+            Point startPoint = e.halfedge()->vertex()->point();
+            Point endPoint = e.halfedge()->opposite()->vertex()->point();
+            featuresPoints.emplace_back(startPoint);
+            featuresPoints.emplace_back(endPoint);
+        }
+    }
+    std::sort(featuresPoints.begin(), featuresPoints.end());
+    featuresPoints.erase(unique(featuresPoints.begin(), featuresPoints.end()), featuresPoints.end());
+
+
+}

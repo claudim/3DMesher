@@ -15,6 +15,8 @@ class Features_detector {
 public:
 
     void detect(Polyhedron &polyhedron);
+
+    void detect(Polyhedron &polyhedron, std::vector<Point> &featuresPoints);
 };
 
 

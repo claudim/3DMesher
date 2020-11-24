@@ -45,6 +45,14 @@ public:
      * @param distance The distance according which some blocks must be removed.
      */
     void removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron, const double &distance);
+
+    /**
+     * @brief Remove the block from the mesh.
+     *
+     * @param lcc The mesh.
+     * @param blockToRemove The block to remove from the mesh.
+     */
+    void removeBlock(LCC_3& lcc, Dart_handle& blockToRemove);
 };
 
 

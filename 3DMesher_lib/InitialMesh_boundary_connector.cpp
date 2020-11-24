@@ -32,7 +32,11 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
 
             Point rounded_point = Point(rounded_down_x, rounded_down_y, rounded_down_z);
 
-            hexahedronPoints.emplace_back(rounded_point);
+
+            //hexahedronPoints.emplace_back(rounded_point);
+            //hexahedronPoints.push_back(lcc.point(vertexIt));
+            intersectionPoint = Point(std::round(intersectionPoint.x()), std::round(intersectionPoint.y()),  std::round(intersectionPoint.z())) ;
+            hexahedronPoints.emplace_back(intersectionPoint);
             hexahedronPoints.push_back(lcc.point(vertexIt));
 
         }

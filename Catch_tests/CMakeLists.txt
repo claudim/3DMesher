@@ -14,6 +14,7 @@ set(SOURCE_TESTS_FILES
         Point_sorter_tests.cpp
         Block_refiner_tests.cpp
         Bad_hex_finder_tests.cpp
+        Initial_mesh_maker_tests.cpp
         )
 
 set(HEADER_TESTS_FILES
