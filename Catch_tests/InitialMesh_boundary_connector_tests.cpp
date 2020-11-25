@@ -76,8 +76,6 @@ TEST_CASE("InitialMesh_boundary_connector cube in sphere"){
     Dart_handle internalBlock = blockMaker.make_cube(lcc, internalBlockBasePoint, internalBlockLg);
 
     std::string fileName = data_path + "/sphere.off";
-
-
 }
 
 

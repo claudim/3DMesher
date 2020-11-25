@@ -6,6 +6,7 @@
 #include "PointNormal_boundary_intersectionPoint_finder.h"
 #include "External_facet_finder.h"
 #include "Point_sorter.h"
+#include <boost/optional.hpp>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;

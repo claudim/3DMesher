@@ -20,49 +20,67 @@ TEST_CASE("PointNormal_boundary_intersectionPoint_finder"){
     PointNormal_boundary_intersectionPoint_finder pointFinder = PointNormal_boundary_intersectionPoint_finder();
 
     // if the point of internal cube is (2, 2, 2)
-    Point intercectionPoint = pointFinder.findIntersecionPoint( lcc, internalBlock, polyhedron);
+    boost::optional<Point> boostIntercectionPoint = pointFinder.findIntersecionPoint( lcc, internalBlock, polyhedron);
+   REQUIRE (boostIntercectionPoint.is_initialized()== true);
+
+    Point intercectionPoint = boostIntercectionPoint.get();
+
     REQUIRE(std::round(intercectionPoint.x()) == 0);
     REQUIRE(std::round(intercectionPoint.y()) == 0);
     REQUIRE(std::round(intercectionPoint.z()) == 0);
 
     // if the point of internal cube is (2, 2, 4)
-    intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 1), polyhedron);
+    boostIntercectionPoint  = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 1), polyhedron);
+    REQUIRE (boostIntercectionPoint.is_initialized()== true);
+    intercectionPoint = boostIntercectionPoint.get();
     REQUIRE(std::round(intercectionPoint.x()) == 0);
     REQUIRE(std::round(intercectionPoint.y()) == 0);
     REQUIRE(std::round(intercectionPoint.z()) == 6);
 
     // if the point of internal cube is (4, 2, 2)
-    intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 1,1,1), polyhedron);
+    boostIntercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 1,1,1), polyhedron);
+    REQUIRE (boostIntercectionPoint.is_initialized()== true);
+    intercectionPoint = boostIntercectionPoint.get();
     REQUIRE(std::round(intercectionPoint.x()) == 6);
     REQUIRE(std::round(intercectionPoint.y()) == 0);
     REQUIRE(std::round(intercectionPoint.z()) == 0);
 
     // if the point of internal cube is (4, 2, 4)
-    intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 1,1), polyhedron);
+    boostIntercectionPoint  = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 1,1), polyhedron);
+    REQUIRE (boostIntercectionPoint.is_initialized()== true);
+    intercectionPoint = boostIntercectionPoint.get();
     REQUIRE(std::round(intercectionPoint.x()) == 6);
     REQUIRE(std::round(intercectionPoint.y()) == 0);
     REQUIRE(std::round(intercectionPoint.z()) == 6);
 
     // if the point of internal cube is (2, 4, 2)
-    intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1, 1, 2, 1), polyhedron);
+    boostIntercectionPoint  = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1, 1, 2, 1), polyhedron);
+    REQUIRE (boostIntercectionPoint.is_initialized()== true);
+    intercectionPoint = boostIntercectionPoint.get();
     REQUIRE(std::round(intercectionPoint.x()) == 0);
     REQUIRE(std::round(intercectionPoint.y()) == 6);
     REQUIRE(std::round(intercectionPoint.z()) == 0);
 
     // if the point of internal cube is (2, 4, 4)
-    intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1 , 1, 2), polyhedron);
+    boostIntercectionPoint  = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1 , 1, 2), polyhedron);
+    REQUIRE (boostIntercectionPoint.is_initialized()== true);
+    intercectionPoint = boostIntercectionPoint.get();
     REQUIRE(std::round(intercectionPoint.x()) == 0);
     REQUIRE(std::round(intercectionPoint.y()) == 6);
     REQUIRE(std::round(intercectionPoint.z()) == 6);
 
     // if the point of internal cube is (4, 4, 4)
-    intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1, 1, 2, 1, 1, 1), polyhedron);
+    boostIntercectionPoint  = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1, 1, 2, 1, 1, 1), polyhedron);
+    REQUIRE (boostIntercectionPoint.is_initialized()== true);
+    intercectionPoint = boostIntercectionPoint.get();
     REQUIRE(std::round(intercectionPoint.x()) == 6);
     REQUIRE(std::round(intercectionPoint.y()) == 6);
     REQUIRE(std::round(intercectionPoint.z()) == 6);
 
     // if the point of internal cube is (4, 4, 2)
-    intercectionPoint = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1, 1, 2, 1, 1), polyhedron);
+    boostIntercectionPoint  = pointFinder.findIntersecionPoint( lcc, lcc.beta(internalBlock, 2, 1, 1, 2, 1, 1), polyhedron);
+    REQUIRE (boostIntercectionPoint.is_initialized()== true);
+    intercectionPoint = boostIntercectionPoint.get();
     REQUIRE(std::round(intercectionPoint.x()) == 6);
     REQUIRE(std::round(intercectionPoint.y()) == 6);
     REQUIRE(std::round(intercectionPoint.z()) == 0);
@@ -195,41 +213,53 @@ TEST_CASE("must find the same intersection point for the same point which is inc
     // find the intersection point of the 2 points in common of the top facet
     PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
     Point blockIntersectionPoint1;
+    boost::optional<Point> boostBlockIntersectionPoint1;
+    boost::optional<Point> boostBlockIntersectionPoint2;
     Point blockIntersectionPoint2;
     for (LCC_3::One_dart_per_incident_cell_range<0, 2, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 2, 3>(
             topFacetBlock).begin(),
                  vertex_end_it = lcc.one_dart_per_incident_cell<0, 2, 3>(topFacetBlock).end();
          vertex_it != vertex_end_it; ++vertex_it) {
         if (lcc.point(vertex_it) == commonPoint1) {
-            blockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+            boostBlockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
                                                                                                       vertex_it,
                                                                                                       polyhedron);
+            REQUIRE (boostBlockIntersectionPoint1.is_initialized()== true);
+            blockIntersectionPoint1 = boostBlockIntersectionPoint1.get();
         }
 
         if (lcc.point(vertex_it) == commonPoint2) {
-            blockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+            boostBlockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
                                                                                                       vertex_it,
                                                                                                       polyhedron);
+            REQUIRE (boostBlockIntersectionPoint2.is_initialized()== true);
+            blockIntersectionPoint2 = boostBlockIntersectionPoint2.get();
         }
     }
 
     //  find the intersection point of the 2 points in common of the adjacent top facet
     Point adjacentBlockIntersectionPoint1;
     Point adjacentBlockIntersectionPoint2;
+    boost::optional<Point> boostAdjacentBlockIntersectionPoint1;
+    boost::optional<Point> boostAdjacentBlockIntersectionPoint2;
     for (LCC_3::One_dart_per_incident_cell_range<0, 2, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 2, 3>(
             topFacetAdjacentBlock).begin(),
                  vertex_end_it = lcc.one_dart_per_incident_cell<0, 2, 3>(topFacetAdjacentBlock).end();
          vertex_it != vertex_end_it; ++vertex_it) {
         if (lcc.point(vertex_it) == commonPoint1) {
-            adjacentBlockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+            boostAdjacentBlockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
                                                                                                               vertex_it,
                                                                                                               polyhedron);
+            REQUIRE (boostAdjacentBlockIntersectionPoint1.is_initialized()== true);
+            adjacentBlockIntersectionPoint1 = boostAdjacentBlockIntersectionPoint1.get();
         }
 
         if (lcc.point(vertex_it) == commonPoint2) {
-            adjacentBlockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+            boostAdjacentBlockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
                                                                                                               vertex_it,
                                                                                                               polyhedron);
+            REQUIRE (boostAdjacentBlockIntersectionPoint2.is_initialized()== true);
+            adjacentBlockIntersectionPoint2 = boostAdjacentBlockIntersectionPoint2.get();
         }
     }
 
@@ -266,40 +296,52 @@ TEST_CASE("must find the same intersection point for the same point which is inc
     PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
     Point blockIntersectionPoint1;
     Point blockIntersectionPoint2;
+    boost::optional<Point> boostBlockIntersectionPoint1;
+    boost::optional<Point> boostBlockIntersectionPoint2;
     for (LCC_3::One_dart_per_incident_cell_range<0, 2, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 2, 3>(
             topFacetBlock).begin(),
                  vertex_end_it = lcc.one_dart_per_incident_cell<0, 2, 3>(topFacetBlock).end();
          vertex_it != vertex_end_it; ++vertex_it) {
         if (lcc.point(vertex_it) == commonPoint1) {
-            blockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+            boostBlockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
                                                                                                       vertex_it,
                                                                                                       polyhedron);
+            REQUIRE (boostBlockIntersectionPoint1.is_initialized()== true);
+            blockIntersectionPoint1 = boostBlockIntersectionPoint1.get();
         }
 
         if (lcc.point(vertex_it) == commonPoint2) {
-            blockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+            boostBlockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
                                                                                                       vertex_it,
                                                                                                       polyhedron);
+            REQUIRE (boostBlockIntersectionPoint2.is_initialized()== true);
+            blockIntersectionPoint2 = boostBlockIntersectionPoint2.get();
         }
     }
 
     //  find the intersection point of the 2 points in common of the adjacent top facet
     Point adjacentBlockIntersectionPoint1;
     Point adjacentBlockIntersectionPoint2;
+    boost::optional<Point> boostAdjacentBlockIntersectionPoint1;
+    boost::optional<Point> boostAdjacentBlockIntersectionPoint2;
     for (LCC_3::One_dart_per_incident_cell_range<0, 2, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 2, 3>(
             topFacetAdjacentBlock).begin(),
                  vertex_end_it = lcc.one_dart_per_incident_cell<0, 2, 3>(topFacetAdjacentBlock).end();
          vertex_it != vertex_end_it; ++vertex_it) {
         if (lcc.point(vertex_it) == commonPoint1) {
-            adjacentBlockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+            boostAdjacentBlockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
                                                                                                               vertex_it,
                                                                                                               polyhedron);
+            REQUIRE (boostAdjacentBlockIntersectionPoint1.is_initialized()== true);
+            adjacentBlockIntersectionPoint2 = boostAdjacentBlockIntersectionPoint1.get();
         }
 
         if (lcc.point(vertex_it) == commonPoint2) {
-            adjacentBlockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+            boostAdjacentBlockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
                                                                                                               vertex_it,
                                                                                                               polyhedron);
+            REQUIRE (boostAdjacentBlockIntersectionPoint2.is_initialized()== true);
+            adjacentBlockIntersectionPoint2 = boostAdjacentBlockIntersectionPoint2.get();
         }
     }
 
@@ -307,4 +349,132 @@ TEST_CASE("must find the same intersection point for the same point which is inc
 //    std::cout<<"Point2: " <<blockIntersectionPoint2<<std::endl;
     REQUIRE(blockIntersectionPoint1 == adjacentBlockIntersectionPoint1);
     REQUIRE(blockIntersectionPoint2 == adjacentBlockIntersectionPoint2);
+}
+
+TEST_CASE("must find the same intersection point for the same point which is incident to 1 adjacent edges")
+{
+    std::string fileName = data_path + "/hexTest.off";
+    OFF_Reader reader = OFF_Reader();
+    Polyhedron polyhedron = reader.read(fileName);
+
+    Point internalBlockBasePoint = Point(2, 2, 2);
+    Point internalAdjacentBlockBasePoint = Point(4, 2, 4);
+    FT internalBlockLg = 2;
+    LCC_3 lcc;
+    Block_maker blockMaker = Block_maker();
+    Dart_handle internalBlock = blockMaker.make_cube(lcc, internalBlockBasePoint, internalBlockLg);
+    Dart_handle internalAdjacentBlock = blockMaker.make_cube(lcc, internalAdjacentBlockBasePoint, internalBlockLg);
+    lcc.sew3_same_facets();
+
+    Point commonPoint1 = Point(4, 4, 4);
+    Point commonPoint2 = Point(4, 2, 4);
+
+    Dart_handle vertex1Handle;
+    Dart_handle vertex2Handle;
+
+// find the front  intersection point of the common  edge
+PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
+Point intersectionPoint1;
+Point intersectionPoint2;
+    boost::optional<Point> boostIntersectionPoint1;
+    boost::optional<Point> boostIntersectionPoint2;
+    for(LCC_3::One_dart_per_incident_cell_range<0,3,3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0,3,3>(internalBlock).begin(),
+                vertex_end_it = lcc.one_dart_per_incident_cell<0,3,3>(internalBlock).end(); vertex_it != vertex_end_it; ++vertex_it){
+        if(lcc.point(vertex_it) == commonPoint1)
+        {
+            boostIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                                 vertex_it,
+                                                                                                 polyhedron);
+            REQUIRE (boostIntersectionPoint1.is_initialized()== true);
+            intersectionPoint1 = boostIntersectionPoint1.get();
+        }
+        if(lcc.point(vertex_it) == commonPoint2)
+        {
+            boostIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                     vertex_it,
+                                                                                     polyhedron);
+            REQUIRE (boostIntersectionPoint2.is_initialized()== true);
+            intersectionPoint2 = boostIntersectionPoint2.get();
+        }
+    }
+
+Point intersectionAdjacentPoint1;
+Point intersectionAdjacentPoint2;
+    boost::optional<Point> boostAdjacentBlockIntersectionPoint1;
+    boost::optional<Point> boostAdjacentBlockIntersectionPoint2;
+for(LCC_3::One_dart_per_incident_cell_range<0,3,3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0,3,3>(internalAdjacentBlock).begin(),
+        vertex_end_it = lcc.one_dart_per_incident_cell<0,3,3>(internalAdjacentBlock).end(); vertex_it != vertex_end_it; ++vertex_it){
+if(lcc.point(vertex_it) == commonPoint1)
+{
+    boostAdjacentBlockIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                     vertex_it,
+                                                                                     polyhedron);
+    REQUIRE (boostAdjacentBlockIntersectionPoint1.is_initialized()== true);
+    intersectionAdjacentPoint1 = boostAdjacentBlockIntersectionPoint1.get();
+}
+if(lcc.point(vertex_it) == commonPoint2)
+{
+    boostAdjacentBlockIntersectionPoint2 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                     vertex_it,
+                                                                                     polyhedron);
+    REQUIRE (boostAdjacentBlockIntersectionPoint2.is_initialized()== true);
+    intersectionAdjacentPoint2 = boostAdjacentBlockIntersectionPoint2.get();
+}
+}
+
+REQUIRE(intersectionAdjacentPoint2 == intersectionPoint2);
+REQUIRE(intersectionAdjacentPoint1 == intersectionPoint1);
+}
+
+TEST_CASE("must find the same intersection point for the same point")
+{
+    std::string fileName = data_path + "/hexTest.off";
+    OFF_Reader reader = OFF_Reader();
+    Polyhedron polyhedron = reader.read(fileName);
+
+    Point internalBlockBasePoint = Point(2, 2, 2);
+    Point internalAdjacentBlockBasePoint = Point(4, 4, 4);
+    FT internalBlockLg = 2;
+    LCC_3 lcc;
+    Block_maker blockMaker = Block_maker();
+    Dart_handle internalBlock = blockMaker.make_cube(lcc, internalBlockBasePoint, internalBlockLg);
+    Dart_handle internalAdjacentBlock = blockMaker.make_cube(lcc, internalAdjacentBlockBasePoint, internalBlockLg);
+    lcc.sew3_same_facets();
+
+    Point commonPoint1 = Point(4, 4, 4);
+
+    Dart_handle vertex1Handle;
+    Dart_handle vertex2Handle;
+
+// find the front  intersection point of the common  edge
+    PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
+    Point intersectionPoint1;
+    boost::optional<Point> boostIntersectionPoint1;
+    for(LCC_3::One_dart_per_incident_cell_range<0,3,3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0,3,3>(internalBlock).begin(),
+                vertex_end_it = lcc.one_dart_per_incident_cell<0,3,3>(internalBlock).end(); vertex_it != vertex_end_it; ++vertex_it){
+        if(lcc.point(vertex_it) == commonPoint1)
+        {
+            boostIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                                 vertex_it,
+                                                                                                 polyhedron);
+            REQUIRE (boostIntersectionPoint1.is_initialized()== true);
+            intersectionPoint1 = boostIntersectionPoint1.get();
+        }
+    }
+
+    Point intersectionAdjacentPoint1;
+    boost::optional<Point> boostIntersectionAdjacentPoint1;
+    for(LCC_3::One_dart_per_incident_cell_range<0,3,3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0,3,3>(internalAdjacentBlock).begin(),
+                vertex_end_it = lcc.one_dart_per_incident_cell<0,3,3>(internalAdjacentBlock).end(); vertex_it != vertex_end_it; ++vertex_it){
+        if(lcc.point(vertex_it) == commonPoint1)
+        {
+            boostIntersectionAdjacentPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
+                                                                                                         vertex_it,
+                                                                                                         polyhedron);
+            REQUIRE (boostIntersectionAdjacentPoint1.is_initialized()== true);
+            intersectionAdjacentPoint1 = boostIntersectionAdjacentPoint1.get();
+        }
+    }
+
+    REQUIRE(intersectionAdjacentPoint1 == intersectionPoint1);
 }

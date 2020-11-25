@@ -21,6 +21,8 @@
 #include <CGAL/AABB_face_graph_triangle_primitive.h>
 #include <CGAL/Polygon_mesh_processing/compute_normal.h>
 #include <CGAL/Polygon_mesh_processing/orientation.h>
+#include "Point_normal_finder.h"
+#include <boost/optional.hpp>
 
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
@@ -53,10 +55,10 @@ public:
      * @param lcc The lcc to which the point belongs.
      * @param vertex_handle Dart handle to the point of which it wants find the isomorphic point on the boundary of the polyhedron.
      * @param polyhedron The polyhedron.
-     * @return The intersection point isomorphic to the vertex_handle point. The intersection point belongs to the boundary of the polyhedron.
+     * @return The intersection point isomorphic to the vertex_handle point when the normal is not null. The intersection point belongs to the boundary of the polyhedron.
      */
    // template<typename Point, typename Linear_cell_complex_traits, typename allocator, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
-    Point findIntersecionPoint(const LCC_3 &lcc, const Dart_const_handle &vertex_handle, const Polyhedron &polyhedron);
+    boost::optional<Point> findIntersecionPoint(LCC_3 &lcc, const Dart_const_handle &vertex_handle, const Polyhedron &polyhedron);
 
    /**
     * @brief Compute the normal of the 0-cell. For each external facets(2-cell) incident to the 0-cell, it is compute its normal. Afterwards, every normal of the 2-cell are weighed added.

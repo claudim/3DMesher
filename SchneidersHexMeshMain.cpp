@@ -62,8 +62,6 @@ int main(int argc, char* argv[]) {
 //        onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
 //        std::cout<<"rimossi i blocchi sul boundary"<<std::endl;
 
-
-
         CGAL::draw(hex_mesh);
         //connect the initial mesh to the polyhedron boundary
         InitialMesh_boundary_connector initialMeshBoundaryConnector = InitialMesh_boundary_connector();

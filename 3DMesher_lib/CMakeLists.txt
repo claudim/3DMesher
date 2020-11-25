@@ -13,6 +13,7 @@ set(HEADER_FILES
         Grid_boundary_connector.h
         OnBoundary_block_remover.h
         External_facet_finder.h
+        Point_normal_finder.h
         PointNormal_boundary_intersectionPoint_finder.h
         InitialMesh_boundary_connector.h
         Writer.h
@@ -33,6 +34,7 @@ set(SOURCE_FILES
         Grid_boundary_connector.cpp
         OnBoundary_block_remover.cpp
         External_facet_finder.cpp
+        Point_normal_finder.cpp
         PointNormal_boundary_intersectionPoint_finder.cpp
         InitialMesh_boundary_connector.cpp
         Writer.cpp

@@ -11,49 +11,47 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
     for( Dart_const_handle facet : externalFacets){
 
         std::vector< Point > hexahedronPoints;
-
-        for(LCC_3::Dart_of_orbit_const_range<1>::const_iterator vertexIt = lcc.darts_of_orbit<1>(facet).begin(),
-                    vertexItEnd = lcc.darts_of_orbit<1>(facet).end(); vertexIt != vertexItEnd; ++vertexIt) {
+        bool jumpToAnotherFacet = false;
+        LCC_3::Dart_of_orbit_const_range<1>::const_iterator vertexIt = lcc.darts_of_orbit<1>(facet).begin(),
+                vertexItEnd = lcc.darts_of_orbit<1>(facet).end();
+        while(!jumpToAnotherFacet && vertexIt != vertexItEnd) {
+//        for(LCC_3::Dart_of_orbit_const_range<1>::const_iterator vertexIt = lcc.darts_of_orbit<1>(facet).begin(),
+//                    vertexItEnd = lcc.darts_of_orbit<1>(facet).end(); vertexIt != vertexItEnd; ++vertexIt) {
             //TODO: marcare il punto per cui ho già calcolato il punto di intersezione e memorizzare questo punto trovato nella 0-cell che sto marcando. questo mi permette di risparmiare del lavoro: se è marcato, cella0 dammi tu il punto di intersezione, se non è marcato, calcolo il punto di interseione.
             const Point p = lcc.point(vertexIt);
-            Point intersectionPoint = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc, vertexIt,
-                                                                                                      polyhedron);
-//            float rounded_down_x = 0;
-//            float rounded_down_y = 0;
-//            float rounded_down_z = 0;
-//            if( !(intersectionPoint.x() > -0.001 && intersectionPoint.x() < 0.001))
-//                rounded_down_x = intersectionPoint.x();
-//
-//            if( !(intersectionPoint.y() > -0.001 && intersectionPoint.y() < 0.001))
-//                rounded_down_y = intersectionPoint.y();
-//
-//            if( !(intersectionPoint.z() > -0.001 && intersectionPoint.z() < 0.001))
-//                rounded_down_z = intersectionPoint.z();
-//
-//            Point rounded_point = Point(rounded_down_x, rounded_down_y, rounded_down_z);
-//
-//            hexahedronPoints.emplace_back(rounded_point);
-            hexahedronPoints.emplace_back(intersectionPoint);
-            hexahedronPoints.push_back(lcc.point(vertexIt));
+            boost::optional<Point> boostIntersectionPoint = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(
+                    lcc, vertexIt,
+                    polyhedron);
+            if (!boostIntersectionPoint.is_initialized()) // if boostIntersectionPoint is not null point
+            {
+                Point intersectionPoint = boostIntersectionPoint.get();
+                hexahedronPoints.emplace_back(intersectionPoint);
+                hexahedronPoints.emplace_back(lcc.point(vertexIt));
+                ++vertexIt;
+            } else {
+                jumpToAnotherFacet = true;
+            }
         }
+        if(!jumpToAnotherFacet) {
+            std::unique(hexahedronPoints.begin(), hexahedronPoints.end());
 
-        std::unique(hexahedronPoints.begin(), hexahedronPoints.end());
+            std::vector<Point> southestFacetPoints;
+            std::vector<Point> northestFacetPoints;
 
-        std::vector<Point> southestFacetPoints;
-        std::vector<Point> northestFacetPoints;
+            Point_sorter pointSorter;
+            pointSorter.sort_southest_points_facet(hexahedronPoints, southestFacetPoints);
+            pointSorter.sort_northest_points_facet(hexahedronPoints, northestFacetPoints);
 
-        Point_sorter pointSorter;
-        pointSorter.sort_southest_points_facet(hexahedronPoints,southestFacetPoints);
-        pointSorter.sort_northest_points_facet(hexahedronPoints, northestFacetPoints);
-
-        Dart_handle newHexahedron = lcc.make_hexahedron(southestFacetPoints[0],
-                                                        southestFacetPoints[1],
-                                                        southestFacetPoints[2],
-                                                        southestFacetPoints[3],
-                                                        northestFacetPoints[0],
-                                                        northestFacetPoints[1],
-                                                        northestFacetPoints[2],
-                                                        northestFacetPoints[3]);
+            Dart_handle newHexahedron = lcc.make_hexahedron(southestFacetPoints[0],
+                                                            southestFacetPoints[1],
+                                                            southestFacetPoints[2],
+                                                            southestFacetPoints[3],
+                                                            northestFacetPoints[0],
+                                                            northestFacetPoints[1],
+                                                            northestFacetPoints[2],
+                                                            northestFacetPoints[3]);
+        }
+        hexahedronPoints.clear();
     }
 
     lcc.display_characteristics(std::cout);

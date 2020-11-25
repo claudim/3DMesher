@@ -47,6 +47,7 @@ public:
      */
     void removeBlocks(LCC_3& lcc, const Polyhedron& polyhedron){
         blockRemover.removeBlocks(lcc, polyhedron);
+        std::cout<<"Blocchi rimossi"<<std::endl;
     }
 
     /**
@@ -99,6 +100,7 @@ public:
             }
             cubes_with_more_than_4_external_facets.clear();
         }
+        std::cout<<"Blocchi rimossi nel refiner"<<std::endl;
     }
 
 private:
