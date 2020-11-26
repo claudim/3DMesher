@@ -22,10 +22,27 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
             boost::optional<Point> boostIntersectionPoint = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(
                     lcc, vertexIt,
                     polyhedron);
-            if (!boostIntersectionPoint.is_initialized()) // if boostIntersectionPoint is not null point
+            if (boostIntersectionPoint.is_initialized()) // if boostIntersectionPoint is null point
             {
                 Point intersectionPoint = boostIntersectionPoint.get();
-                hexahedronPoints.emplace_back(intersectionPoint);
+
+                float rounded_down_x = 0;
+                float rounded_down_y = 0;
+                float rounded_down_z = 0;
+                if( !(intersectionPoint.x() > -0.001 && intersectionPoint.x() < 0.001))
+                    rounded_down_x = intersectionPoint.x();
+
+                if( !(intersectionPoint.y() > -0.001 && intersectionPoint.y() < 0.001))
+                    rounded_down_y = intersectionPoint.y();
+
+                if( !(intersectionPoint.z() > -0.001 && intersectionPoint.z() < 0.001))
+                    rounded_down_z = intersectionPoint.z();
+
+//                Point rounded_point = Point(std::round(intersectionPoint.x()), std::round(intersectionPoint.y()), std::round(intersectionPoint.z()));
+                Point rounded_point = Point(rounded_down_x, rounded_down_y, rounded_down_z);
+                hexahedronPoints.emplace_back(rounded_point);
+
+//                hexahedronPoints.emplace_back(intersectionPoint);
                 hexahedronPoints.emplace_back(lcc.point(vertexIt));
                 ++vertexIt;
             } else {
@@ -50,6 +67,16 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
                                                             northestFacetPoints[1],
                                                             northestFacetPoints[2],
                                                             northestFacetPoints[3]);
+
+            std::cout<<"esaedro: "<<std::endl;
+            for (int i =0; i< southestFacetPoints.size(); i++)
+            {
+                std::cout<<southestFacetPoints.at(i)<<std::endl;
+            }
+            for (int i =0; i< northestFacetPoints.size(); i++)
+            {
+                std::cout<<northestFacetPoints.at(i)<<std::endl;
+            }
         }
         hexahedronPoints.clear();
     }
@@ -58,7 +85,6 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
     std::cout<<"creati i blocchi tra init mesh e boundary"<<std::endl;
     lcc.sew3_same_facets(); // link all blocks in lcc with same facets if they are not linked.
     lcc.display_characteristics(std::cout);
-
 }
 
 ////template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
