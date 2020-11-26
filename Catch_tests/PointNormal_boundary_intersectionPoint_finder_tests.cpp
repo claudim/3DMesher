@@ -333,7 +333,7 @@ TEST_CASE("must find the same intersection point for the same point which is inc
                                                                                                               vertex_it,
                                                                                                               polyhedron);
             REQUIRE (boostAdjacentBlockIntersectionPoint1.is_initialized()== true);
-            adjacentBlockIntersectionPoint2 = boostAdjacentBlockIntersectionPoint1.get();
+            adjacentBlockIntersectionPoint1 = boostAdjacentBlockIntersectionPoint1.get();
         }
 
         if (lcc.point(vertex_it) == commonPoint2) {
@@ -457,8 +457,7 @@ TEST_CASE("must find the same intersection point for the same point")
             boostIntersectionPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
                                                                                                  vertex_it,
                                                                                                  polyhedron);
-            REQUIRE (boostIntersectionPoint1.is_initialized()== true);
-            intersectionPoint1 = boostIntersectionPoint1.get();
+            REQUIRE (boostIntersectionPoint1.is_initialized()== false);
         }
     }
 
@@ -471,10 +470,9 @@ TEST_CASE("must find the same intersection point for the same point")
             boostIntersectionAdjacentPoint1 = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc,
                                                                                                          vertex_it,
                                                                                                          polyhedron);
-            REQUIRE (boostIntersectionAdjacentPoint1.is_initialized()== true);
-            intersectionAdjacentPoint1 = boostIntersectionAdjacentPoint1.get();
+            REQUIRE (boostIntersectionAdjacentPoint1.is_initialized()== false);
         }
     }
 
-    REQUIRE(intersectionAdjacentPoint1 == intersectionPoint1);
+    REQUIRE(boostIntersectionAdjacentPoint1 == boostIntersectionPoint1);
 }

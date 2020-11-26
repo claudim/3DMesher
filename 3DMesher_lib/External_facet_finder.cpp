@@ -19,7 +19,7 @@ std::vector<Dart_const_handle> External_facet_finder::find(const LCC_3 & lcc){
 }
 
 std::vector<Dart_handle> External_facet_finder::findFacets(LCC_3 & lcc){
-    std::vector<Dart_handle> externalFacets = std::vector<Dart_handle>();
+    std::vector<Dart_handle> externalFacets;
     if(!lcc.is_empty())
     {
         for(LCC_3::One_dart_per_cell_range<2,3>::iterator cell_facet_iterator = lcc.one_dart_per_cell<2,3>().begin(),

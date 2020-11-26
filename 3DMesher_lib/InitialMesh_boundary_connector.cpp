@@ -1,5 +1,7 @@
 #include "InitialMesh_boundary_connector.h"
 
+#include <CGAL/Polyhedron_3_to_lcc.h>
+
 //template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
 void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyhedron) {
     External_facet_finder externalFacetFinder;
@@ -7,10 +9,12 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
     const std::vector<Dart_const_handle> &externalFacets = externalFacetFinder.find(lcc);
 
     PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
-
+    std::vector< std::vector<Point> > hexahedraToCreate;
+    LCC_3 newHexahedraLcc;
     for( Dart_const_handle facet : externalFacets){
 
         std::vector< Point > hexahedronPoints;
+
         bool jumpToAnotherFacet = false;
         LCC_3::Dart_of_orbit_const_range<1>::const_iterator vertexIt = lcc.darts_of_orbit<1>(facet).begin(),
                 vertexItEnd = lcc.darts_of_orbit<1>(facet).end();
@@ -59,26 +63,58 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
             pointSorter.sort_southest_points_facet(hexahedronPoints, southestFacetPoints);
             pointSorter.sort_northest_points_facet(hexahedronPoints, northestFacetPoints);
 
-            Dart_handle newHexahedron = lcc.make_hexahedron(southestFacetPoints[0],
-                                                            southestFacetPoints[1],
-                                                            southestFacetPoints[2],
-                                                            southestFacetPoints[3],
-                                                            northestFacetPoints[0],
-                                                            northestFacetPoints[1],
-                                                            northestFacetPoints[2],
-                                                            northestFacetPoints[3]);
+//            Dart_handle newHexahedron = lcc.make_hexahedron(southestFacetPoints[0],
+//                                                            southestFacetPoints[1],
+//                                                            southestFacetPoints[2],
+//                                                            southestFacetPoints[3],
+//                                                            northestFacetPoints[0],
+//                                                            northestFacetPoints[1],
+//                                                            northestFacetPoints[2],
+//                                                            northestFacetPoints[3]);
 
-            std::cout<<"esaedro: "<<std::endl;
-            for (int i =0; i< southestFacetPoints.size(); i++)
-            {
-                std::cout<<southestFacetPoints.at(i)<<std::endl;
-            }
-            for (int i =0; i< northestFacetPoints.size(); i++)
-            {
-                std::cout<<northestFacetPoints.at(i)<<std::endl;
-            }
+
+            std::vector<Point> newHexahedron;
+            newHexahedron.emplace_back(southestFacetPoints[0]);
+            newHexahedron.emplace_back(southestFacetPoints[1]);
+            newHexahedron.emplace_back(southestFacetPoints[2]);
+            newHexahedron.emplace_back(southestFacetPoints[3]);
+            newHexahedron.emplace_back(northestFacetPoints[0]);
+            newHexahedron.emplace_back(northestFacetPoints[1]);
+            newHexahedron.emplace_back(northestFacetPoints[2]);
+            newHexahedron.emplace_back(northestFacetPoints[3]);
+//            Dart_handle newHexahedron = newHexahedraLcc.make_hexahedron(southestFacetPoints[0],
+//                                                            southestFacetPoints[1],
+//                                                            southestFacetPoints[2],
+//                                                            southestFacetPoints[3],
+//                                                            northestFacetPoints[0],
+//                                                            northestFacetPoints[1],
+//                                                            northestFacetPoints[2],
+//                                                            northestFacetPoints[3]);
+            hexahedraToCreate.emplace_back(newHexahedron);
+//            std::cout<<"esaedro: "<<std::endl;
+//            for (int i =0; i< southestFacetPoints.size(); i++)
+//            {
+//                std::cout<<southestFacetPoints.at(i)<<std::endl;
+//            }
+//            for (int i =0; i< northestFacetPoints.size(); i++)
+//            {
+//                std::cout<<northestFacetPoints.at(i)<<std::endl;
+//            }
         }
         hexahedronPoints.clear();
+    }
+
+    //add the new hedrahedron created in the lcc which contain the initial mesh
+    for (std::vector<Point> hexahedron : hexahedraToCreate)
+    {
+       lcc.make_hexahedron(hexahedron[0],
+               hexahedron[1],
+               hexahedron[2],
+               hexahedron[3],
+               hexahedron[4],
+               hexahedron[5],
+               hexahedron[6],
+               hexahedron[7]);
     }
 
     lcc.display_characteristics(std::cout);
