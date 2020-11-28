@@ -20,6 +20,7 @@ set(HEADER_FILES
         Point_sorter.h
         Block_refiner.h
         Bad_hex_finder.h
+        Intersecting_polyhedron_finder.h
         )
 
 set(SOURCE_FILES
@@ -34,13 +35,13 @@ set(SOURCE_FILES
         Grid_boundary_connector.cpp
         OnBoundary_block_remover.cpp
         External_facet_finder.cpp
-        Point_normal_finder.cpp
         PointNormal_boundary_intersectionPoint_finder.cpp
         InitialMesh_boundary_connector.cpp
         Writer.cpp
         Point_sorter.cpp
         Block_refiner.cpp
         Bad_hex_finder.cpp
+        Intersecting_polyhedron_finder.cpp
         )
 
 # You get to pick a type of library, STATIC, SHARED, or MODULE. If you leave this choice off, the value of BUILD_SHARED_LIBS will be used to pick between STATIC and SHARED.

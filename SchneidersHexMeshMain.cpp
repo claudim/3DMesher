@@ -24,7 +24,7 @@ void bad_hex_finder(LCC_3 &lcc);
 int main(int argc, char* argv[]) {
     const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
     std::string name = "cube100x100rotated";
-   // std::string name = "cube100x100axisAligned";
+    //std::string name = "cube100x100axisAligned";
     //std::string name = "sphere";
     //std::string fileName = data_path + "/" + name + ".off";
     std::string fileName = data_path + "/" + name + ".stl";
@@ -48,9 +48,9 @@ int main(int argc, char* argv[]) {
 
         //detect the initial mesh
         Initial_mesh_maker<External_and_onBoundary_remover> initialMeshMaker;
-        //initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
+        initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
         initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
-        initialMeshMaker.refine(hex_mesh);
+        //initialMeshMaker.refine(hex_mesh);
 
 
 //        External_block_remover externalBlockRemover = External_block_remover();

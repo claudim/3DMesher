@@ -69,9 +69,9 @@ public:
      */
     void refine(LCC_3 &lcc) {
         std::vector<Dart_handle> cubes_with_more_than_4_external_facets;
-        bool cubes_with_more_than_4_external_facets_not_found = true;
+        bool cubes_with_more_than_4_external_facets_not_found = false;
 
-        while(cubes_with_more_than_4_external_facets_not_found) {
+        while(!cubes_with_more_than_4_external_facets_not_found) {
             // find the external cubes with more than 4 external facets
             for (LCC_3::One_dart_per_cell_range<3, 3>::iterator cube_it = lcc.one_dart_per_cell<3>().begin(),
                          cube_end_it = lcc.one_dart_per_cell<3>().end(); cube_it != cube_end_it; ++cube_it) {
@@ -90,9 +90,9 @@ public:
                     cubes_with_more_than_4_external_facets.emplace_back(cube_it);
                 }
             }
-            if(!cubes_with_more_than_4_external_facets.empty())
+            if(cubes_with_more_than_4_external_facets.empty())
             {
-                cubes_with_more_than_4_external_facets_not_found = false;
+                cubes_with_more_than_4_external_facets_not_found = true;
             }
             // remove the cubes found
             for (Dart_handle cube: cubes_with_more_than_4_external_facets) {

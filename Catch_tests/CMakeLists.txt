@@ -16,6 +16,7 @@ set(SOURCE_TESTS_FILES
         Block_refiner_tests.cpp
         Bad_hex_finder_tests.cpp
         Initial_mesh_maker_tests.cpp
+        Intersecting_polyhedron_finder_tests.cpp
         )
 
 set(HEADER_TESTS_FILES

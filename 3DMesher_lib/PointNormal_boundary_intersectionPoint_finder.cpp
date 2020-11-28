@@ -13,6 +13,7 @@ boost::optional<Point> PointNormal_boundary_intersectionPoint_finder::findInters
     Point p1 = lcc.point(vertex_handle);
     Point_normal_finder<LCC_3> pointNormalFinder;
     Vector v = pointNormalFinder.compute(lcc,p1);
+    v.direction();
     if( v.squared_length() != 0) {
         v = v / (CGAL::sqrt(v * v));
 
