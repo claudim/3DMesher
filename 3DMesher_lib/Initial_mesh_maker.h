@@ -86,7 +86,7 @@ public:
                         number_of_external_facets++;
                     }
                 }
-                if (number_of_external_facets > 4) {
+                if (number_of_external_facets == 5) {
                     cubes_with_more_than_4_external_facets.emplace_back(cube_it);
                 }
             }

@@ -1,6 +1,7 @@
 #include "../Include/catch.hpp"
 #include "test_config.h"
 #include "Block_maker.h"
+#include "Writer.h"
 
 TEST_CASE("cube_must_have_8_vertices","[make_cube][Block_maker_test]"){
     LCC_3 lcc;
@@ -70,28 +71,3 @@ TEST_CASE("block_must_have_6_facets","[make_block][Block_maker_test]"){
         REQUIRE(blockVertices.size() == 0);
     }
 }
-
-
-//TEST_CASE("block_must_have_1_length_between_2_vertices","[Block_maker_test]"){
-//    LCC_3 lcc;
-//    Point basePoint = Point(0,0,0);
-//    Block_maker blockMaker = Block_maker();
-//    FT lg = 1;
-//    const Dart_handle block = blockMaker.make_cube(lcc, basePoint, lg);
-//    Point prevoiusPoint = basePoint;
-//    for(LCC_3::Dart_of_cell_const_range<2,3>::const_iterator facet_block_iterator = lcc.darts_of_cell<2,3>(block).begin(),
-//            end_iterator = lcc.darts_of_cell<2,3>(block).end(); facet_block_iterator != end_iterator; ++facet_block_iterator)
-//    {
-//        if(facet_block_iterator != block) {
-//            bool length_between_2_vertices_is_1 = false;
-//            Point point = lcc.point(facet_block_iterator);
-//
-//            if (prevoiusPoint.x() == point.x() - lg || prevoiusPoint.y() == point.y() - lg ||
-//                prevoiusPoint.z() == point.z() - lg) {
-//                length_between_2_vertices_is_1 = true;
-//            }
-//            REQUIRE(length_between_2_vertices_is_1 == true);
-//            prevoiusPoint = point;
-//        }
-//    }
-//}

@@ -49,8 +49,9 @@ int main(int argc, char* argv[]) {
         //detect the initial mesh
         Initial_mesh_maker<External_and_onBoundary_remover> initialMeshMaker;
         initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
+        //initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
         initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
-        //initialMeshMaker.refine(hex_mesh);
+        initialMeshMaker.refine(hex_mesh);
 
 
 //        External_block_remover externalBlockRemover = External_block_remover();
@@ -75,7 +76,7 @@ int main(int argc, char* argv[]) {
 
         //output
         const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
-        std::string outputFileName = out_data_path + "/" + name + "3.mesh";
+        std::string outputFileName = out_data_path + "/" + name + "_senzaCornetti_2normals.mesh";
         std::ofstream medit_file(outputFileName);
         Writer writer;
         writer.output_to_medit(medit_file,hex_mesh);

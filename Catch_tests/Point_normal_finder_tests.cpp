@@ -5,7 +5,7 @@
 #include "PointNormal_boundary_intersectionPoint_finder.h"
 #include "STL_reader.h"
 
-TEST_CASE("must find normal parallel to y"){
+TEST_CASE("must find normal vector parallel to y"){
 
     typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
     typedef CGAL::Ray_3<K> Ray;

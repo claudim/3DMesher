@@ -31,6 +31,7 @@ class Point_normal_finder {
 
 
 public:
+
     /**
      * @brief Compute the normal of a 0-cell point.
      *
@@ -51,11 +52,64 @@ public:
         const std::vector<Dart_handle> externalFacets = externalFacetFinder.findFacets(lcc);
 
         for(Dart_handle facet: externalFacets){
+            for(typename LCC::template  One_dart_per_incident_cell_range<0,2>::
+            iterator vertexIt(lcc,facet); vertexIt.cont(); ++vertexIt) {
+                if(lcc.point(vertexIt) == point_of_0_cell){
+                    incidentFacets.emplace_back(facet);
+                }
+            }
+        }
+
+        std::vector<K::Direction_3 > facet_normal_directions;
+        for(Dart_handle incident_facet: incidentFacets)
+        {
+            Vector normalOfCell2 = CGAL::compute_normal_of_cell_2(lcc, incident_facet);
+            if(!(std::find(facet_normal_directions.begin(), facet_normal_directions.end(), normalOfCell2.direction()) != facet_normal_directions.end()))
+            {
+                facet_normal_directions.emplace_back(normalOfCell2.direction());
+                normal = typename LCC::Traits::Construct_sum_of_vectors()
+                        (normal, normalOfCell2);
+                ++nb;
+            }
+
+//            if( std::count(facet_normal_directions.begin(), facet_normal_directions.end(), normalOfCell2.direction()) < 2)
+//            {
+//                facet_normal_directions.emplace_back(normalOfCell2.direction());
+//                normal = typename LCC::Traits::Construct_sum_of_vectors()
+//                        (normal, normalOfCell2);
+//                ++nb;
+//            }
+
+        }
+        if ( nb<2 ) return normal;
+        return (typename LCC::Traits::Construct_scaled_vector()(normal, 1.0/nb));
+    }
+
+    /**
+     * @brief Compute the normal of a 0-cell point.
+     *
+     * @param lcc The lcc where store the mesh.
+     * @param point_of_0_cell Point associated to a 0-cell.
+     * @return The normal vector of the point.
+     */
+    typename LCC::Vector compute2(LCC &lcc, const typename LCC::Point &point_of_0_cell){
+        typedef typename LCC::Vector Vector;
+        typedef typename LCC::Dart_handle Dart_handle;
+        //typedef typename LCC::template LCC::Dart_of_orbit_const_range<1>::iterator iterator;
+
+        Vector normal(CGAL::NULL_VECTOR);
+        std::vector<Dart_handle> incidentFacets;
+        unsigned int nb = 0;
+
+        External_facet_finder externalFacetFinder;
+        const std::vector<Dart_handle> externalFacets = externalFacetFinder.findFacets(lcc);
+
+        for(Dart_handle facet: externalFacets){
 //            for(typename LCC::template Dart_of_orbit_const_range<1>::
 //                    iterator vertexIt = lcc.darts_of_orbit<1>(facet).begin(),
 //                        vertexItEnd = lcc.darts_of_orbit<1>(facet).end(); vertexIt != vertexItEnd; ++vertexIt) {
-                for(typename LCC::template  One_dart_per_incident_cell_range<0,2>::
-                iterator vertexIt(lcc,facet); vertexIt.cont(); ++vertexIt) {
+            for(typename LCC::template  One_dart_per_incident_cell_range<0,2>::
+            iterator vertexIt(lcc,facet); vertexIt.cont(); ++vertexIt) {
                 if(lcc.point(vertexIt) == point_of_0_cell){
                     incidentFacets.emplace_back(facet);
                 }
@@ -64,9 +118,9 @@ public:
 
         for(Dart_handle facet: incidentFacets)
         {
-                normal = typename LCC::Traits::Construct_sum_of_vectors()
-                        (normal, CGAL::compute_normal_of_cell_2(lcc, facet));
-                ++nb;
+            normal = typename LCC::Traits::Construct_sum_of_vectors()
+                    (normal, CGAL::compute_normal_of_cell_2(lcc, facet));
+            ++nb;
         }
         if ( nb<2 ) return normal;
         return (typename LCC::Traits::Construct_scaled_vector()(normal, 1.0/nb));

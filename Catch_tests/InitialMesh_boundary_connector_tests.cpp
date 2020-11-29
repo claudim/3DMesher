@@ -309,4 +309,35 @@ REQUIRE (!result.is_initialized());
     {
         std::cout<<"p2 "<<boostIntersectionPoint2.get()<<std::endl;
     }
+
+    //find all incident facets to p1 point (p1 = (3,2,2))
+    std::vector<Dart_handle> p1_incident_facets;
+    for(LCC_3::One_dart_per_cell_range<2,3>::iterator facet_it = lcc.one_dart_per_cell<2>().begin(),
+                facet_end_it = lcc.one_dart_per_cell<2>().end(); facet_it != facet_end_it; ++facet_it){
+        for(LCC_3::One_dart_per_incident_cell_range<0,2,3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0,2,3>(facet_it).begin(),
+                    vertex_end_it = lcc.one_dart_per_incident_cell<0,2,3>(facet_it).end(); vertex_it != vertex_end_it; ++vertex_it){
+            if(lcc.point(vertex_it) == p1)
+            {
+                if(lcc.beta(facet_it, 3) == lcc.null_dart_handle) {
+                    p1_incident_facets.emplace_back(facet_it);
+                }
+            }
+        }
+    }
+
+std::vector<K::Direction_3 > facet_normal_directions;
+
+    for(Dart_handle incident_facet: p1_incident_facets){
+        Vector normalOfCell2 = CGAL::compute_normal_of_cell_2(lcc, incident_facet);
+        if(!(std::find(facet_normal_directions.begin(), facet_normal_directions.end(), normalOfCell2.direction()) != facet_normal_directions.end()))
+        {
+            facet_normal_directions.emplace_back(normalOfCell2.direction());
+
+        }
+    }
+
+    REQUIRE(facet_normal_directions.size() == 3);
+
+
 }
+
