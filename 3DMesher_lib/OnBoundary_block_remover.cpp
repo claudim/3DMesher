@@ -19,6 +19,7 @@ void OnBoundary_block_remover::removeBlocks(LCC_3 &lcc, const Polyhedron &polyhe
 
 
 void OnBoundary_block_remover::removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron, const double &distance) {
+    //remove all onBoundary blocks
     if(!lcc.is_empty())
     {
         for (LCC_3::One_dart_per_cell_range<3, 3>::iterator lcc_cells_iterator = lcc.one_dart_per_cell<3, 3>().begin(),
@@ -31,6 +32,7 @@ void OnBoundary_block_remover::removeBlocks(LCC_3 &lcc, const Polyhedron &polyhe
                 removeBlock(lcc, lcc_cells_iterator);
             }
         }
+        //remove all blocks too close to the boundary.
         if(!lcc.is_empty()){
             for (LCC_3::One_dart_per_cell_range<3, 3>::iterator lcc_cells_iterator = lcc.one_dart_per_cell<3, 3>().begin(),
                          lcc_cells_end_iterator = lcc.one_dart_per_cell<3, 3>().end();
@@ -68,9 +70,57 @@ bool OnBoundary_block_remover::is_block_on_boundary(const LCC_3 &lcc,
     return block_onBoundary;
 }
 
-
-
+//precondition: every on-boundary block have already been removed
 bool OnBoundary_block_remover::is_block_too_close_to_the_boundary(const LCC_3 &lcc,
+                                                                  const Dart_handle& block,
+                                                                  const Polyhedron &polyhedron,
+                                                                  const double &distance){
+
+    //using 3cell_barycenter-boundary distance
+    bool block_too_close = false;
+
+
+    if(!lcc.is_empty()) {
+//      //detect all external blocks (here external means block is on the boundary lcc, not external to the polyhedron)
+//        External_facet_finder externalFacetFinder;
+//        std::vector<Dart_const_handle> facets = externalFacetFinder.find(lcc);
+//        std::vector<Dart_const_handle> externalHexes;
+//        for(Dart_const_handle facet: facets)
+//        {
+//            if(lcc.one_dart_per_incident_cell<3,2,3>(facet).size() > 0) {
+//                Dart_const_handle hex = lcc.one_dart_per_incident_cell<3, 2, 3>(facet).begin();
+//                if (std::find(externalHexes.begin(), externalHexes.end(), hex) == externalHexes.end()) {
+//                    // aggiungi cubo esterno
+//                    externalHexes.emplace_back(hex);
+//                }
+//            }
+//        }
+
+        // compute barycenter for each external blocks
+        Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
+        Point barycenter_point = lcc.barycenter<3>(block);
+        //compute distance from barycenter-point detected to polyhedron
+        double squared_distance_Barycenter_Polyhedron = vertexLocationFinder.getAabbTree().squared_distance(barycenter_point);
+        double distance_Barycenter_Polyhedron = sqrt(squared_distance_Barycenter_Polyhedron);
+        // if the computed distance is <= distance then block is to be removed
+        if (distance_Barycenter_Polyhedron <= distance)
+        {
+            block_too_close = true;
+        }
+    }
+    return block_too_close;
+}
+
+
+
+
+
+
+
+
+
+//precondition: every on-boundary block have already been removed
+bool OnBoundary_block_remover::is_block_too_close_to_the_boundary2(const LCC_3 &lcc,
                                                                   const Dart_handle& block,
                                                                   const Polyhedron &polyhedron,
                                                                   const double &distance){
@@ -101,9 +151,7 @@ bool OnBoundary_block_remover::is_block_too_close_to_the_boundary(const LCC_3 &l
         }
     }
     return block_too_close;
-
 }
-
 
 
 

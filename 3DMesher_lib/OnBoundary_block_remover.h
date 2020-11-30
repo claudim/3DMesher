@@ -8,6 +8,7 @@
 #include <CGAL/Linear_cell_complex_constructors.h>
 #include <CGAL/Linear_cell_complex_operations.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include "External_facet_finder.h"
 
 typedef CGAL::Vertex_location_finder Vertex_location_finder;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
@@ -44,6 +45,7 @@ public:
                                 const double &distance);
 
     bool is_block_too_close_to_the_boundary(const LCC_3 &lcc,const Dart_handle& block,const Polyhedron &polyhedron,const double &distance);
+    bool is_block_too_close_to_the_boundary2(const LCC_3 &lcc,const Dart_handle& block,const Polyhedron &polyhedron,const double &distance);
 
 
     //template<typename allocator, typename allocator, typename Linear_cell_complex_traits, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>

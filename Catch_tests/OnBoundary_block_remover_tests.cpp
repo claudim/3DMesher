@@ -20,7 +20,7 @@ TEST_CASE("check on boundary block"){
     }
 }
 
-TEST_CASE("check if one block is too close to the boundary"){
+TEST_CASE("check if one block is too close to the boundary 2"){
     std::string fileName = data_path + "/cubeTest.off";
     OFF_Reader reader = OFF_Reader();
     Polyhedron polyhedron = reader.read(fileName);
@@ -46,7 +46,7 @@ TEST_CASE("check if one block is too close to the boundary"){
                         Traits::Construct_translated_point()
                                 (basepoint, Traits::Vector(lg1, lg1, 3)));
 
-    REQUIRE(blockRemover.is_block_too_close_to_the_boundary(lcc, too_close_block, polyhedron, distance) == true );
+    REQUIRE(blockRemover.is_block_too_close_to_the_boundary2(lcc, too_close_block, polyhedron, distance) == true );
     LCC_3 lcc1;
     Dart_handle not_too_close_block = lcc1.make_hexahedron(basepoint,
                                                       Traits::Construct_translated_point()
@@ -63,7 +63,7 @@ TEST_CASE("check if one block is too close to the boundary"){
                                                               (basepoint, Traits::Vector(lg1, 0, 3)),
                                                       Traits::Construct_translated_point()
                                                               (basepoint, Traits::Vector(lg1, lg1, lg1)));
-    REQUIRE(blockRemover.is_block_too_close_to_the_boundary(lcc1, not_too_close_block, polyhedron, distance) == false );
+    REQUIRE(blockRemover.is_block_too_close_to_the_boundary2(lcc1, not_too_close_block, polyhedron, distance) == false );
 }
 
 TEST_CASE("remove_all_onBoundary_blocks","[OnBoundary_block_remover]"){
@@ -299,5 +299,42 @@ TEST_CASE("remove blocks using 3 points approach", "[OnBoundary_block_remover]")
     REQUIRE(lcc4.is_empty() == false);
     REQUIRE(lcc4.one_dart_per_cell<3>().size() == 1);
 
+}
+
+TEST_CASE("remove 3cells too close to the boundary according to a passed distance"){
+
+    std::string fileName = data_path + "/cubeTest.off";
+    OFF_Reader reader = OFF_Reader();
+    Polyhedron polyhedron = reader.read(fileName);
+    LCC_3 lcc;
+    Block_maker blockMaker;
+    OnBoundary_block_remover blockRemover;
+    Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
+    FT lg =2;
+    Dart_handle block_handle = blockMaker.make_cube(lcc, Point(2, 2, 2), lg);
+
+    Point barycenter_point = lcc.barycenter<3>(block_handle);
+
+    REQUIRE(barycenter_point == Point(3,3,3));
+
+
+    double distance_Barycenter_Polyhedron = vertexLocationFinder.getAabbTree().squared_distance(barycenter_point);
+
+    REQUIRE(sqrt(distance_Barycenter_Polyhedron) == 3.0);
+    
+    double distance = 2;
+    bool isBlockTooCloseToTheBoundary = blockRemover.is_block_too_close_to_the_boundary(lcc, block_handle, polyhedron,
+                                                                                        distance);
+    REQUIRE(isBlockTooCloseToTheBoundary == false);
+
+    distance = 3;
+    isBlockTooCloseToTheBoundary = blockRemover.is_block_too_close_to_the_boundary(lcc, block_handle, polyhedron,
+                                                                                   distance);
+    REQUIRE(isBlockTooCloseToTheBoundary == true);
+    
+    distance = 4;
+    isBlockTooCloseToTheBoundary = blockRemover.is_block_too_close_to_the_boundary(lcc, block_handle, polyhedron,
+                                                                                   distance);
+    REQUIRE(isBlockTooCloseToTheBoundary == true);
 
 }

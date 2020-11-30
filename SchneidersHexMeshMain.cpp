@@ -49,8 +49,8 @@ int main(int argc, char* argv[]) {
         //detect the initial mesh
         Initial_mesh_maker<External_and_onBoundary_remover> initialMeshMaker;
         initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
-        //initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
-        initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
+        //initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/2);
+        //initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
         initialMeshMaker.refine(hex_mesh);
 
 
@@ -64,19 +64,19 @@ int main(int argc, char* argv[]) {
 //        std::cout<<"rimossi i blocchi sul boundary"<<std::endl;
 
         CGAL::draw(hex_mesh);
-        //connect the initial mesh to the polyhedron boundary
+//        //connect the initial mesh to the polyhedron boundary
         InitialMesh_boundary_connector initialMeshBoundaryConnector = InitialMesh_boundary_connector();
         initialMeshBoundaryConnector.connect(hex_mesh, polyhedron);
-        std::cout<<"valido: " << hex_mesh.is_valid()<<std::endl;
-
-        Block_refiner blockRefiner;
-        blockRefiner.refineBlocks(hex_mesh, featuresPoints ,gridMaker.getGridDimension()/2);
+//        std::cout<<"valido: " << hex_mesh.is_valid()<<std::endl;
+//
+//        Block_refiner blockRefiner;
+//        blockRefiner.refineBlocks(hex_mesh, featuresPoints ,gridMaker.getGridDimension()/2);
 
        // CGAL::draw(hex_mesh);
 
         //output
         const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
-        std::string outputFileName = out_data_path + "/" + name + "_senzaCornetti_2normals.mesh";
+        std::string outputFileName = out_data_path + "/" + name + "Mesh.mesh";
         std::ofstream medit_file(outputFileName);
         Writer writer;
         writer.output_to_medit(medit_file,hex_mesh);
