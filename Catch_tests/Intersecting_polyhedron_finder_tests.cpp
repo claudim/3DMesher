@@ -138,3 +138,36 @@ TEST_CASE("must_detect_intersection_if_2_polyhedra_share_one_edge", "[Intersecti
     std::cout << lcc.is_sewable<1>(block1, block5) << std::endl;
     std::cout << lcc.is_sewable<0>(block1, block5) << std::endl;
 }
+
+TEST_CASE("Intersection between the polyhedron facets")
+{
+    LCC_3 lcc;
+    Block_maker blockMaker;
+    Intersecting_polyhedron_finder intersectingPolyhedronFinder;
+
+    SECTION("No intersection")
+    {
+        FT lg = 2;
+        const Dart_handle cube = blockMaker.make_cube(lcc, Point(2, 2, 2), lg);
+        bool facets_intersection = intersectingPolyhedronFinder.do_polyhedron_facets_intersect(lcc, cube);
+        REQUIRE(facets_intersection == false);
+    }
+
+    SECTION("Intersection")
+    {
+        std::vector<Point> block_points;
+        block_points.emplace_back(Point(2,2,2));
+        block_points.emplace_back(Point(4,2,2));
+        block_points.emplace_back(Point(4,4,2));
+        block_points.emplace_back(Point(2,4,2));
+        block_points.emplace_back(Point(2,4,4));
+        block_points.emplace_back(Point(2,2,4));
+        block_points.emplace_back(Point(1,3,5));
+        block_points.emplace_back(Point(4,4,4));
+        const Dart_handle intersecting_block = blockMaker.make_block(lcc, block_points);
+        bool facets_intersection = intersectingPolyhedronFinder.do_polyhedron_facets_intersect(lcc,intersecting_block);
+        REQUIRE(facets_intersection == true);
+    }
+
+
+}
