@@ -10,11 +10,12 @@
 
 #ifndef INC_3DMESHER_EXTERNAL_AND_ONBOUNDARY_REMOVER_H
 #define INC_3DMESHER_EXTERNAL_AND_ONBOUNDARY_REMOVER_H
+#include <MyLCC.h>
 #include "External_block_remover.h"
 #include "OnBoundary_block_remover.h"
 
-typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
+//typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+//typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
 /**

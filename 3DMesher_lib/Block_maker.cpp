@@ -21,7 +21,7 @@ Dart_handle Block_maker::make_cube(LCC_3& lcc, const Point& basepoint, FT& lg){
 }
 
 //template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename Point, typename Point>
-const Dart_handle Block_maker::make_block(LCC_3 &lcc, const std::vector<Point> &vertices) {
+Dart_handle Block_maker::make_block(LCC_3 &lcc, const std::vector<Point> &vertices) {
 
     return lcc.make_hexahedron(vertices[0],
                         vertices[1],

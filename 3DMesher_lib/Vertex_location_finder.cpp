@@ -14,7 +14,7 @@ bool CGAL::Vertex_location_finder::is_point_inside_polyhedron(const Point &point
     return isInternalPoint;
 }
 
-bool CGAL::Vertex_location_finder::is_point_onBoundary_polyhedron(const Point &pointToBeCheck) {
+bool CGAL::Vertex_location_finder::is_point_onBoundary_polyhedron(const Point &pointToBeCheck) const {
     bool isOnBoundaryPoint = false;
     //Point_inside inside(polyhedron);
     if (inside(pointToBeCheck) == CGAL::ON_BOUNDARY){

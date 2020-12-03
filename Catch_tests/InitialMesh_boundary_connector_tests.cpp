@@ -61,14 +61,9 @@ TEST_CASE("InitialMesh_boundary_connector cube in cube"){
     REQUIRE( number_of_vertices == 16);
 
     // Output
-    std::ofstream medit_file("out.mesh");
-    Writer w;
-    w.output_to_medit(medit_file,lcc);
-
-    // const CGAL::Bbox_3 polyhedron_bbox3 = CGAL::Polygon_mesh_processing::bbox(polyhedron);
-    // const CGAL::Bbox_3 lcc_bbox3 = CGAL::Polygon_mesh_processing::bbox(lcc);
-    // const CGAL::Bbox_3 lcc_bbox3 = bbox_3(lcc.one_dart_per_cell<0,3>().begin(), lcc.one_dart_per_cell<0,3>().end());
-    // REQUIRE( polyhedron_bbox3 == lcc_bbox3);
+//    std::ofstream medit_file("out.mesh");
+//    Writer w;
+//    w.output_to_medit(medit_file,lcc);
 
 }
 TEST_CASE("InitialMesh_boundary_connector cube in sphere"){

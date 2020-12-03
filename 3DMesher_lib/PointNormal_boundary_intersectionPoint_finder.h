@@ -11,6 +11,7 @@
 #ifndef INC_3DMESHER_POINTNORMAL_BOUNDARY_INTERSECTIONPOINT_FINDER_H
 #define INC_3DMESHER_POINTNORMAL_BOUNDARY_INTERSECTIONPOINT_FINDER_H
 
+#include <MyLCC.h>
 #include <CGAL/Linear_cell_complex_for_combinatorial_map.h>
 #include <CGAL/Linear_cell_complex_constructors.h>
 #include <CGAL/Linear_cell_complex_operations.h>
@@ -25,14 +26,14 @@
 #include <boost/optional.hpp>
 
 
-typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
-typedef LCC_3::Dart_handle Dart_handle;
-typedef LCC_3::Dart_const_handle Dart_const_handle;
-typedef LCC_3::Point Point;
-typedef LCC_3::Traits Traits;
-typedef LCC_3::FT FT;
-typedef LCC_3::Vector Vector;
+//typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+//typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
+//typedef LCC_3::Dart_handle Dart_handle;
+//typedef LCC_3::Dart_const_handle Dart_const_handle;
+//typedef LCC_3::Point Point;
+//typedef LCC_3::Traits Traits;
+//typedef LCC_3::FT FT;
+//typedef LCC_3::Vector Vector;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 typedef CGAL::AABB_face_graph_triangle_primitive<Polyhedron> Primitive;
 typedef CGAL::AABB_traits<K, Primitive> AABB_Traits;
@@ -89,6 +90,19 @@ public:
         if ( nb<2 ) return normal;
         return (typename LCC::Traits::Construct_scaled_vector()(normal, 1.0/nb));
     }
+
+    /**
+     * Find the intersection point according to the normal vector parameter.
+     *
+     * @param lcc The lcc to which the point belongs.
+     * @param vertex_handle Dart handle to the point of which it wants find the isomorphic point on the boundary of the polyhedron.
+     * @param polyhedron The polyhedron.
+     * @param normal_vector The normal vector.
+     * @return The intersection point isomorphic to the vertex_handle point when the normal is not null. The intersection point belongs to the boundary of the polyhedron.
+     */
+    boost::optional<Point> findIntersecionPoint(LCC_3 &lcc,const Dart_const_handle &vertex_handle,const Polyhedron &polyhedron,
+                                                                                                Vector &normal_vector);
+
 };
 
 

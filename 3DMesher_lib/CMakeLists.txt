@@ -21,6 +21,8 @@ set(HEADER_FILES
         Block_refiner.h
         Bad_hex_finder.h
         Intersecting_polyhedron_finder.h
+        Hexahedron_fitter.h
+        MyLCC.h
         )
 
 set(SOURCE_FILES
@@ -42,6 +44,7 @@ set(SOURCE_FILES
         Block_refiner.cpp
         Bad_hex_finder.cpp
         Intersecting_polyhedron_finder.cpp
+        Hexahedron_fitter.cpp
         )
 
 # You get to pick a type of library, STATIC, SHARED, or MODULE. If you leave this choice off, the value of BUILD_SHARED_LIBS will be used to pick between STATIC and SHARED.

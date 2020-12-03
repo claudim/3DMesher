@@ -8,18 +8,19 @@
 #include <CGAL/AABB_traits.h>
 #include <CGAL/AABB_face_graph_triangle_primitive.h>
 #include <CGAL/Side_of_triangle_mesh.h>
+#include <MyLCC.h>
 
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 typedef CGAL::Side_of_triangle_mesh<Polyhedron, K> Point_inside;
-typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
-typedef LCC_3::Point Point;
-typedef LCC_3::Dart_handle Dart_handle;
+//typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
+//typedef LCC_3::Point Point;
+//typedef LCC_3::Dart_handle Dart_handle;
 typedef CGAL::AABB_face_graph_triangle_primitive<Polyhedron> Primitive;
 typedef CGAL::AABB_traits<K, Primitive> AABB_Traits;
 typedef CGAL::AABB_tree<AABB_Traits> Tree;
-typedef LCC_3::FT FT;
+//typedef LCC_3::FT FT;
 
 namespace CGAL {
     class Vertex_location_finder {
@@ -39,7 +40,7 @@ namespace CGAL {
         //template<typename Point>
         bool is_point_inside_polyhedron(const Point &pointToBeCheck);
 
-        bool is_point_onBoundary_polyhedron(const Point &pointToBeCheck);
+        bool is_point_onBoundary_polyhedron(const Point &pointToBeCheck) const;
 
         bool is_point_external_polyhedron(const Point &pointToBeCheck);
 

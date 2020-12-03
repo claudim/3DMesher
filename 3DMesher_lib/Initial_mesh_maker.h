@@ -11,6 +11,7 @@
 #ifndef INC_3DMESHER_INITIAL_MESH_MAKER_H
 #define INC_3DMESHER_INITIAL_MESH_MAKER_H
 
+#include "MyLCC.h"
 #include <CGAL/Polyhedral_mesh_domain_with_features_3.h>
 #include <CGAL/Linear_cell_complex_for_combinatorial_map.h>
 #include <CGAL/Linear_cell_complex_constructors.h>
@@ -19,8 +20,8 @@
 #include <CGAL/Side_of_triangle_mesh.h>
 #include "External_block_remover.h"
 
-typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
+//typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+//typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
 /**

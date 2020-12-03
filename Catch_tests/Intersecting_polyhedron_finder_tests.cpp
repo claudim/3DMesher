@@ -1,9 +1,9 @@
-#include <Point_sorter.h>
 #include "../Include/catch.hpp"
 #include "test_config.h"
 #include "OFF_Reader.h"
 #include "Intersecting_polyhedron_finder.h"
 #include "Block_maker.h"
+#include <Point_sorter.h>
 
 TEST_CASE("must_not_detect_intersection", "[Intersecting_polyhedron_finder_tests][do_polyhedra_intersect]"){
     std::string fileName = data_path + "/cubeTest.off";
@@ -144,13 +144,35 @@ TEST_CASE("Intersection between the polyhedron facets")
     LCC_3 lcc;
     Block_maker blockMaker;
     Intersecting_polyhedron_finder intersectingPolyhedronFinder;
+    std::vector<Dart_handle> facets;
 
     SECTION("No intersection")
     {
         FT lg = 2;
         const Dart_handle cube = blockMaker.make_cube(lcc, Point(2, 2, 2), lg);
-        bool facets_intersection = intersectingPolyhedronFinder.do_polyhedron_facets_intersect(lcc, cube);
+        bool facets_intersection = intersectingPolyhedronFinder.do_polyhedron_facets_intersect(lcc, cube, facets);
         REQUIRE(facets_intersection == false);
+        bool facets_intersection2 = intersectingPolyhedronFinder.do_polyhedron_facets_intersect(lcc, cube);
+        REQUIRE(facets_intersection2 == false);
+    }
+
+    SECTION("No intersection for a trapezoid")
+    {
+        FT lg = 2;
+        std::vector<Point> block_points;
+        block_points.emplace_back(Point(0,2,2));
+        block_points.emplace_back(Point(6,2,2));
+        block_points.emplace_back(Point(6,4,2));
+        block_points.emplace_back(Point(0,4,2));
+        block_points.emplace_back(Point(2,4,4));
+        block_points.emplace_back(Point(2,2,4));
+        block_points.emplace_back(Point(4,2,4));
+        block_points.emplace_back(Point(4,4,4));
+        const Dart_handle intersecting_block = blockMaker.make_block(lcc, block_points);
+        bool facets_intersection = intersectingPolyhedronFinder.do_polyhedron_facets_intersect(lcc,intersecting_block, facets);
+        REQUIRE(facets_intersection == false);
+        bool facets_intersection2 = intersectingPolyhedronFinder.do_polyhedron_facets_intersect(lcc, intersecting_block);
+        REQUIRE(facets_intersection2 == false);
     }
 
     SECTION("Intersection")
@@ -165,7 +187,9 @@ TEST_CASE("Intersection between the polyhedron facets")
         block_points.emplace_back(Point(1,3,5));
         block_points.emplace_back(Point(4,4,4));
         const Dart_handle intersecting_block = blockMaker.make_block(lcc, block_points);
-        bool facets_intersection = intersectingPolyhedronFinder.do_polyhedron_facets_intersect(lcc,intersecting_block);
+        bool facets_intersection2 = intersectingPolyhedronFinder.do_polyhedron_facets_intersect(lcc, intersecting_block);
+        REQUIRE(facets_intersection2 == true);
+        bool facets_intersection = intersectingPolyhedronFinder.do_polyhedron_facets_intersect(lcc,intersecting_block, facets);
         REQUIRE(facets_intersection == true);
     }
 

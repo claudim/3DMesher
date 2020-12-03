@@ -8,7 +8,15 @@ TEST_CASE("cube_must_have_8_vertices","[make_cube][Block_maker_test]"){
     Point basePoint = Point(0,0,0);
     Block_maker blockMaker = Block_maker();
     FT lg = 1;
-    const Dart_handle &block = blockMaker.make_cube(lcc, basePoint, lg);
+    Dart_handle block = blockMaker.make_cube(lcc, basePoint, lg);
+    boost::optional<Point> intersectionPoint = lcc.info<0>(block);
+    REQUIRE( intersectionPoint.is_initialized() == false);
+    REQUIRE(intersectionPoint == boost::none);
+    lcc.info<0>(block) = Point(10,10,10);
+    intersectionPoint = lcc.info<0>(block);
+    REQUIRE( intersectionPoint.is_initialized() == true);
+    REQUIRE( intersectionPoint.get() ==  Point(10,10,10));
+
     int number_of_vertices = 0;
     // per tutti i vertici
     for (LCC_3::One_dart_per_cell_const_range<0, 3>::const_iterator vertex_iterator = lcc.one_dart_per_cell<0, 3>().begin(), iterEnd = lcc.one_dart_per_cell<0, 3>().end();
@@ -16,6 +24,8 @@ TEST_CASE("cube_must_have_8_vertices","[make_cube][Block_maker_test]"){
         number_of_vertices++;
     }
     REQUIRE(number_of_vertices==8);
+    REQUIRE(lcc.info<0>(block) == Point(10,10,10));
+    REQUIRE(lcc.point(block) == basePoint);
 }
 
 TEST_CASE("cube_must_have_6_facets","[make_cube][Block_maker_test]"){
