@@ -103,6 +103,8 @@ public:
     boost::optional<Point> findIntersecionPoint(LCC_3 &lcc,const Dart_const_handle &vertex_handle,const Polyhedron &polyhedron,
                                                                                                 Vector &normal_vector);
 
+    boost::optional<Point> findIntersecionPoint(const Point & point,const Polyhedron &polyhedron,Vector &normal_vector);
+
 };
 
 

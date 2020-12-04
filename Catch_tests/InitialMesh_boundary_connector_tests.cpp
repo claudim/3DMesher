@@ -11,6 +11,64 @@
 
 typedef  K::Intersect_3 Intersect_3;
 typedef  K::Ray_3 Ray;
+
+TEST_CASE("Must not replace points in order to avoid normal vector intersection when there are not intersection") {
+
+
+    std::string fileName = data_path + "/cubeTest.off";
+    OFF_Reader reader = OFF_Reader();
+    Polyhedron polyhedron = reader.read(fileName);
+
+    InitialMesh_boundary_connector initialMeshBoundaryConnector;
+    std::vector<Point> hexahedron;
+    hexahedron.emplace_back(Point(2,2,2));
+    hexahedron.emplace_back(Point(0,0,0));
+    hexahedron.emplace_back(Point(4,2,2));
+    hexahedron.emplace_back(Point(6,0,0));
+    hexahedron.emplace_back(Point(2,2,4));
+    hexahedron.emplace_back(Point(0,0,6));
+    hexahedron.emplace_back(Point(4,4,2));
+    hexahedron.emplace_back(Point(6,0,6));
+    initialMeshBoundaryConnector.replace(hexahedron, polyhedron, 2);
+    REQUIRE(hexahedron[0] == Point(2,2,2));
+    REQUIRE(hexahedron[1] == Point(0,0,0));
+    REQUIRE(hexahedron[2] == Point(4,2,2));
+    REQUIRE(hexahedron[3] == Point(6,0,0));
+    REQUIRE(hexahedron[4] == Point(2,2,4));
+    REQUIRE(hexahedron[5] == Point(0,0,6));
+    REQUIRE(hexahedron[6] == Point(4,4,2));
+    REQUIRE(hexahedron[7] == Point(6,0,6));
+
+}
+
+TEST_CASE("Must replace points in order to avoid normal vector intersection") {
+    std::string fileName = data_path + "/cubeTest.off";
+    OFF_Reader reader = OFF_Reader();
+    Polyhedron polyhedron = reader.read(fileName);
+
+    InitialMesh_boundary_connector initialMeshBoundaryConnector;
+    std::vector<Point> hexahedron;
+    hexahedron.emplace_back(Point(4,2,2));
+    hexahedron.emplace_back(Point(6,2,4));
+    hexahedron.emplace_back(Point(4,4,2));
+    hexahedron.emplace_back(Point(6,4,4));
+    hexahedron.emplace_back(Point(4,2,4));
+    hexahedron.emplace_back(Point(6,2,4));
+    hexahedron.emplace_back(Point(4,4,4));
+    hexahedron.emplace_back(Point(6,4,4));
+    initialMeshBoundaryConnector.replace(hexahedron, polyhedron, 2);
+    REQUIRE(hexahedron[0] == Point(4,2,2));
+    REQUIRE(hexahedron[1] == Point(6,2,4));
+    REQUIRE(hexahedron[2] == Point(4,4,2));
+    REQUIRE(hexahedron[3] == Point(6,4,4));
+    REQUIRE(hexahedron[4] == Point(4,2,4));
+    REQUIRE(hexahedron[5] != Point(6,2,4));
+    REQUIRE(hexahedron[5].z() > 4);
+    REQUIRE(hexahedron[6] == Point(4,4,4));
+    REQUIRE(hexahedron[7] != Point(6,4,4));
+    REQUIRE(hexahedron[7].z() > 4);
+}
+
 TEST_CASE("InitialMesh_boundary_connector cube in cube"){
 
     Point internalBlockBasePoint = Point(2, 2, 2);

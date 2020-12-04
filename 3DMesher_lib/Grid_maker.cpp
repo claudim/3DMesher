@@ -2,6 +2,8 @@
 #include "Block_maker.h"
 
 Grid_maker::Grid_maker(){
+
+    resolution = 4;
     grid_box = CGAL::Bbox_3();
 }
 

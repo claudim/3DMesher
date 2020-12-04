@@ -1,5 +1,6 @@
 #include "InitialMesh_boundary_connector.h"
 #include "Hexahedron_fitter.h"
+#include "Grid_maker.h"
 
 
 //template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
@@ -82,13 +83,13 @@ void InitialMesh_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyh
     for (std::vector<Point> hexahedron : hexahedraToCreate)
     {
         hexahedra_built.emplace_back(lcc.make_hexahedron(hexahedron[0],
-               hexahedron[1],
-               hexahedron[2],
-               hexahedron[3],
-               hexahedron[4],
-               hexahedron[5],
-               hexahedron[6],
-               hexahedron[7]));
+                                                         hexahedron[1],
+                                                         hexahedron[2],
+                                                         hexahedron[3],
+                                                         hexahedron[4],
+                                                         hexahedron[5],
+                                                         hexahedron[6],
+                                                         hexahedron[7]));
     }
 
 // controllare che non si intersechino
@@ -138,4 +139,64 @@ bool InitialMesh_boundary_connector::is_the_isomorphic_point_computed(LCC_3 &lcc
         return true;
     }
     return false;
+}
+
+void InitialMesh_boundary_connector::replace(std::vector<Point> &hexahedronVertexPoints, const Polyhedron& polyhedron, const double distance) {
+
+    std::vector<CGAL::Segment_3<K> > segments;
+    segments.emplace_back(CGAL::Segment_3<K>(hexahedronVertexPoints[1], hexahedronVertexPoints[0]));
+    segments.emplace_back(CGAL::Segment_3<K>(hexahedronVertexPoints[3], hexahedronVertexPoints[2]));
+    segments.emplace_back(CGAL::Segment_3<K>(hexahedronVertexPoints[5], hexahedronVertexPoints[4]));
+    segments.emplace_back(CGAL::Segment_3<K>(hexahedronVertexPoints[7], hexahedronVertexPoints[6]));
+
+    for(std::vector<CGAL::Segment_3<K> >::iterator it = segments.begin(), it2, it_end = segments.end();
+        it != it_end; ++it){
+        it2 = it; it2++;
+        while(it2 != it_end){
+            double squaredDistance = CGAL::squared_distance(*it, *it2);
+
+            if(squaredDistance < (std::pow(distance,2)))
+            //if(squaredDistance < (std::pow(Grid_maker().getGridDimension(polyhedron)/10,2)))
+            {
+                //move the end segment point:
+                //1. change direction
+                Vector v1 = (*it).to_vector();
+                Vector v2 =(*it2).to_vector();
+                Vector v = CGAL::NULL_VECTOR;
+                Point p;
+                if((v1.direction().dx()== 0 && v1.direction().dy() == 0) || (v1.direction().dx()==0 && v1.direction().dz() ==0) ||
+                        (v1.direction().dz()== 0 && v1.direction().dy() == 0))
+                {
+                    v = LCC::Traits::Construct_sum_of_vectors()(v1, v2);
+                    p = (*it).end();
+                }
+                if((v2.direction().dx()== 0 && v2.direction().dy() == 0) || (v2.direction().dx()==0 && v2.direction().dz() ==0) ||
+                   (v2.direction().dz()== 0 && v2.direction().dy() == 0)){
+
+                    v = LCC::Traits::Construct_sum_of_vectors()(v2, v1);
+                    p = (*it2).end();
+                }
+                //2. compute the new intersection point
+                if(v != CGAL::NULL_VECTOR) {
+                    PointNormal_boundary_intersectionPoint_finder intersectionPointFinder;
+                    boost::optional<Point> boostIntersectionPoint = intersectionPointFinder.findIntersecionPoint(p,polyhedron,v);
+                    //3. update the vertex point
+                    if(boostIntersectionPoint.is_initialized())
+                    {
+                         Point p1 = boostIntersectionPoint.get();
+                         std::cout<<p1<<std::endl;
+                         for(int i=0; i < hexahedronVertexPoints.size(); i++ )
+                         {
+                             if(hexahedronVertexPoints[i] == p)
+                             {
+                                 hexahedronVertexPoints[i+1] = p1;
+                             }
+                         }
+                    }
+                }
+            }
+            ++it2;
+        }
+    }
+
 }

@@ -48,8 +48,7 @@ int main(int argc, char* argv[]) {
 
         //detect the initial mesh
         Initial_mesh_maker<External_and_onBoundary_remover> initialMeshMaker;
-        initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
-        //initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/2);
+        initialMeshMaker.removeBlocks(hex_mesh, polyhedron, Grid_maker::getGridDimension()/2);
         //initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
         initialMeshMaker.refine(hex_mesh);
 
