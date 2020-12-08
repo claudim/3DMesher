@@ -10,6 +10,7 @@
 #include <boost/optional.hpp>
 #include "Intersecting_polyhedron_finder.h"
 #include "Vertex_location_finder.h"
+#include "Grid_maker.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
@@ -28,6 +29,9 @@ public:
 
 
     void replace(std::vector<Point> &hexahedronVertexPoints, const Polyhedron &polyhedron, const double distance);
+
+    //template<typename allocator, typename allocator, typename allocator, typename allocator>
+    void replace(LCC_3 &lcc, Dart_handle facet, const Polyhedron &polyhedron, const double distance);
 };
 
 #endif //INC_3DMESHER_INITIALMESH_BOUNDARY_CONNECTOR_H

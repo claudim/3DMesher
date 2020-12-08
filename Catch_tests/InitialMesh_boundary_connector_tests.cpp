@@ -67,6 +67,46 @@ TEST_CASE("Must replace points in order to avoid normal vector intersection") {
     REQUIRE(hexahedron[6] == Point(4,4,4));
     REQUIRE(hexahedron[7] != Point(6,4,4));
     REQUIRE(hexahedron[7].z() > 4);
+
+    LCC_3 lcc;
+    Block_maker blockMaker;
+    std::vector<Point> blockPoints;
+    FT lg = 2;
+    Dart_handle cube = blockMaker.make_cube(lcc, Point(2, 2, 2), lg);
+    for(LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator it = lcc.one_dart_per_incident_cell<0,3, 3>(
+            cube).begin(),
+                it_end = lcc.one_dart_per_incident_cell<0, 3, 3>(cube).end(); it != it_end; ++it){
+        if(lcc.point(it) == Point(4,2,2) || lcc.point(it) == Point(4,2,4))
+        {
+            lcc.info<0>(it) = Point(6,2,4);
+        }
+        if(lcc.point(it) == Point(4,4,2) || lcc.point(it) == Point(4,4,4))
+        {
+            lcc.info<0>(it) = Point(6,4,4);
+        }
+    }
+
+    blockPoints.emplace_back(Point(4,2,2));
+    blockPoints.emplace_back(Point(4,2,4));
+    blockPoints.emplace_back(Point(4,4,4));
+    blockPoints.emplace_back(Point(4,4,2));
+    blockPoints.emplace_back(Point(6,4,4));
+    blockPoints.emplace_back(Point(6,4,5));
+    blockPoints.emplace_back(Point(6,2,4));
+    blockPoints.emplace_back(Point(6,2,5));
+    Dart_handle facet = blockMaker.make_block(lcc, blockPoints);
+    initialMeshBoundaryConnector.replace(lcc, facet,  polyhedron, 2);
+
+std::vector<Point> points;
+    for(Point p: blockPoints) {
+        for (LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator it = lcc.one_dart_per_incident_cell<0, 3, 3>(cube).begin(),
+                     it_end = lcc.one_dart_per_incident_cell<0, 3, 3>(cube).end(); it != it_end; ++it) {
+            if (p == lcc.point(it) || p== lcc.info<0>(it)) {
+                points.emplace_back(p);
+            }
+        }
+    }
+    REQUIRE(points.size() == 8);
 }
 
 TEST_CASE("InitialMesh_boundary_connector cube in cube"){

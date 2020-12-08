@@ -65,22 +65,13 @@ public:
         for(Dart_handle incident_facet: incidentFacets)
         {
             Vector normalOfCell2 = CGAL::compute_normal_of_cell_2(lcc, incident_facet);
-            if(!(std::find(facet_normal_directions.begin(), facet_normal_directions.end(), normalOfCell2.direction()) != facet_normal_directions.end()))
+            if(std::find(facet_normal_directions.begin(), facet_normal_directions.end(), normalOfCell2.direction()) == facet_normal_directions.end())
             {
                 facet_normal_directions.emplace_back(normalOfCell2.direction());
                 normal = typename LCC::Traits::Construct_sum_of_vectors()
                         (normal, normalOfCell2);
                 ++nb;
             }
-
-//            if( std::count(facet_normal_directions.begin(), facet_normal_directions.end(), normalOfCell2.direction()) < 2)
-//            {
-//                facet_normal_directions.emplace_back(normalOfCell2.direction());
-//                normal = typename LCC::Traits::Construct_sum_of_vectors()
-//                        (normal, normalOfCell2);
-//                ++nb;
-//            }
-
         }
         if ( nb<2 ) return normal;
         return (typename LCC::Traits::Construct_scaled_vector()(normal, 1.0/nb));

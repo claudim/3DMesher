@@ -48,25 +48,15 @@ int main(int argc, char* argv[]) {
 
         //detect the initial mesh
         Initial_mesh_maker<External_and_onBoundary_remover> initialMeshMaker;
-        initialMeshMaker.removeBlocks(hex_mesh, polyhedron, Grid_maker::getGridDimension()/2);
+        initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/2);
         //initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
         initialMeshMaker.refine(hex_mesh);
-
-
-//        External_block_remover externalBlockRemover = External_block_remover();
-//        externalBlockRemover.removeBlocks(hex_mesh, polyhedron);
-//        std::cout<<"rimossi i blocchi esterni"<<std::endl;
-//
-//        OnBoundary_block_remover onBoundaryBlockRemover = OnBoundary_block_remover();
-//       // onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron);
-//        onBoundaryBlockRemover.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/4);
-//        std::cout<<"rimossi i blocchi sul boundary"<<std::endl;
 
         CGAL::draw(hex_mesh);
 //        //connect the initial mesh to the polyhedron boundary
         InitialMesh_boundary_connector initialMeshBoundaryConnector = InitialMesh_boundary_connector();
         initialMeshBoundaryConnector.connect(hex_mesh, polyhedron);
-//        std::cout<<"valido: " << hex_mesh.is_valid()<<std::endl;
+        std::cout<<"valido: " << hex_mesh.is_valid()<<std::endl;
 //
 //        Block_refiner blockRefiner;
 //        blockRefiner.refineBlocks(hex_mesh, featuresPoints ,gridMaker.getGridDimension()/2);
