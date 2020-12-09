@@ -187,7 +187,8 @@ void InitialMesh_boundary_connector::replace(std::vector<Point> &hexahedronVerte
         it2 = it; it2++;
         while(it2 != it_end){
             double squaredDistance = CGAL::squared_distance(*it, *it2);
-
+            std::cout<<"segmento1  "<<(*it).source() << " e " << (*it).end() <<std::endl;
+            std::cout<<"segmento2  "<<(*it2).source() << " e " << (*it2).end() <<std::endl;
             if(squaredDistance < (std::pow(distance,2)))
                 //if(squaredDistance < (std::pow(Grid_maker().getGridDimension(polyhedron)/10,2)))
             {
@@ -227,7 +228,7 @@ void InitialMesh_boundary_connector::replace(std::vector<Point> &hexahedronVerte
                     }
                 }
             }
-            ++it2;
+            it2++;
         }
     }
 

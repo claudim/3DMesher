@@ -85,24 +85,42 @@ TEST_CASE("Must replace points in order to avoid normal vector intersection") {
             lcc.info<0>(it) = Point(6,4,4);
         }
     }
+    Dart_handle facet;
+    for(LCC_3::One_dart_per_incident_cell_range<2, 3, 3>::iterator it = lcc.one_dart_per_incident_cell<2,3, 3>(cube).begin(),
+            it_end = lcc.one_dart_per_incident_cell<2, 3, 3>(cube).end(); it != it_end; ++it){
+        int number_of_vertices = 0;
+        for(LCC_3::One_dart_per_incident_cell_range<0, 2, 3>::iterator v_it = lcc.one_dart_per_incident_cell<0,2, 3>(it).begin(),
+                    v_it_end = lcc.one_dart_per_incident_cell<0, 2, 3>(it).end(); v_it != v_it_end; ++v_it){
+            if(lcc.point(v_it) == Point(4,4,4) || lcc.point(v_it) == Point(4,2,4) || lcc.point(v_it) == Point(4,2,2) || lcc.point(v_it) == Point(4,4,2))
+            {
+                number_of_vertices++;
+            }
+        }
+        if( number_of_vertices == 4)
+        {
+            facet = it;
+        }
+    }
+    initialMeshBoundaryConnector.replace(lcc, facet,  polyhedron, 2);
 
     blockPoints.emplace_back(Point(4,2,2));
     blockPoints.emplace_back(Point(4,2,4));
     blockPoints.emplace_back(Point(4,4,4));
     blockPoints.emplace_back(Point(4,4,2));
     blockPoints.emplace_back(Point(6,4,4));
-    blockPoints.emplace_back(Point(6,4,5));
     blockPoints.emplace_back(Point(6,2,4));
     blockPoints.emplace_back(Point(6,2,5));
-    Dart_handle facet = blockMaker.make_block(lcc, blockPoints);
-    initialMeshBoundaryConnector.replace(lcc, facet,  polyhedron, 2);
+    blockPoints.emplace_back(Point(6,4,5));
 
 std::vector<Point> points;
     for(Point p: blockPoints) {
-        for (LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator it = lcc.one_dart_per_incident_cell<0, 3, 3>(cube).begin(),
-                     it_end = lcc.one_dart_per_incident_cell<0, 3, 3>(cube).end(); it != it_end; ++it) {
-            if (p == lcc.point(it) || p== lcc.info<0>(it)) {
-                points.emplace_back(p);
+        for (LCC_3::One_dart_per_incident_cell_range<0, 2, 3>::iterator it = lcc.one_dart_per_incident_cell<0, 2, 3>(facet).begin(),
+                     it_end = lcc.one_dart_per_incident_cell<0, 2, 3>(facet).end(); it != it_end; ++it) {
+            Point p_1 = lcc.point(it);
+            Point p_2 = lcc.info<0>(it).get();
+            if(p == p_1) {
+                points.emplace_back(p_1);
+                points.emplace_back(p_2);
             }
         }
     }
