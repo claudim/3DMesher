@@ -23,8 +23,8 @@ private:
     double x_dimension;
     double y_dimension;
     double z_dimension;
-    //int resolution = 8;
-    int resolution = 24;
+    int resolution = 8;
+    //int resolution = 24;
 
     double grid_dimension;
 
@@ -54,7 +54,7 @@ public:
     }
 
     double getGridDimension(const Polyhedron &polyhedron){
-        if(grid_dimension == 0) {
+//        if(grid_dimension == 0) {
             const CGAL::Bbox_3 &polyhedron_bbox3 = CGAL::Polygon_mesh_processing::bbox(polyhedron);
 
             double delta_x = polyhedron_bbox3.xmax() - polyhedron_bbox3.xmin();
@@ -62,9 +62,11 @@ public:
             double delta_z = polyhedron_bbox3.zmax() - polyhedron_bbox3.zmin();
 
             grid_dimension =  std::min(std::min(delta_y, delta_z), delta_x) / resolution;
-        }
+//       }
         return grid_dimension;
     }
+
+    void setGridDimension(double gridDimension);
 
     double getGridDimension(){
         return grid_dimension;

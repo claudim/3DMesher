@@ -20,6 +20,7 @@ typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 class InitialMesh_boundary_connector {
 
 public:
+    void connect2(LCC_3 &lcc, const Polyhedron &polyhedron);
 //    template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
     void connect(LCC_3 &lcc, const Polyhedron &polyhedron);
 //
@@ -32,6 +33,12 @@ public:
 
     //template<typename allocator, typename allocator, typename allocator, typename allocator>
     void replace(LCC_3 &lcc, Dart_handle facet, const Polyhedron &polyhedron, const double distance);
+
+    void replace2(LCC_3& lcc, Dart_handle facet, const Polyhedron& polyhedron, const double distance);
+
+    void connect3(LCC_3 &lcc, const Polyhedron &polyhedron);
+    bool replace_L_facets(LCC_3& lcc, Dart_handle facet, const Polyhedron& polyhedron, const double distance);
+    void replace_U_facets(LCC_3& lcc, Dart_handle facet, const Polyhedron& polyhedron, const double distance);
 };
 
 #endif //INC_3DMESHER_INITIALMESH_BOUNDARY_CONNECTOR_H

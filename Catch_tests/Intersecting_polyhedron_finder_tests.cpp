@@ -56,8 +56,6 @@ TEST_CASE("must_detect_intersection", "[Intersecting_polyhedron_finder_tests][do
     std::cout << lcc.is_sewable<1>(block1, block2) << std::endl;
     std::cout << lcc.is_sewable<0>(block1, block2) << std::endl;
 
-
-
 }
 
 TEST_CASE("must_detect_intersection2", "[Intersecting_polyhedron_finder_tests][do_polyhedra_intersect]"){

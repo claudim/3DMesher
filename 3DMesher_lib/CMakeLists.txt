@@ -23,6 +23,8 @@ set(HEADER_FILES
         Intersecting_polyhedron_finder.h
         Hexahedron_fitter.h
         MyLCC.h
+        L_facet_detector.h
+        Volume_Validator.h
         )
 
 set(SOURCE_FILES
@@ -45,6 +47,8 @@ set(SOURCE_FILES
         Bad_hex_finder.cpp
         Intersecting_polyhedron_finder.cpp
         Hexahedron_fitter.cpp
+        L_facet_detector.cpp
+        Volume_Validator.cpp
         )
 
 # You get to pick a type of library, STATIC, SHARED, or MODULE. If you leave this choice off, the value of BUILD_SHARED_LIBS will be used to pick between STATIC and SHARED.

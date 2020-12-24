@@ -11,6 +11,14 @@ bool CGAL::Vertex_location_finder::is_point_inside_polyhedron(const Point &point
     if (inside(pointToBeCheck) == CGAL::ON_BOUNDED_SIDE){
         isInternalPoint = true;
     }
+    if (this->point_internal_check_tolerance > 0 && inside(pointToBeCheck) != CGAL::ON_BOUNDED_SIDE ){
+        isInternalPoint= true;
+        FT squareDistance = AABB_tree.squared_distance(pointToBeCheck);
+        if(squareDistance > std::pow(this->point_internal_check_tolerance, 2))
+        {
+            isInternalPoint = false;
+        }
+    }
     return isInternalPoint;
 }
 
@@ -22,9 +30,10 @@ bool CGAL::Vertex_location_finder::is_point_onBoundary_polyhedron(const Point &p
     }
     if(inside(pointToBeCheck) == CGAL::ON_UNBOUNDED_SIDE) //if point is external but is outside of about a minimal distance
     {
+        int tolerance = 0.001;
         isOnBoundaryPoint = true;
         FT squareDistance = AABB_tree.squared_distance(pointToBeCheck);
-        if(squareDistance > 0)
+        if(squareDistance > std::pow(tolerance, 2))
         {
             isOnBoundaryPoint = false;
         }
@@ -57,7 +66,7 @@ void CGAL::Vertex_location_finder::findExternalVertices(const LCC_3 &lcc, int &n
             Point p = lcc.point(vertex_iterator);
             if(!is_point_inside_polyhedron(p) && !is_point_onBoundary_polyhedron(p)){
   //              FT squareDistance = AABB_tree.squared_distance(p);
- //               if(squareDistance > 0 && squareDistance >= tolerance) {
+ //               if(squareDistance > 0 && squareDistance >= point_internal_check_tolerance) {
                     number_of_external_vertices++;
   //              }
             }

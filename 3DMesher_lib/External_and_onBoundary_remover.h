@@ -14,8 +14,6 @@
 #include "External_block_remover.h"
 #include "OnBoundary_block_remover.h"
 
-//typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-//typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
 /**
@@ -48,12 +46,22 @@ public:
     void removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron, const double &distance);
 
     /**
-     * @brief Remove the block from the mesh.
+     * @brief Remove the single block from the mesh.
      *
      * @param lcc The mesh.
      * @param blockToRemove The block to remove from the mesh.
      */
     void removeBlock(LCC_3& lcc, Dart_handle& blockToRemove);
+
+    /**
+     * @brief Check if block is to remove
+     *
+     * @param lcc The mesh.
+     * @param block Hexahedral block to check.
+     * @param polyhedron The input which the mesh must represent.
+     * @return true if it is to remove, false otherwise.
+     */
+    bool is_block_to_be_removed(const LCC_3& lcc, const Dart_handle& block, const Polyhedron& polyhedron);
 };
 
 

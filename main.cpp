@@ -30,30 +30,39 @@ int main(int argc, char* argv[]) {
     try {
         //lettura lancia errore
 
-        typedef typename CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC;
-        std::string fileName = data_path + "/cubeTest.off";
-        OFF_Reader reader = OFF_Reader();
-        Polyhedron polyhedron = reader.read(fileName);
-        LCC lcc;
         Block_maker blockMaker;
-        Intersecting_polyhedron_finder intersectingPolyhedronFinder;
-        std::vector<Point> block_points;
-        block_points.emplace_back(Point(2,2,2));
-        block_points.emplace_back(Point(4,2,2));
-        block_points.emplace_back(Point(4,4,2));
-        block_points.emplace_back(Point(2,4,2));
-        block_points.emplace_back(Point(2,4,4));
-        block_points.emplace_back(Point(2,2,4));
-        block_points.emplace_back(Point(1,3,5));
-        block_points.emplace_back(Point(4,4,4));
+        LCC_3 hex_mesh;
+        FT lg = 1;
+        blockMaker.make_cube(hex_mesh, Point(1,1,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(2,1,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(3,1,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(4,1,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(5,1,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(1,2,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(2,2,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(3,2,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(4,2,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(5,2,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(1,3,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(2,3,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(3,3,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(4,3,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(5,3,1), lg);
+        blockMaker.make_cube(hex_mesh, Point(1,1,2), lg);
+        blockMaker.make_cube(hex_mesh, Point(2,1,2), lg);
+        blockMaker.make_cube(hex_mesh, Point(3,1,2), lg);
+        blockMaker.make_cube(hex_mesh, Point(4,1,2), lg);
+        blockMaker.make_cube(hex_mesh, Point(5,1,2), lg);
+        blockMaker.make_cube(hex_mesh, Point(1,2,2), lg);
+        blockMaker.make_cube(hex_mesh, Point(5,2,2), lg);
+        blockMaker.make_cube(hex_mesh, Point(1,3,2), lg);
+        blockMaker.make_cube(hex_mesh, Point(2,3,2), lg);
+        blockMaker.make_cube(hex_mesh, Point(3,3,2), lg);
+        blockMaker.make_cube(hex_mesh, Point(4,3,2), lg);
+        blockMaker.make_cube(hex_mesh, Point(5,3,2), lg);
+        hex_mesh.sew3_same_facets();
 
-        std::vector<Dart_handle> facets;
-        Dart_handle intersecting_block = blockMaker.make_block(lcc, block_points);
-        bool facets_intersection = intersectingPolyhedronFinder.do_polyhedron_facets_intersect(lcc,intersecting_block, facets);
-       std::cout<<facets_intersection <<std::endl;
-
-        Hexahedron_fitter hexahedronFitter;
-        hexahedronFitter.fix(lcc, intersecting_block, facets, polyhedron);
+        CGAL::draw(hex_mesh);
 
     }
 

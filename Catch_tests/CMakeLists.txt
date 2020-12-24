@@ -19,6 +19,7 @@ set(SOURCE_TESTS_FILES
         Intersecting_polyhedron_finder_tests.cpp
         Hexahedron_fitter_tests.cpp
         L_facet_detector_tests.cpp
+        Volume_validator_tests.cpp
         )
 
 set(HEADER_TESTS_FILES

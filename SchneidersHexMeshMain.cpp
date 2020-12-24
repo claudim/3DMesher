@@ -23,8 +23,14 @@ void bad_hex_finder(LCC_3 &lcc);
 
 int main(int argc, char* argv[]) {
     const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
-    std::string name = "cube100x100rotated";
+     std::string name = "bolt";
+    //std::string name = "bunny";
+    //std::string name = "ellipse";
     //std::string name = "cube100x100axisAligned";
+    //std::string name = "cube100x100rotated";
+    //std::string name = "sphere";
+    //std::string name = "rotatedTrapezoid";
+
     //std::string name = "sphere";
     //std::string fileName = data_path + "/" + name + ".off";
     std::string fileName = data_path + "/" + name + ".stl";
@@ -48,9 +54,11 @@ int main(int argc, char* argv[]) {
 
         //detect the initial mesh
         Initial_mesh_maker<External_and_onBoundary_remover> initialMeshMaker;
-        initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/2);
+        //initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()* 3/5);
+        initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()* 2/3);
+       // initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()/2);
         //initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
-        initialMeshMaker.refine(hex_mesh);
+//        initialMeshMaker.refine(hex_mesh);
 
         CGAL::draw(hex_mesh);
 //        //connect the initial mesh to the polyhedron boundary
@@ -65,7 +73,7 @@ int main(int argc, char* argv[]) {
 
         //output
         const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
-        std::string outputFileName = out_data_path + "/" + name + "Mesh.mesh";
+        std::string outputFileName = out_data_path + "/" + name + "_R8_Mesh.mesh";
         std::ofstream medit_file(outputFileName);
         Writer writer;
         writer.output_to_medit(medit_file,hex_mesh);

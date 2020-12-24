@@ -28,6 +28,7 @@ namespace CGAL {
         Polyhedron polyhedron;
         Point_inside inside;
         Tree AABB_tree;
+        int point_internal_check_tolerance = 0; // distance_tolerance between the point_to_check and the boundary surface
 
     public:
 
