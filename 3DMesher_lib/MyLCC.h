@@ -2,9 +2,12 @@
 #define INC_3DMESHER_MYLCC_H
 
 #include <CGAL/Linear_cell_complex_for_combinatorial_map.h>
+#include <CGAL/Simple_cartesian.h>
 #include <boost/optional.hpp>
 
+//typedef CGAL::Simple_cartesian<double> K;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+
 //typedef CGAL::Point_3<K> Isomorphic_point;
 typedef boost::optional<CGAL::Point_3<K> > Isomorphic_point;
 
@@ -19,7 +22,8 @@ struct Myitem
 };
 
 
-typedef CGAL::Linear_cell_complex_traits<3, CGAL::Exact_predicates_inexact_constructions_kernel> Traits;
+//typedef CGAL::Linear_cell_complex_traits<3, CGAL::Exact_predicates_inexact_constructions_kernel> Traits;
+typedef CGAL::Linear_cell_complex_traits<3, K> Traits;
 typedef CGAL::Linear_cell_complex_for_combinatorial_map<3,3,Traits,Myitem> LCC_3;
 typedef LCC_3::Dart_handle                               Dart_handle;
 typedef LCC_3::Dart_const_handle                         Dart_const_handle;

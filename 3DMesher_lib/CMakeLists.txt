@@ -13,6 +13,7 @@ set(HEADER_FILES
         Grid_boundary_connector.h
         OnBoundary_block_remover.h
         External_facet_finder.h
+        More_external_block_finder.h
         Point_normal_finder.h
         PointNormal_boundary_intersectionPoint_finder.h
         InitialMesh_boundary_connector.h
@@ -25,6 +26,7 @@ set(HEADER_FILES
         MyLCC.h
         L_facet_detector.h
         Volume_Validator.h
+        Degenerate_element_finder.h
         )
 
 set(SOURCE_FILES
@@ -39,6 +41,7 @@ set(SOURCE_FILES
         Grid_boundary_connector.cpp
         OnBoundary_block_remover.cpp
         External_facet_finder.cpp
+        More_external_block_finder.cpp
         PointNormal_boundary_intersectionPoint_finder.cpp
         InitialMesh_boundary_connector.cpp
         Writer.cpp
@@ -49,6 +52,7 @@ set(SOURCE_FILES
         Hexahedron_fitter.cpp
         L_facet_detector.cpp
         Volume_Validator.cpp
+        Degenerate_element_finder.cpp
         )
 
 # You get to pick a type of library, STATIC, SHARED, or MODULE. If you leave this choice off, the value of BUILD_SHARED_LIBS will be used to pick between STATIC and SHARED.

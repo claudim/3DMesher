@@ -9,6 +9,7 @@
 
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+//typedef CGAL::Simple_cartesian<double> K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
 class Block_refiner {

@@ -929,3 +929,171 @@ void InitialMesh_boundary_connector::replace_U_facets(LCC_3& lcc, Dart_handle fa
 }
 
 
+void InitialMesh_boundary_connector::connect4(LCC_3 &lcc, const Polyhedron &polyhedron) {
+
+    External_facet_finder externalFacetFinder;
+
+    const std::vector<Dart_handle> &externalFacets = externalFacetFinder.findFacets(lcc);
+
+    PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
+    std::vector< std::vector<Point> > hexahedraToCreate;
+    LCC_3 newHexahedraLcc;
+    for( Dart_handle facet : externalFacets){
+
+        std::vector< Point > hexahedronPoints;
+        Point rounded_point;
+        bool jumpToAnotherFacet = false;
+        LCC_3::Dart_of_orbit_range<1>::iterator vertexIt = lcc.darts_of_orbit<1>(facet).begin(),
+                vertexItEnd = lcc.darts_of_orbit<1>(facet).end();
+        while(!jumpToAnotherFacet && vertexIt != vertexItEnd) {
+            boost::optional<Point> boostIntersectionPoint = boost::none;
+            if(!is_the_isomorphic_point_computed(lcc,vertexIt))
+            {   //compute the isomorphic point
+                boostIntersectionPoint = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(lcc, vertexIt,polyhedron);
+                if (boostIntersectionPoint.is_initialized()) // if boostIntersectionPoint is null point
+                {
+                    Point intersectionPoint = boostIntersectionPoint.get();
+
+                    float rounded_down_x = 0;
+                    float rounded_down_y = 0;
+                    float rounded_down_z = 0;
+                    if (!(intersectionPoint.x() > -0.001 && intersectionPoint.x() < 0.001))
+                        rounded_down_x = intersectionPoint.x();
+
+                    if (!(intersectionPoint.y() > -0.001 && intersectionPoint.y() < 0.001))
+                        rounded_down_y = intersectionPoint.y();
+
+                    if (!(intersectionPoint.z() > -0.001 && intersectionPoint.z() < 0.001))
+                        rounded_down_z = intersectionPoint.z();
+
+                    rounded_point = Point(rounded_down_x, rounded_down_y, rounded_down_z);
+                    lcc.info<0>(vertexIt) = rounded_point;
+                }
+            }
+            else {
+                boostIntersectionPoint = lcc.info<0>(vertexIt);
+            }
+            if (boostIntersectionPoint.is_initialized()) // if boostIntersectionPoint is null point
+            {
+                vertexIt++;
+            } else {
+                jumpToAnotherFacet = true;
+            }
+        }
+        if(!jumpToAnotherFacet) {
+            //check for intersections
+            double distance = Grid_maker().getGridDimension(polyhedron)/10;
+            std::vector<CGAL::Segment_3<K> > segments;
+            for(LCC_3::Dart_of_orbit_range<1>::iterator vertexIt = lcc.darts_of_orbit<1>(facet).begin(),
+                        vertexItEnd = lcc.darts_of_orbit<1>(facet).end(); vertexIt != vertexItEnd; ++vertexIt)
+            {
+                Point isomorphic_point = lcc.info<0>(vertexIt).get();
+                Point initialMesh_point = lcc.point(vertexIt);
+                CGAL::Segment_3<K> segment = CGAL::Segment_3<K>(isomorphic_point, initialMesh_point);
+                segments.emplace_back(segment);
+            }
+                for(std::vector<CGAL::Segment_3<K> >::iterator it = segments.begin(), it2, it_end = segments.end();
+                    it != it_end; ++it) {
+                    it2 = it;
+                    it2++;
+                    while (it2 != it_end) {
+                        double squaredDistance = CGAL::squared_distance(*it, *it2);
+                        if (squaredDistance < (std::pow(distance, 2)) &&
+                            !CGAL::parallel(*it, *it2)) //little distance and they are not parallels
+                        {
+
+                            //move the end segment point:
+                            //1. change direction
+                            Vector v1 = (*it).to_vector();
+                            auto v1_x_direction = v1.direction().dx();
+                            auto v1_y_direction = v1.direction().dy();
+                            auto v1_z_direction = v1.direction().dz();
+                            if (v1_x_direction > -0.001 && v1_x_direction < 0.001)
+                                v1_x_direction = 0;
+
+                            if (v1_y_direction > -0.001 && v1_y_direction < 0.001)
+                                v1_y_direction = 0;
+
+                            if (v1_z_direction  > -0.001 && v1_z_direction  < 0.001)
+                                v1_z_direction = 0;
+
+                            Vector v2 =(*it2).to_vector();
+                            auto v2_x_direction = v2.direction().dx();
+                            auto v2_y_direction = v2.direction().dy();
+                            auto v2_z_direction = v2.direction().dz();
+                            if (v2_x_direction > -0.001 && v2_x_direction < 0.001)
+                                v2_x_direction = 0;
+
+                            if (v2_y_direction > -0.001 && v2_y_direction < 0.001)
+                                v2_y_direction = 0;
+
+                            if (v2_z_direction  > -0.001 && v2_z_direction  < 0.001)
+                                v2_z_direction = 0;
+
+                            Vector v = CGAL::NULL_VECTOR;
+                            Point p;
+                            PointNormal_boundary_intersectionPoint_finder intersectionPointFinder;
+                            boost::optional<Point> boostIntersectionPoint = boost::none;
+
+                            bool is_v1_45_degrees = false;
+                            bool is_v2_45_degrees = false;
+
+                            if((v1_x_direction == v1_y_direction) || (v1_x_direction == v1_z_direction) || (v1_z_direction == v1_y_direction))
+                            {
+                                is_v1_45_degrees = true;
+                            }
+                            if((v2_x_direction == v2_y_direction) || (v2_x_direction == v2_z_direction  ) || (v2_z_direction== v2_y_direction)){
+                                is_v2_45_degrees = true;
+
+                            }
+
+                            if(is_v1_45_degrees && is_v2_45_degrees){
+
+
+                            }
+
+                            //se v1 è a 45 gradi sommo v1 a v2
+                            if(is_v1_45_degrees && !is_v2_45_degrees){
+                                //std::cout<<"entro in v1 "<<std::endl;
+                                v = LCC::Traits::Construct_sum_of_vectors()(v1, v2);
+                                p = (*it).end();
+
+                            }
+
+                            //se v2 è a 45 gradi sommo v2 a v1
+                            if(!is_v1_45_degrees && is_v2_45_degrees){
+
+                                // std::cout<<"entro in v2 "<<std::endl;
+                                v = LCC::Traits::Construct_sum_of_vectors()(v2, v1);
+                                p = (*it2).end();
+
+                            }
+
+                            //2. compute the new intersection point
+                            if(v != CGAL::NULL_VECTOR) {
+                                boostIntersectionPoint = intersectionPointFinder.findIntersecionPoint(p,polyhedron,v);
+
+                                //3. update the vertex point
+                                if(boostIntersectionPoint.is_initialized())
+                                {
+                                    Point p1 = boostIntersectionPoint.get();
+                                    for(LCC_3::Dart_of_orbit_range<1>::iterator vertexIt = lcc.darts_of_orbit<1>(facet).begin(),
+                                                vertexItEnd = lcc.darts_of_orbit<1>(facet).end(); vertexIt != vertexItEnd; ++vertexIt)
+                                    {
+                                        if(lcc.point(vertexIt) == p)
+                                        {
+                                            lcc.info<0>(vertexIt) = p1;
+                                        }
+                                    }
+                                }
+                            }
+
+
+                        }
+                    }
+                }
+        }
+    }
+
+
+}

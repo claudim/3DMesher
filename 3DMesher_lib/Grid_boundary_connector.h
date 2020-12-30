@@ -10,6 +10,7 @@
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+//typedef CGAL::Simple_cartesian<double> K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 //typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
 //typedef LCC_3::Point Point;

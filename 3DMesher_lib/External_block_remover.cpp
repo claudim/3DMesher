@@ -27,7 +27,8 @@ bool External_block_remover::is_block_to_be_removed(const LCC_3& lcc, const Dart
                      it = lcc.one_dart_per_incident_cell<0,3>(block).begin(),
                      itend = lcc.one_dart_per_incident_cell<0, 3>(block).end(); it != itend; ++it) {
             //if (is_point_inside_polyhedron(lcc.point(it), inside)) {
-            if (vertexLocationFinder.is_point_inside_polyhedron(lcc.point(it)) ) {
+            if (vertexLocationFinder.is_point_inside_polyhedron(lcc.point(it))) {
+           // if (vertexLocationFinder.is_point_inside_polyhedron(lcc.point(it)) || vertexLocationFinder.is_point_onBoundary_polyhedron(lcc.point(it))) {
                 number_of_internal_points++;
             }
         }

@@ -13,6 +13,7 @@
 #include "Block_refiner.h"
 #include <verdict.h> //to include verdict library
 #include <CGAL/draw_linear_cell_complex.h>
+#include "Volume_Validator.h"
 //#include <CGAL/draw_polyhedron.h>
 #include "Writer.h"
 
@@ -69,6 +70,9 @@ int main(int argc, char* argv[]) {
 //        Block_refiner blockRefiner;
 //        blockRefiner.refineBlocks(hex_mesh, featuresPoints ,gridMaker.getGridDimension()/2);
 
+//delete element with Volume <= 0
+        Volume_Validator volumeValidator;
+        volumeValidator.delete_blocks_with_less_than_or_equal_to_zero(hex_mesh);
        // CGAL::draw(hex_mesh);
 
         //output

@@ -6,6 +6,7 @@ set(SOURCE_TESTS_FILES
         Vertex_location_finder_tests.cpp
         Grid_maker_tests.cpp
         External_block_remover_tests.cpp
+        More_external_block_finder_tests.cpp
         Grid_boundary_connector_tests.cpp
         OnBoundary_block_remover_tests.cpp
         External_facet_finder_tests.cpp
@@ -20,6 +21,7 @@ set(SOURCE_TESTS_FILES
         Hexahedron_fitter_tests.cpp
         L_facet_detector_tests.cpp
         Volume_validator_tests.cpp
+        Degenerate_element_finder_tests.cpp
         )
 
 set(HEADER_TESTS_FILES
