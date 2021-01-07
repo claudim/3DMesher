@@ -224,7 +224,7 @@ public:
     /**
      * \brief Find the degenerate elements in the mesh.
      * In this method degenerate elements means: pyramid, tetrhedron, wedge, quadrilateral, elements with facets whose 4 vertices are not coplanar,
-     * elements that have 3 collinear vertices. For how the UNIVAQ algorithm is built, it finds degenerate elements only for the more external mesh block.
+     * elements that have 3 collinear vertices. It finds degenerate elements among all mesh blocks.
      *
      * @param lcc The mesh.
      * @return Vector of degenerate elements present in the mesh.
@@ -235,8 +235,8 @@ public:
             // for every mesh block
             for (LCC_3::One_dart_per_cell_range<3, 3>::iterator cell_it = lcc.one_dart_per_cell<3>().begin(), cell_end_it = lcc.one_dart_per_cell<3>().end();
                  cell_it != cell_end_it; ++cell_it) {
-                if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it) ||
-                    this->has_3_collinear_vertices(lcc, cell_it)) {
+               //questo è quello gusto if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it) || this->has_3_collinear_vertices(lcc, cell_it)) {
+                if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it)) {
                     degenerate_elements.emplace_back(cell_it);
                 }
             }
@@ -255,6 +255,7 @@ public:
     std::vector<Dart_handle> find_degenerate_elements_among_the_more_external_mesh_block(LCC_3 &lcc) {
         std::vector<Dart_handle> degenerate_elements;
         if(!lcc.is_empty()) {
+            //TODO: replase "for every mesh block" with "for every more external blocks"
             // for every mesh block
             for (LCC_3::One_dart_per_cell_range<3, 3>::iterator cell_it = lcc.one_dart_per_cell<3>().begin(), cell_end_it = lcc.one_dart_per_cell<3>().end();
                  cell_it != cell_end_it; ++cell_it) {

@@ -38,5 +38,4 @@ void Features_detector::detect(Polyhedron &polyhedron, std::vector<Point> &featu
     std::sort(featuresPoints.begin(), featuresPoints.end());
     featuresPoints.erase(unique(featuresPoints.begin(), featuresPoints.end()), featuresPoints.end());
 
-
 }

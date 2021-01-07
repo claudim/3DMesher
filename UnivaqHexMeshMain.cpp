@@ -10,6 +10,7 @@
 #include <CGAL/draw_linear_cell_complex.h>
 #include <CGAL/draw_polyhedron.h>
 #include "Volume_Validator.h"
+#include "Degenerate_element_finder.h"
 #include "Writer.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
@@ -100,11 +101,10 @@ int main(int argc, char* argv[]) {
 //            number_of_element++;
 //        }
 //        std::cout<<"Number of element "<< number_of_element<<std::endl;
-
-//        //delete element with Volume <= 0
-//        Volume_Validator volumeValidator;
-//        volumeValidator.delete_blocks_with_less_than_or_equal_to_zero(hex_mesh);
-
+        
+        Degenerate_element_finder degenerateElementFinder;
+        std::vector<Dart_handle> degenerateElements = degenerateElementFinder.find_degenerate_elements(hex_mesh);
+        std::cout<<"Degenerate elements are " << degenerateElements.size() <<std::endl;
 
         //output
         const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/UnivaqHexMeshOutput/";

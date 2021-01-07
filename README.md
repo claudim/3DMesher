@@ -13,6 +13,7 @@ A C++ implementation of full automatic tool for 3D Meshing.
 3. CMake 3.16 or newer
 4. CGAL library 5.1 (https://www.cgal.org/releases.html)
 5. Verdict library(https://gitlab.kitware.com/verdict/verdict/-/tree/master)
+6. VTK library (https://gitlab.kitware.com/vtk/vtk.git)
 
 
 ### Installing

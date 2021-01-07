@@ -1,7 +1,3 @@
-//
-// Created by Claudia Di Marco on 01/11/2020.
-//
-
 #ifndef INC_3DMESHER_WRITER_H
 #define INC_3DMESHER_WRITER_H
 
@@ -11,6 +7,14 @@
 #include <CGAL/Linear_cell_complex_constructors.h>
 #include <CGAL/Linear_cell_complex_operations.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+
+//#include <vtkUnstructuredGrid.h>
+//#include <vtkUnstructuredGridWriter.h>
+//#include <vtkSmartPointer.h>
+//#include <vtkPoints.h>
+//#include <vtkCellArray.h>
+//#include <vtkVersion.h>
+//#include <vtkType.h>
 
 //typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 //typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
@@ -25,6 +29,14 @@ class Writer {
 
 public:
     void output_to_medit(std::ostream& os, const LCC_3& lcc);
+
+    /**
+     * \brief Write the hex_mesh in a .vtk file.
+     *
+     * @param hex_mesh The hexahedral mesh to write in the vtk file format.
+     */
+    //void output_to_vtk_ascii_unstructured(std::ostream& os, const LCC_3& hex_mesh);
+
     int get();
 
     LCC_3::size_type number_of_facets_in_lcc(const LCC_3 &lcc);

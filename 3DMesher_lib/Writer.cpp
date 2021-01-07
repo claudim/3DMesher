@@ -1,7 +1,3 @@
-//
-// Created by Claudia Di Marco on 01/11/2020.
-//
-
 #include "Writer.h"
 
 void Writer::output_to_medit(std::ostream& os, const LCC_3& lcc){
@@ -93,6 +89,66 @@ void Writer::output_to_medit(std::ostream& os, const LCC_3& lcc){
     os << "End\n";
 }
 
+//void Writer::output_to_vtk_ascii_unstructured(std::ostream& os, const LCC_3& hex_mesh){
+//    typedef typename LCC_3::Vertex_attribute_const_handle Vertex_handle;
+//
+//    vtkPoints* const vtk_points = vtkPoints::New();
+//    vtkCellArray* const vtk_cells = vtkCellArray::New();
+//
+//    vtk_points->Allocate(hex_mesh.one_dart_per_cell<0>().size());
+//    vtk_cells->Allocate(hex_mesh.one_dart_per_cell<3>().size());
+//
+//    std::map<Vertex_handle, vtkIdType> Vids;
+//    vtkIdType inum = 0;
+//
+//    //for every vertex
+//    for( Vertex_handle vit = hex_mesh.vertex_attributes().begin();
+//         vit !=  hex_mesh.vertex_attributes().end();
+//         ++vit)
+//    {
+//        LCC_3::Point p = hex_mesh.point_of_vertex_attribute(vit);
+//        vtk_points->InsertNextPoint(CGAL::to_double(p.x()),
+//                                    CGAL::to_double(p.y()),
+//                                    CGAL::to_double(p.z()));
+//        Vids[vit] = inum++;
+//    }
+//
+//
+//    // for every hexes
+//    for (LCC_3::One_dart_per_cell_const_range<3,3>::const_iterator lcc_cells_iterator = hex_mesh.one_dart_per_cell<3,3>().begin(),
+//                 lcc_cells_end_iterator = hex_mesh.one_dart_per_cell<3,3>().end();
+//         lcc_cells_iterator != lcc_cells_end_iterator; ++lcc_cells_iterator) {
+//
+//        vtkIdList* cell = vtkIdList::New();
+//
+//        // for every hex vertex
+//        for (LCC_3::One_dart_per_incident_cell_const_range<0,3>::const_iterator
+//                     it = hex_mesh.one_dart_per_incident_cell<0, 3>(lcc_cells_iterator).begin(),
+//                     itend = hex_mesh.one_dart_per_incident_cell<0, 3>(lcc_cells_iterator).end(); it != itend; ++it) {
+//
+//            cell->InsertNextId(Vids[hex_mesh.point(it)]);
+//        }
+//        vtk_cells->InsertNextCell(cell);
+//        cell->Delete();
+//    }
+//
+//    vtkSmartPointer<vtkUnstructuredGrid> usg =
+//            vtkSmartPointer<vtkUnstructuredGrid>::New();
+//
+//    usg->SetPoints(vtk_points);
+//    vtk_points->Delete();
+//
+//    usg->SetCells(5,vtk_cells);
+//    vtk_cells->Delete();
+//
+//    // Write the unstructured grid
+//    //vtkSmartPointer<VtkWriter> writer =vtkSmartPointer<VtkWriter>::New();
+//    vtkSmartPointer<vtkUnstructuredGridWriter> writer =vtkSmartPointer<vtkUnstructuredGridWriter>::New();
+//
+//    writer->SetFileName(filename);
+//    writer->SetInputData(usg);
+//    writer->Write();
+//}
 
 int Writer::get()
 {
