@@ -22,6 +22,8 @@ include( ${CGAL_USE_FILE} )
 
 find_package(verdict)
 
+find_package(VTK)
+
 #set(SOURCE_FILES main.cpp)
 #set(SOURCE_FILES SchneidersHexMeshMain.cpp)
 #set(SOURCE_FILES DelaunayTetMeshMain.cpp)
@@ -41,6 +43,9 @@ target_link_libraries(3DMesher_lib
         PUBLIC
         Verdict::verdict
         )
+
+target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+
 
 
 add_subdirectory(Catch_tests)

@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
         auto stop_reading = std::chrono::high_resolution_clock::now();
 
         // Get duration
-        auto duration = duration_cast<std::chrono::microseconds>(stop_reading - start_reading);
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop_reading - start_reading);
 
         std::cout << "Time taken by read function is : "
              << duration.count() << " microseconds" << std::endl;
@@ -88,7 +88,7 @@ int main(int argc, char* argv[]) {
         auto stop = std::chrono::high_resolution_clock::now();
 
         // Get duration
-        auto duration2 = duration_cast<std::chrono::microseconds>(stop - start_reading);
+        auto duration2 = std::chrono::duration_cast<std::chrono::microseconds>(stop - start_reading);
 
         std::cout << "Time taken by mesh generation is : "
                   << duration2.count() << " microseconds" << std::endl;
