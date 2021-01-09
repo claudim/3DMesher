@@ -265,7 +265,7 @@ TEST_CASE("Must_resolve_U_case","[L_facets_detect_tests]")
     InitialMesh_boundary_connector boundaryConnector = InitialMesh_boundary_connector();
     boundaryConnector.connect3(hex_mesh, polyhedron);
     int number_of_intersecting_hexes = 0;
-    Intersecting_polyhedron_finder intersectingPolyhedronFinder;
+    Intersecting_polyhedron_finder< Polyhedron, LCC_3> intersectingPolyhedronFinder;
     std::vector<typename LCC::Dart_const_handle> intersecting_facets;
     for(LCC_3::One_dart_per_cell_range<3,3>::iterator it = hex_mesh.one_dart_per_cell<3>().begin(),
                 end_it = hex_mesh.one_dart_per_cell<3>().end(); it != end_it; ++it)

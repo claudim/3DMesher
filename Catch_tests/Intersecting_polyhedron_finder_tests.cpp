@@ -13,7 +13,7 @@ TEST_CASE("must_not_detect_intersection", "[Intersecting_polyhedron_finder_tests
     Polyhedron polyhedron = reader.read(fileName);
     Polyhedron polyhedron2 = reader.read(fileName2);
 
-    Intersecting_polyhedron_finder intersectingPolyhedronFinder;
+    Intersecting_polyhedron_finder< Polyhedron, LCC_3> intersectingPolyhedronFinder;
     bool intersection = intersectingPolyhedronFinder.do_polyhedra_intersect(polyhedron, polyhedron2);
     REQUIRE_FALSE(intersection);
 
@@ -40,7 +40,7 @@ TEST_CASE("must_detect_intersection", "[Intersecting_polyhedron_finder_tests][do
     Polyhedron polyhedron3 = reader.read(fileName3);
 
     // polyhedra share portion of space
-    Intersecting_polyhedron_finder intersectingPolyhedronFinder;
+    Intersecting_polyhedron_finder< Polyhedron, LCC_3> intersectingPolyhedronFinder;
     bool intersection = intersectingPolyhedronFinder.do_polyhedra_intersect(polyhedron, polyhedron3);
     REQUIRE(intersection);
 
@@ -67,7 +67,7 @@ TEST_CASE("must_detect_intersection2", "[Intersecting_polyhedron_finder_tests][d
     Polyhedron polyhedron4 = reader.read(fileName4);
 
     // polyhedra share a facet
-    Intersecting_polyhedron_finder intersectingPolyhedronFinder;
+    Intersecting_polyhedron_finder< Polyhedron, LCC_3> intersectingPolyhedronFinder;
     bool intersection = intersectingPolyhedronFinder.do_polyhedra_intersect(polyhedron, polyhedron4);
     REQUIRE(intersection);
 
@@ -94,7 +94,7 @@ TEST_CASE("must_detect_intersection_if_2_polyhedra_share_one_point", "[Intersect
     Polyhedron polyhedron5 = reader.read(fileName5);
 
     // polyhedra share a point
-    Intersecting_polyhedron_finder intersectingPolyhedronFinder;
+    Intersecting_polyhedron_finder< Polyhedron, LCC_3> intersectingPolyhedronFinder;
     bool intersection = intersectingPolyhedronFinder.do_polyhedra_intersect(polyhedron, polyhedron5);
     REQUIRE(intersection);
 
@@ -121,7 +121,7 @@ TEST_CASE("must_detect_intersection_if_2_polyhedra_share_one_edge", "[Intersecti
     Polyhedron polyhedron6 = reader.read(fileName6);
 
     // polyhedra share an edge
-    Intersecting_polyhedron_finder intersectingPolyhedronFinder;
+    Intersecting_polyhedron_finder< Polyhedron, LCC_3> intersectingPolyhedronFinder;
     bool intersection = intersectingPolyhedronFinder.do_polyhedra_intersect(polyhedron, polyhedron6);
     REQUIRE(intersection);
 
@@ -141,7 +141,7 @@ TEST_CASE("Intersection between the polyhedron facets")
 {
     LCC_3 lcc;
     Block_maker blockMaker;
-    Intersecting_polyhedron_finder intersectingPolyhedronFinder;
+    Intersecting_polyhedron_finder< Polyhedron, LCC_3> intersectingPolyhedronFinder;
     std::vector<Dart_handle> facets;
 
     SECTION("No intersection")

@@ -115,6 +115,9 @@ int main(int argc, char* argv[]) {
         writer.output_to_medit(medit_file,hex_mesh);
         medit_file.close();
 
+        outputFileName = out_data_path + "/" + name + "_8Res.vtk";
+        writer.output_to_vtk_ascii_unstructured(outputFileName, hex_mesh);
+
         //draw in cgal the final hex mesh
        // CGAL::draw(hex_mesh);
 

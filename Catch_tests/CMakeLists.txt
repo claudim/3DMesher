@@ -22,6 +22,7 @@ set(SOURCE_TESTS_FILES
         L_facet_detector_tests.cpp
         Volume_validator_tests.cpp
         Degenerate_element_finder_tests.cpp
+        Writer_tests.cpp
         )
 
 set(HEADER_TESTS_FILES

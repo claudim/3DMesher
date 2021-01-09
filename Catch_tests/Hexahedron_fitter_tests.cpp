@@ -62,7 +62,7 @@ TEST_CASE("initial mesh with L shape creates intersecting polyhedron")
     initialMeshBoundaryConnector.connect(lcc, polyhedron);
 
     int number_of_self_intersecting_hex = 0;
-    Intersecting_polyhedron_finder intersectingPolyhedronFinder;
+    Intersecting_polyhedron_finder< Polyhedron, LCC_3> intersectingPolyhedronFinder;
 
     // for each hex in lcc
     for(LCC_3::One_dart_per_cell_range<3,3>::iterator hex_it = lcc.one_dart_per_cell<3>().begin(),
