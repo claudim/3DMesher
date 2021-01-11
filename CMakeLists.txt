@@ -66,10 +66,23 @@ include( ${CGAL_USE_FILE} )
 
 find_package(verdict)
 
+find_library(GMSH_LIB gmsh)
+if(NOT GMSH_LIB)
+    message(FATAL_ERROR "Could not find libgmsh")
+endif()
+
+find_path(GMSH_INC gmsh.h)
+if(NOT GMSH_INC)
+    message(FATAL_ERROR "Could not find gmsh.h")
+endif()
+
+
+
 #set(SOURCE_FILES main.cpp)
 #set(SOURCE_FILES SchneidersHexMeshMain.cpp)
 #set(SOURCE_FILES DelaunayTetMeshMain.cpp)
-set(SOURCE_FILES UnivaqHexMeshMain.cpp)
+#set(SOURCE_FILES UnivaqHexMeshMain.cpp)
+set(SOURCE_FILES main_gmsh.cpp)
 add_executable(3DMesher ${SOURCE_FILES})
 
 include_directories(3DMesher_lib )
@@ -83,8 +96,12 @@ target_link_libraries(3DMesher PUBLIC CGAL::CGAL_Qt5)
 
 target_link_libraries(3DMesher_lib PUBLIC Verdict::verdict)
 
+
+
 #Link VTK library
 target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+
+target_link_libraries(3DMesher PUBLIC ${GMSH_LIB} )
 
 add_subdirectory(Catch_tests)
 
