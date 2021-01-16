@@ -1,5 +1,3 @@
-
-
 #include "Writer.h"
 
 void Writer::output_to_medit(std::ostream& os, const LCC_3& lcc){
@@ -91,18 +89,147 @@ void Writer::output_to_medit(std::ostream& os, const LCC_3& lcc){
     os << "End\n";
 }
 
-void Writer::output_to_vtk_ascii_unstructured(const std::string outputFileName, const LCC_3& hex_mesh){
+void Writer::output_to_legacy_vtk_ascii_unstructured(std::ostream& os, const LCC_3& hex_mesh){
     typedef typename LCC_3::Vertex_attribute_const_handle Vertex_handle;
+    int number_of_hexahedra = hex_mesh.one_dart_per_cell<3>().size();
+    //-------------------------------------------------------
+    // File output
+    //-------------------------------------------------------
 
-//    vtkPoints* const vtk_points = vtkPoints::New();
-//    vtkCellArray* const vtk_cells = vtkCellArray::New();
+    //-------------------------------------------------------
+    // Header
+    //-------------------------------------------------------
+    //The version number
+    os << "# vtk DataFile Version 3.0 \n";
+   // os << "# vtk DataFile Version " << vtkVersion::GetVTKVersion <<"\n";
+    //a title
+    os << "3D Hex-Mesh vtk file \n";
+    //ASCII or BINARY indicates the format used for subsequent data.
+    os << "ASCII \n";
+    os << "DATASET UNSTRUCTURED_GRID \n";
+
+    //Unstructured grids are defined by points, cells, and cell types.
+
+    //the number and type of points
+    os << "POINTS " << hex_mesh.one_dart_per_cell<0>().size() << " double \n";
+    // a row for each point
+    std::map<Vertex_handle, vtkIdType> Vids;
+    vtkIdType inum = 0;
+
+    //the points
+    //for each vertex
+    for( Vertex_handle vit = hex_mesh.vertex_attributes().begin();
+         vit !=  hex_mesh.vertex_attributes().end();
+         ++vit)
+    {
+        LCC_3::Point p = hex_mesh.point_of_vertex_attribute(vit);
+        os << CGAL::to_double(p.x()) << ' '
+           << CGAL::to_double(p.y()) << ' '
+           << CGAL::to_double(p.z()) << ' '
+           << '\n';
+        Vids[vit] = inum++;
+    }
+
+    //-------------------------------------------------------
+    // Hexahedra
+    //-------------------------------------------------------
+    //The CELLS keyword requires two parameters: the number of cells n and the size of the cell list size.
+    int cells_list_size = 9 * number_of_hexahedra;
+    os << "CELLS " << number_of_hexahedra << " "<< cells_list_size <<"\n"; //todo:aggiungere la size
+
+    // for every hexes
+    for (LCC_3::One_dart_per_cell_const_range<3,3>::const_iterator lcc_cells_iterator = hex_mesh.one_dart_per_cell<3,3>().begin(),
+                 lcc_cells_end_iterator = hex_mesh.one_dart_per_cell<3,3>().end();
+         lcc_cells_iterator != lcc_cells_end_iterator; ++lcc_cells_iterator) {
+
+        os << "8 " ;
+        int j = 0;
+        // for every hex vertex
+        for (LCC_3::One_dart_per_incident_cell_const_range<0,3>::const_iterator
+                     it = hex_mesh.one_dart_per_incident_cell<0, 3>(lcc_cells_iterator).begin(),
+                     itend = hex_mesh.one_dart_per_incident_cell<0, 3>(lcc_cells_iterator).end(); it != itend; ++it) {
+
+            os << Vids[hex_mesh.vertex_attribute(it)] << " ";
+        }
+        os << '\n';
+    }
+    os << "CELL_TYPES " << number_of_hexahedra << "\n";
+    for (int i = 0; i<number_of_hexahedra; i++)
+    {
+        os << "12 " << "\n";
+    }
+    //-------------------------------------------------------
+    // End
+    //-------------------------------------------------------
+}
+
+
+//void Writer::output_to_legacy_vtk_ascii_unstructured(const std::string outputFileName, const LCC_3& hex_mesh){
+//    typedef typename LCC_3::Vertex_attribute_const_handle Vertex_handle;
 //
-//    vtk_points->Allocate(hex_mesh.one_dart_per_cell<0>().size());
-//    vtk_cells->Allocate(hex_mesh.one_dart_per_cell<3>().size());
+//    vtkPoints* const vtk_points = vtkPoints::New();
+////    vtkCellArray* const vtk_cells = vtkCellArray::New();
+////
+////    vtk_points->Allocate(hex_mesh.one_dart_per_cell<0>().size());
+////    vtk_cells->Allocate(hex_mesh.one_dart_per_cell<3>().size());
+////
+////    std::map<Vertex_handle, vtkIdType> Vids;
+////    vtkIdType inum = 0;
+////
+////    //for each vertex
+////    for( Vertex_handle vit = hex_mesh.vertex_attributes().begin();
+////         vit !=  hex_mesh.vertex_attributes().end();
+////         ++vit)
+////    {
+////        LCC_3::Point p = hex_mesh.point_of_vertex_attribute(vit);
+////        vtk_points->InsertNextPoint(CGAL::to_double(p.x()),
+////                                    CGAL::to_double(p.y()),
+////                                    CGAL::to_double(p.z()));
+////        Vids[vit] = inum++;
+////    }
+////
+////
+////    // for every hexes
+////    for (LCC_3::One_dart_per_cell_const_range<3,3>::const_iterator lcc_cells_iterator = hex_mesh.one_dart_per_cell<3,3>().begin(),
+////                 lcc_cells_end_iterator = hex_mesh.one_dart_per_cell<3,3>().end();
+////         lcc_cells_iterator != lcc_cells_end_iterator; ++lcc_cells_iterator) {
+////
+////        vtkIdList* cell = vtkIdList::New();
+////
+////        // for every hex vertex
+////        for (LCC_3::One_dart_per_incident_cell_const_range<0,3>::const_iterator
+////                     it = hex_mesh.one_dart_per_incident_cell<0, 3>(lcc_cells_iterator).begin(),
+////                     itend = hex_mesh.one_dart_per_incident_cell<0, 3>(lcc_cells_iterator).end(); it != itend; ++it) {
+////
+////            //cell->InsertNextId(Vids[hex_mesh.vertex_attribute(it)]);
+////            cell->InsertNextId(Vids[hex_mesh.vertex_attribute(it)]);
+////            Vertex_handle attribute = hex_mesh.vertex_attribute(it);
+////        }
+////        vtk_cells->InsertNextCell(cell);
+////        cell->Delete();
+////    }
+////
+////    vtkSmartPointer<vtkUnstructuredGrid> unstructured_grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+////
+////    unstructured_grid->SetPoints(vtk_points);
+////    vtk_points->Delete();
+////
+////    unstructured_grid->SetCells(VTK_HEXAHEDRON, vtk_cells);
+////    vtk_cells->Delete();
+////
+////    // Write the unstructured grid
+////    //vtkSmartPointer<VtkWriter> writer =vtkSmartPointer<VtkWriter>::New();
+////    vtkSmartPointer<vtkUnstructuredGridWriter> writer =vtkSmartPointer<vtkUnstructuredGridWriter>::New();
+////    writer->SetFileName(outputFileName.c_str());
+////    writer->SetInputData(unstructured_grid);
+////    writer->Write();
+//
+//    ///vtkNew<vtkPoints> vtk_points;
+//    //vtkNew<vtkCellArray> vtk_cells;
+//    vtkNew<vtkUnstructuredGrid> unstructured_grid;
 //
 //    std::map<Vertex_handle, vtkIdType> Vids;
 //    vtkIdType inum = 0;
-//
 //    //for each vertex
 //    for( Vertex_handle vit = hex_mesh.vertex_attributes().begin();
 //         vit !=  hex_mesh.vertex_attributes().end();
@@ -112,104 +239,46 @@ void Writer::output_to_vtk_ascii_unstructured(const std::string outputFileName, 
 //        vtk_points->InsertNextPoint(CGAL::to_double(p.x()),
 //                                    CGAL::to_double(p.y()),
 //                                    CGAL::to_double(p.z()));
+//
 //        Vids[vit] = inum++;
 //    }
-//
+//    unstructured_grid->SetPoints(vtk_points);
 //
 //    // for every hexes
 //    for (LCC_3::One_dart_per_cell_const_range<3,3>::const_iterator lcc_cells_iterator = hex_mesh.one_dart_per_cell<3,3>().begin(),
 //                 lcc_cells_end_iterator = hex_mesh.one_dart_per_cell<3,3>().end();
 //         lcc_cells_iterator != lcc_cells_end_iterator; ++lcc_cells_iterator) {
 //
-//        vtkIdList* cell = vtkIdList::New();
-//
+//        vtkNew<vtkHexahedron> hex;
+//        int j = 0;
 //        // for every hex vertex
 //        for (LCC_3::One_dart_per_incident_cell_const_range<0,3>::const_iterator
 //                     it = hex_mesh.one_dart_per_incident_cell<0, 3>(lcc_cells_iterator).begin(),
 //                     itend = hex_mesh.one_dart_per_incident_cell<0, 3>(lcc_cells_iterator).end(); it != itend; ++it) {
 //
+//            hex->GetPointIds()->SetId(j,Vids[hex_mesh.vertex_attribute(it)]);
+//            j++;
 //            //cell->InsertNextId(Vids[hex_mesh.vertex_attribute(it)]);
-//            cell->InsertNextId(Vids[hex_mesh.vertex_attribute(it)]);
-//            Vertex_handle attribute = hex_mesh.vertex_attribute(it);
+//            //cell->InsertNextId(Vids[hex_mesh.vertex_attribute(it)]);
+//           // Vertex_handle attribute = hex_mesh.vertex_attribute(it);
 //        }
-//        vtk_cells->InsertNextCell(cell);
-//        cell->Delete();
+//        unstructured_grid->InsertNextCell(hex->GetCellType(), hex->GetPointIds());
+//        //vtk_cells->InsertNextCell(hex);
 //    }
 //
-//    vtkSmartPointer<vtkUnstructuredGrid> unstructured_grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+//    //unstructuredGrid->SetCells(VTK_HEXAHEDRON, vtk_cells);
 //
-//    unstructured_grid->SetPoints(vtk_points);
-//    vtk_points->Delete();
-//
-//    unstructured_grid->SetCells(VTK_HEXAHEDRON, vtk_cells);
-//    vtk_cells->Delete();
-//
-//    // Write the unstructured grid
-//    //vtkSmartPointer<VtkWriter> writer =vtkSmartPointer<VtkWriter>::New();
-//    vtkSmartPointer<vtkUnstructuredGridWriter> writer =vtkSmartPointer<vtkUnstructuredGridWriter>::New();
+//    //write file
+//    vtkNew<vtkUnstructuredGridWriter> writer;
 //    writer->SetFileName(outputFileName.c_str());
-//    writer->SetInputData(unstructured_grid);
+//    #if VTK_MAJOR_VERSION <= 5
+//        writer->SetInput(unstructured_grid);
+//    #else
+//        writer->SetInputData(unstructured_grid);
+//    #endif
 //    writer->Write();
-
-    vtkNew<vtkPoints> vtk_points;
-    //vtkNew<vtkCellArray> vtk_cells;
-    vtkNew<vtkUnstructuredGrid> unstructured_grid;
-
-    std::map<Vertex_handle, vtkIdType> Vids;
-    vtkIdType inum = 0;
-    //for each vertex
-    for( Vertex_handle vit = hex_mesh.vertex_attributes().begin();
-         vit !=  hex_mesh.vertex_attributes().end();
-         ++vit)
-    {
-        LCC_3::Point p = hex_mesh.point_of_vertex_attribute(vit);
-        vtk_points->InsertNextPoint(CGAL::to_double(p.x()),
-                                    CGAL::to_double(p.y()),
-                                    CGAL::to_double(p.z()));
-
-        Vids[vit] = inum++;
-    }
-    unstructured_grid->SetPoints(vtk_points);
-
-    // for every hexes
-    for (LCC_3::One_dart_per_cell_const_range<3,3>::const_iterator lcc_cells_iterator = hex_mesh.one_dart_per_cell<3,3>().begin(),
-                 lcc_cells_end_iterator = hex_mesh.one_dart_per_cell<3,3>().end();
-         lcc_cells_iterator != lcc_cells_end_iterator; ++lcc_cells_iterator) {
-
-        vtkNew<vtkHexahedron> hex;
-        int j = 0;
-        // for every hex vertex
-        for (LCC_3::One_dart_per_incident_cell_const_range<0,3>::const_iterator
-                     it = hex_mesh.one_dart_per_incident_cell<0, 3>(lcc_cells_iterator).begin(),
-                     itend = hex_mesh.one_dart_per_incident_cell<0, 3>(lcc_cells_iterator).end(); it != itend; ++it) {
-
-            hex->GetPointIds()->SetId(j,Vids[hex_mesh.vertex_attribute(it)]);
-            j++;
-            //cell->InsertNextId(Vids[hex_mesh.vertex_attribute(it)]);
-            //cell->InsertNextId(Vids[hex_mesh.vertex_attribute(it)]);
-           // Vertex_handle attribute = hex_mesh.vertex_attribute(it);
-        }
-        unstructured_grid->InsertNextCell(hex->GetCellType(), hex->GetPointIds());
-        //vtk_cells->InsertNextCell(hex);
-    }
-
-    //unstructuredGrid->SetCells(VTK_HEXAHEDRON, vtk_cells);
-
-    //write file
-    vtkNew<vtkUnstructuredGridWriter> writer;
-    writer->SetFileName(outputFileName.c_str());
-    #if VTK_MAJOR_VERSION <= 5
-        writer->SetInput(unstructured_grid);
-    #else
-        writer->SetInputData(unstructured_grid);
-    #endif
-    writer->Write();
-
-
-
-
-
-}
+//
+//}
 
 int Writer::get()
 {

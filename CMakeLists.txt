@@ -33,24 +33,29 @@ else (DOXYGEN_FOUND)
 endif (DOXYGEN_FOUND)
 # end Doxygen
 
+
+
 #set(VTK_DIR "/usr/local/include/vtk-9.0")
 
-set(VTK_INCLUDE_DIRS "/usr/local/include/vtk-9.0")
-set(VTK_LIBRARY_DIRS "/usr/local/lib")
-find_package(VTK REQUIRED NO_MODULE)
-#include( ${VTK_USE_FILE} )
-IF(VTK_FOUND)
-    message("found VTK. Version:" ${VTK_VERSION}. VTK_DIR: ${VTK_DIR}. VTK_LIBRARIES: ${VTK_USE_FILE}.
-            VTK_LIBRARY_DIRS: ${VTK_LIBRARY_DIRS})
-
-ELSE(VTK_FOUND)
-    MESSAGE(FATAL_ERROR
-            "Cannot build the executable without VTK. Please set the
-VTK_DIR")
-ENDIF(VTK_FOUND)
+#set(VTK_INCLUDE_DIRS "/usr/local/include/vtk-9.0")
+#set(VTK_LIBRARY_DIRS "/usr/local/lib")
+#find_package(VTK REQUIRED NO_MODULE)
+##include( ${VTK_USE_FILE} )
+#IF(VTK_FOUND)
+#    message("found VTK. Version:" ${VTK_VERSION}. VTK_DIR: ${VTK_DIR}. VTK_LIBRARIES: ${VTK_USE_FILE}.
+#            VTK_LIBRARY_DIRS: ${VTK_LIBRARY_DIRS})
+#
+#ELSE(VTK_FOUND)
+#    MESSAGE(FATAL_ERROR
+#            "Cannot build the executable without VTK. Please set the
+#VTK_DIR")
+#ENDIF(VTK_FOUND)
 
 #set(CMAKE_BUILD_TYPE Release) #the debugger does not work
 
+# --------------------------------------------------------------------------- #
+# CGAL
+# --------------------------------------------------------------------------- #
 # rows 14 to 25 and 43 are needed for draw an object in CGAL
 #find the package CGAL with the component Qt5
 find_package(CGAL COMPONENTS Qt5)
@@ -66,6 +71,9 @@ include( ${CGAL_USE_FILE} )
 
 find_package(verdict)
 
+# --------------------------------------------------------------------------- #
+# GMSH
+# --------------------------------------------------------------------------- #
 find_library(GMSH_LIB gmsh)
 if(NOT GMSH_LIB)
     message(FATAL_ERROR "Could not find libgmsh")
@@ -76,6 +84,33 @@ if(NOT GMSH_INC)
     message(FATAL_ERROR "Could not find gmsh.h")
 endif()
 
+# --------------------------------------------------------------------------- #
+# SMESH
+# --------------------------------------------------------------------------- #
+#find_package(SMESH REQUIRED)
+
+
+#vtk
+find_package(VTK COMPONENTS
+        vtkCommonColor
+        vtkCommonCore
+        vtkCommonDataModel
+        vtkFiltersCore
+        vtkFiltersSources
+        vtkIOLegacy
+        vtkIOXML
+        vtkInteractionStyle
+        QUIET
+        )
+if (NOT VTK_FOUND)
+    message("${VTK_NOT_FOUND_MESSAGE}")
+    # return ()
+endif()
+message (STATUS "VTK_VERSION: ${VTK_VERSION}")
+if (VTK_VERSION VERSION_LESS "8.90.0")
+    # old system
+    include(${VTK_USE_FILE})
+endif ()
 
 
 #set(SOURCE_FILES main.cpp)
@@ -96,16 +131,28 @@ target_link_libraries(3DMesher PUBLIC CGAL::CGAL_Qt5)
 
 target_link_libraries(3DMesher_lib PUBLIC Verdict::verdict)
 
+target_link_libraries(3DMesher PUBLIC ${GMSH_LIB} )
 
+#target_link_libraries(3DMesher  PUBLIC ${SMESH_LIBRARIES})
 
 #Link VTK library
-target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+if (VTK_VERSION VERSION_LESS "8.90.0")
+    # old system
+    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+else ()
+    # include all components
+    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+    # vtk_module_autoinit is needed
+    vtk_module_autoinit(
+            TARGETS 3DMesher
+            MODULES ${VTK_LIBRARIES}
+    )
+endif ()
 
-target_link_libraries(3DMesher PUBLIC ${GMSH_LIB} )
 
 add_subdirectory(Catch_tests)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/include/vtk-9.0")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/include/vtk-9.0")
 
 #for the documentation
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

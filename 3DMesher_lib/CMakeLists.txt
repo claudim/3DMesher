@@ -27,6 +27,7 @@ set(HEADER_FILES
         L_facet_detector.h
         Volume_Validator.h
         Degenerate_element_finder.h
+        VTK_manager.h
         )
 
 set(SOURCE_FILES
@@ -53,7 +54,7 @@ set(SOURCE_FILES
         L_facet_detector.cpp
         Volume_Validator.cpp
         Degenerate_element_finder.cpp
-
+        VTK_manager.cpp
         )
 
 include_directories(${PROJECT_SOURCE_DIR}/3DMesher_lib/3D_hex_mesh_algorithms)
