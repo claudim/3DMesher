@@ -1,3 +1,33 @@
+// Copyright (c) 2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Implementation of a Salome body fitting algorithm. To get more information on this algorithm,
+// you can consult https://docs.salome-platform.org/latest/gui/SMESH/cartesian_algo.html .
+// From previous link so from Salome documentation:
+// "Body Fitting algorithm generates hexahedrons of a Cartesian grid
+// in the internal part of geometry and polyhedrons and other types of elements
+// at the intersection of Cartesian cells with the geometrical boundary.
+// The meshing algorithm is as follows:
+// 1) Lines of a Cartesian structured grid defined by Body Fitting Parameters hypothesis are intersected with the geometry boundary,
+// thus nodes lying on the boundary are found. This step also allows finding out for each node of the Cartesian grid if it is inside or outside the geometry.
+// 2) For each cell of the grid, check how many of its nodes are outside of the geometry boundary.
+//    Depending on a result of this check:
+//      -     skip a cell, if all its nodes are outside
+//      -     skip a cell, if it is too small according to Size Threshold parameter. If the size of a truncated grid cell is Threshold times less than a initial cell size, then a mesh element is not created.
+//      -     add a hexahedron in the mesh, if all nodes are inside
+//      -     add a polyhedron or another cell type in the mesh, if some nodes are inside and some outside."
+//
+// Code documentation for the GEOM module is https://docs.salome-platform.org/latest/tui/GEOM/index.html
+// Code documentation for the SMESH module is https://docs.salome-platform.org/latest/tui/SMESH/index.html
+// Code documentation for the MEDCoupling is https://docs.salome-platform.org/latest/dev/MEDCoupling/developer/medcouplingcppexamples.html
+//
+//******************************************************************************
+
+
 #ifndef INC_3DMESHER_HEX_DOM_SALOME_MESH_H
 #define INC_3DMESHER_HEX_DOM_SALOME_MESH_H
 
@@ -21,6 +51,14 @@ depending on your needs.*/
 
 class Hex_dom_salome_mesh {
 public:
+    /**
+     * @brief Execute Salome body fitting algorithm.
+     *
+     * @file Hex_dom_salome_mesh.h
+     * @class Hex_dom_salome_mesh
+     *
+     * Execute Salome body fitting algorithm.
+     */
     void run(){
         //1. create solid importing from STL file
         GEOM::GEOM_Gen* geomGen = new GEOM:GEOM_Gen(); //geomGen sarebbe geompy // engine to create objects
