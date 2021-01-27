@@ -1,3 +1,13 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Read a STL file.
+//******************************************************************************
+
 #ifndef INC_3DMESHER_STL_READER_H
 #define INC_3DMESHER_STL_READER_H
 
@@ -8,12 +18,24 @@
 
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-//typedef CGAL::Simple_cartesian<double> K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
+/**
+ * @brief Reader for a STL file.
+ *
+ * @file STL_reader.h
+ * @class STL_reader
+ */
 class STL_reader {
 
 public:
+    /**
+     * @brief Read a STL file and starting from the contents of the file create a polyhedron.
+     *
+     * @tparam Polyhedron The Polyhedron class where store the contents of the file.
+     * @param fileName The STL file name to read.
+     * @return A polyhedron read from the STL file.
+     */
     template<class Polyhedron = Polyhedron>
     Polyhedron read(const std::string fileName){
         std::ifstream input(fileName, std::ios::in |
