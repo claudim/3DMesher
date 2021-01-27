@@ -1,3 +1,12 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Remove blocks that intersect the boundary.
+//******************************************************************************
 
 #ifndef INC_3DMESHER_ONBOUNDARY_BLOCK_REMOVER_H
 #define INC_3DMESHER_ONBOUNDARY_BLOCK_REMOVER_H
@@ -26,7 +35,12 @@ typedef CGAL::Side_of_triangle_mesh<Polyhedron, K> Point_inside;
 class OnBoundary_block_remover {
 
 public:
-    //template<typename Linear_cell_complex_traits, typename allocator, typename allocator, typename Linear_cell_complex_traits>
+    /**
+     * @brief Remove all blocks that intersect the polyhedron boundary.
+     *
+     * @param lcc The mesh to remove the block from.
+     * @param polyhedron The polyhedron.
+     */
     void removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron);
 
     void removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron, const double &distance);

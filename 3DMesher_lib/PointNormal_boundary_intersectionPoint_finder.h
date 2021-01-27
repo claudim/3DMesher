@@ -103,8 +103,15 @@ public:
     boost::optional<Point> findIntersecionPoint(LCC_3 &lcc,const Dart_const_handle &vertex_handle,const Polyhedron &polyhedron,
                                                                                                 Vector &normal_vector);
 
+    /**
+     * Find the intersection point according to the normal vector parameter.
+     *
+     * @param vertex_handle Dart handle to the point of which it wants find the isomorphic point on the boundary of the polyhedron.
+     * @param polyhedron The polyhedron.
+     * @param normal_vector The normal vector.
+     * @return The intersection point isomorphic to the vertex_handle point when the normal is not null. The intersection point belongs to the boundary of the polyhedron.
+     */
     boost::optional<Point> findIntersecionPoint(const Point & point,const Polyhedron &polyhedron,Vector &normal_vector);
-
 };
 
 
