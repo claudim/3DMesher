@@ -11,7 +11,7 @@
 #ifndef INC_3DMESHER_BAD_HEX_FINDER_H
 #define INC_3DMESHER_BAD_HEX_FINDER_H
 
-#include <verdict.h>
+#include "verdict.h"
 #include "MyLCC.h"
 #include <CGAL/Linear_cell_complex_for_combinatorial_map.h>
 

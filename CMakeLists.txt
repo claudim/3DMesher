@@ -90,34 +90,35 @@ endif()
 #find_package(SMESH REQUIRED)
 
 
-#vtk
-find_package(VTK COMPONENTS
-        vtkCommonColor
-        vtkCommonCore
-        vtkCommonDataModel
-        vtkFiltersCore
-        vtkFiltersSources
-        vtkIOLegacy
-        vtkIOXML
-        vtkInteractionStyle
-        QUIET
-        )
-if (NOT VTK_FOUND)
-    message("${VTK_NOT_FOUND_MESSAGE}")
-    # return ()
-endif()
-message (STATUS "VTK_VERSION: ${VTK_VERSION}")
-if (VTK_VERSION VERSION_LESS "8.90.0")
-    # old system
-    include(${VTK_USE_FILE})
-endif ()
+##vtk
+#find_package(VTK COMPONENTS
+#        vtkCommonColor
+#        vtkCommonCore
+#        vtkCommonDataModel
+#        vtkFiltersCore
+#        vtkFiltersSources
+#        vtkIOLegacy
+#        vtkIOXML
+#        vtkInteractionStyle
+#        QUIET
+#        )
+#if (NOT VTK_FOUND)
+#    message("${VTK_NOT_FOUND_MESSAGE}")
+#    # return ()
+#endif()
+#message (STATUS "VTK_VERSION: ${VTK_VERSION}")
+#if (VTK_VERSION VERSION_LESS "8.90.0")
+#    # old system
+#    include(${VTK_USE_FILE})
+#endif ()
 
 
 #set(SOURCE_FILES main.cpp)
 #set(SOURCE_FILES SchneidersHexMeshMain.cpp)
 #set(SOURCE_FILES DelaunayTetMeshMain.cpp)
-#set(SOURCE_FILES UnivaqHexMeshMain.cpp)
-set(SOURCE_FILES main_gmsh.cpp)
+set(SOURCE_FILES UnivaqHexMeshMain.cpp)
+#set(SOURCE_FILES main_gmsh.cpp)
+#set(SOURCE_FILES main_getBBox.cpp)
 add_executable(3DMesher ${SOURCE_FILES})
 
 include_directories(3DMesher_lib )
@@ -127,7 +128,7 @@ add_subdirectory(3DMesher_lib )
 target_link_libraries(3DMesher PUBLIC 3DMesher_lib)
 
 # Link CGAL_Qt5 with your program
-target_link_libraries(3DMesher PUBLIC CGAL::CGAL_Qt5)
+#target_link_libraries(3DMesher PUBLIC CGAL::CGAL_Qt5)
 
 target_link_libraries(3DMesher_lib PUBLIC Verdict::verdict)
 
@@ -135,19 +136,19 @@ target_link_libraries(3DMesher PUBLIC ${GMSH_LIB} )
 
 #target_link_libraries(3DMesher  PUBLIC ${SMESH_LIBRARIES})
 
-#Link VTK library
-if (VTK_VERSION VERSION_LESS "8.90.0")
-    # old system
-    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
-else ()
-    # include all components
-    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
-    # vtk_module_autoinit is needed
-    vtk_module_autoinit(
-            TARGETS 3DMesher
-            MODULES ${VTK_LIBRARIES}
-    )
-endif ()
+##Link VTK library
+#if (VTK_VERSION VERSION_LESS "8.90.0")
+#    # old system
+#    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+#else ()
+#    # include all components
+#    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+#    # vtk_module_autoinit is needed
+#    vtk_module_autoinit(
+#            TARGETS 3DMesher
+#            MODULES ${VTK_LIBRARIES}
+#    )
+#endif ()
 
 
 add_subdirectory(Catch_tests)

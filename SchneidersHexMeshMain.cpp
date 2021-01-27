@@ -12,7 +12,7 @@
 #include "InitialMesh_boundary_connector.h"
 #include "Block_refiner.h"
 #include <verdict.h> //to include verdict library
-#include <CGAL/draw_linear_cell_complex.h>
+//#include <CGAL/draw_linear_cell_complex.h>
 #include "Volume_Validator.h"
 //#include <CGAL/draw_polyhedron.h>
 #include "Writer.h"
@@ -23,7 +23,8 @@ typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 void bad_hex_finder(LCC_3 &lcc);
 
 int main(int argc, char* argv[]) {
-    const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
+    //const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
+    const std::string data_path = "/home/claudia/CLionProjects/3DMesher/DataInput";
      std::string name = "bolt";
     //std::string name = "bunny";
     //std::string name = "ellipse";
@@ -61,7 +62,7 @@ int main(int argc, char* argv[]) {
         //initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
 //        initialMeshMaker.refine(hex_mesh);
 
-        CGAL::draw(hex_mesh);
+//        CGAL::draw(hex_mesh);
 //        //connect the initial mesh to the polyhedron boundary
         InitialMesh_boundary_connector initialMeshBoundaryConnector = InitialMesh_boundary_connector();
         initialMeshBoundaryConnector.connect(hex_mesh, polyhedron);
@@ -76,7 +77,8 @@ int main(int argc, char* argv[]) {
        // CGAL::draw(hex_mesh);
 
         //output
-        const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
+        //const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
+        const std::string out_data_path = "/home/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
         std::string outputFileName = out_data_path + "/" + name + "_R8_Mesh.mesh";
         std::ofstream medit_file(outputFileName);
         Writer writer;

@@ -7,8 +7,8 @@
 #include "Initial_mesh_maker.h"
 #include "External_block_remover.h"
 #include "Grid_boundary_connector.h"
-#include <CGAL/draw_linear_cell_complex.h>
-#include <CGAL/draw_polyhedron.h>
+//#include <CGAL/draw_linear_cell_complex.h>
+//#include <CGAL/draw_polyhedron.h>
 #include "Volume_Validator.h"
 #include "Degenerate_element_finder.h"
 #include "Writer.h"
@@ -19,14 +19,15 @@ typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
 int main(int argc, char* argv[]) {
 
-    const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
-    //std::string name = "bolt";
+    //const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
+    const std::string data_path = "/home/claudia/CLionProjects/3DMesher/DataInput";
+    std::string name = "bolt";
     //std::string name = "bunny";
     //std::string name = "ellipse";
     //std::string name = "Tronco_cono_3D";
     //std::string name = "cube100x100axisAligned";
     //std::string name = "cube100x100rotated";
-    std::string name = "sfera";
+   // std::string name = "sfera";
     //std::string name = "rotatedTrapezoid";
 
     //std::string fileName = data_path + "/cubeTest.stl";
@@ -107,7 +108,8 @@ int main(int argc, char* argv[]) {
         std::cout<<"Degenerate elements are " << degenerateElements.size() <<std::endl;
 
         //output
-        const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/UnivaqHexMeshOutput/";
+        //const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/UnivaqHexMeshOutput/";
+        const std::string out_data_path = "/home/claudia/CLionProjects/3DMesher/MeshOutput/UnivaqHexMeshOutput";
         std::string outputFileName = out_data_path + "/" + name + "_8Res.mesh";
 
         std::ofstream medit_file(outputFileName);
@@ -116,7 +118,7 @@ int main(int argc, char* argv[]) {
         medit_file.close();
 
         outputFileName = out_data_path + "/" + name + "_8Res.vtk";
-        writer.output_to_vtk_ascii_unstructured(outputFileName, hex_mesh);
+        //writer.output_to_vtk_ascii_unstructured(outputFileName, hex_mesh);
 
         //draw in cgal the final hex mesh
        // CGAL::draw(hex_mesh);
