@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
         double y_dimension = delta_y_grid;
         double z_dimension = delta_z_grid;
 
-        Point centroid =Point(grid_box.xmin() + x_dimension / 2,
+        Point centroid = Point(grid_box.xmin() + x_dimension / 2,
                               grid_box.ymin() + y_dimension / 2,
                               grid_box.zmin() + z_dimension / 2);
 

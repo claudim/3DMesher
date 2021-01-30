@@ -55,15 +55,15 @@ void External_block_remover::removeBlocks(LCC_3& lcc, const Polyhedron& polyhedr
                      lcc_cells_end_iterator = lcc.one_dart_per_cell<3, 3>().end();
              lcc_cells_iterator != lcc_cells_end_iterator; ++lcc_cells_iterator) {
             if (is_block_to_be_removed(lcc, lcc_cells_iterator, polyhedron)) {
-                removeBlock(lcc, lcc_cells_iterator);
+                //removeBlock(lcc, lcc_cells_iterator);
+                lcc.remove_cell<3>(lcc_cells_iterator);
             }
         }
     }
 }
 
-//template<typename Linear_cell_complex_traits, typename allocator>
-void External_block_remover::removeBlock(LCC_3& lcc, Dart_handle& blockToRemove) {
-    lcc.remove_cell<3>(blockToRemove);
+void External_block_remover::removeBlock(LCC_3& hex_mesh, Dart_handle& blockToRemove) {
+    hex_mesh.remove_cell<3>(blockToRemove);
 }
 
 void External_block_remover::removeBlocks(LCC_3& lcc, const Polyhedron& polyhedron, const double &distance) {}

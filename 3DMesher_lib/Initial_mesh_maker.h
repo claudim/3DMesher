@@ -63,46 +63,46 @@ public:
     }
 
 
-    /**
-     * @brief Remove blocks with more than 4 external facets from the lcc.
-     *
-     * @param lcc The mesh to improve.
-     */
-    void refine(LCC_3 &lcc) {
-        std::vector<Dart_handle> cubes_with_more_than_4_external_facets;
-        bool cubes_with_more_than_4_external_facets_not_found = false;
-
-        while(!cubes_with_more_than_4_external_facets_not_found) {
-            // find the external cubes with more than 4 external facets
-            for (LCC_3::One_dart_per_cell_range<3, 3>::iterator cube_it = lcc.one_dart_per_cell<3>().begin(),
-                         cube_end_it = lcc.one_dart_per_cell<3>().end(); cube_it != cube_end_it; ++cube_it) {
-                FT number_of_external_facets = 0;
-                for (LCC_3::One_dart_per_incident_cell_range<2, 3, 3>::iterator facet_it = lcc.one_dart_per_incident_cell<2, 3, 3>(
-                        cube_it).begin(),
-                             facet_end_it = lcc.one_dart_per_incident_cell<2, 3, 3>(cube_it).end();
-                     facet_it != facet_end_it; ++facet_it) {
-
-                    Dart_handle near_cell_facet_dart_handle = lcc.beta(facet_it, 3);
-                    if (near_cell_facet_dart_handle == lcc.null_dart_handle) {
-                        number_of_external_facets++;
-                    }
-                }
-                if (number_of_external_facets == 5) {
-                    cubes_with_more_than_4_external_facets.emplace_back(cube_it);
-                }
-            }
-            if(cubes_with_more_than_4_external_facets.empty())
-            {
-                cubes_with_more_than_4_external_facets_not_found = true;
-            }
-            // remove the cubes found
-            for (Dart_handle cube: cubes_with_more_than_4_external_facets) {
-                blockRemover.removeBlock(lcc, cube);
-            }
-            cubes_with_more_than_4_external_facets.clear();
-        }
-        std::cout<<"Blocchi rimossi nel refiner"<<std::endl;
-    }
+//    /**
+//     * @brief Remove blocks with more than 4 external facets from the lcc.
+//     *
+//     * @param lcc The mesh to improve.
+//     */
+//    void refine(LCC_3 &lcc) {
+//        std::vector<Dart_handle> cubes_with_more_than_4_external_facets;
+//        bool cubes_with_more_than_4_external_facets_not_found = false;
+//
+//        while(!cubes_with_more_than_4_external_facets_not_found) {
+//            // find the external cubes with more than 4 external facets
+//            for (LCC_3::One_dart_per_cell_range<3, 3>::iterator cube_it = lcc.one_dart_per_cell<3>().begin(),
+//                         cube_end_it = lcc.one_dart_per_cell<3>().end(); cube_it != cube_end_it; ++cube_it) {
+//                FT number_of_external_facets = 0;
+//                for (LCC_3::One_dart_per_incident_cell_range<2, 3, 3>::iterator facet_it = lcc.one_dart_per_incident_cell<2, 3, 3>(
+//                        cube_it).begin(),
+//                             facet_end_it = lcc.one_dart_per_incident_cell<2, 3, 3>(cube_it).end();
+//                     facet_it != facet_end_it; ++facet_it) {
+//
+//                    Dart_handle near_cell_facet_dart_handle = lcc.beta(facet_it, 3);
+//                    if (near_cell_facet_dart_handle == lcc.null_dart_handle) {
+//                        number_of_external_facets++;
+//                    }
+//                }
+//                if (number_of_external_facets == 5) {
+//                    cubes_with_more_than_4_external_facets.emplace_back(cube_it);
+//                }
+//            }
+//            if(cubes_with_more_than_4_external_facets.empty())
+//            {
+//                cubes_with_more_than_4_external_facets_not_found = true;
+//            }
+//            // remove the cubes found
+//            for (Dart_handle cube: cubes_with_more_than_4_external_facets) {
+//                blockRemover.removeBlock(lcc, cube);
+//            }
+//            cubes_with_more_than_4_external_facets.clear();
+//        }
+//        std::cout<<"Blocchi rimossi nel refiner"<<std::endl;
+//    }
 
 private:
     /*

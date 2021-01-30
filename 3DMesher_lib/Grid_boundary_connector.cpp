@@ -24,6 +24,4 @@ void CGAL::Grid_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyhe
             }
         }
     }
-
-
 }

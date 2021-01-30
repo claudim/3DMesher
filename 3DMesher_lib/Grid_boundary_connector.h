@@ -1,3 +1,16 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Connect the grid to the polyhedron. Among the grid blocks, there are some that have external point.
+// External point is a point outside the polyhedron.
+// The objective of this class is to move the external points to points belonging to the polyhedron boundary.
+//******************************************************************************
+
+
 #ifndef INC_3DMESHER_GRID_BOUNDARY_CONNECTOR_H
 #define INC_3DMESHER_GRID_BOUNDARY_CONNECTOR_H
 
@@ -19,10 +32,24 @@ typedef CGAL::AABB_traits<K, Primitive> AABB_Traits;
 typedef CGAL::AABB_tree<AABB_Traits> Tree;
 
 namespace CGAL {
+    /**
+     * @brief Connect the grid to the polyhedron. Among the grid blocks, there are some that have external point.
+     * External point is a point outside the polyhedron.
+     * The objective of this class is to move the external points to points belonging to the polyhedron boundary.
+     *
+     * @file Grid_boundary_connector.h
+     * @class Grid_boundary_connector
+     */
     class Grid_boundary_connector {
 
     public:
         //template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
+        /**
+         * @brief Foreach grid block, move all the external points of the grid block to points belonging to the polyhedron boundary.
+         *
+         * @param lcc The initial grid/mesh.
+         * @param polyhedron The polyhedron to discretize.
+         */
         void connect(LCC_3 &lcc, const Polyhedron &polyhedron);
     };
 

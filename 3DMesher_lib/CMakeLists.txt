@@ -52,7 +52,6 @@ set(SOURCE_FILES
         Intersecting_polyhedron_finder.cpp
         Hexahedron_fitter.cpp
         L_facet_detector.cpp
-        Volume_Validator.cpp
         Degenerate_element_finder.cpp
         VTK_manager.cpp
         )

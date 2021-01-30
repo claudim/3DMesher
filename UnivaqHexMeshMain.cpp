@@ -19,8 +19,8 @@ typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
 int main(int argc, char* argv[]) {
 
-    //const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
-    const std::string data_path = "/home/claudia/CLionProjects/3DMesher/DataInput";
+    const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
+    //const std::string data_path = "/home/claudia/CLionProjects/3DMesher/DataInput";
     std::string name = "bolt";
     //std::string name = "bunny";
     //std::string name = "ellipse";
@@ -63,19 +63,20 @@ int main(int argc, char* argv[]) {
         std::cout<<"fatto"<<std::endl;
 
         //remove external blocks
-        Initial_mesh_maker<External_block_remover> initialMeshMaker;
-        initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
-//        External_block_remover externalBlockRemover = External_block_remover();
-//        externalBlockRemover.removeBlocks(hex_mesh, polyhedron);
+//        Initial_mesh_maker<External_block_remover> initialMeshMaker;
+//        initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
+        External_block_remover externalBlockRemover = External_block_remover();
+        externalBlockRemover.removeBlocks(hex_mesh, polyhedron);
         std::cout<<"rimossi i blocchi esterni"<<std::endl;
-        //get the number of hex_mesh element
-        int number_of_int_element = 0;
-        for(LCC_3::One_dart_per_cell_range<3,3>::iterator cell_it = hex_mesh.one_dart_per_cell<3,3>().begin(),
-                    cell_it_end = hex_mesh.one_dart_per_cell<3,3>().end(); cell_it != cell_it_end; ++cell_it)
-        {
-            number_of_int_element++;
-        }
-        std::cout<<"Number of initial mesh element "<< number_of_int_element<<std::endl;
+
+//        //get the number of hex_mesh element
+//        int number_of_int_element = 0;
+//        for(LCC_3::One_dart_per_cell_range<3,3>::iterator cell_it = hex_mesh.one_dart_per_cell<3,3>().begin(),
+//                    cell_it_end = hex_mesh.one_dart_per_cell<3,3>().end(); cell_it != cell_it_end; ++cell_it)
+//        {
+//            number_of_int_element++;
+//        }
+//        std::cout<<"Number of initial mesh element "<< number_of_int_element<<std::endl;
 
         //fit on boundary blocks to polyhedron boundary
         CGAL::Grid_boundary_connector gridBoundaryConnector;
@@ -108,8 +109,8 @@ int main(int argc, char* argv[]) {
         std::cout<<"Degenerate elements are " << degenerateElements.size() <<std::endl;
 
         //output
-        //const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/UnivaqHexMeshOutput/";
-        const std::string out_data_path = "/home/claudia/CLionProjects/3DMesher/MeshOutput/UnivaqHexMeshOutput";
+        const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/UnivaqHexMeshOutput/";
+        //const std::string out_data_path = "/home/claudia/CLionProjects/3DMesher/MeshOutput/UnivaqHexMeshOutput";
         std::string outputFileName = out_data_path + "/" + name + "_8Res.mesh";
 
         std::ofstream medit_file(outputFileName);
