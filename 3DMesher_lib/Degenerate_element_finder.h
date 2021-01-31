@@ -6,13 +6,11 @@
 class Degenerate_element_finder {
 private:
     std::vector<Dart_handle> pyramids;
-
-
-private:
     std::vector<Dart_handle> tetrahedra;
     std::vector<Dart_handle> wedges;
     std::vector<Dart_handle> quadrilaterals;
 
+public:
     /**
      * \brief Check if a mesh block is a pyramid and if it is a pyramid add it to pyramids vector.
      *
@@ -236,7 +234,9 @@ public:
             for (LCC_3::One_dart_per_cell_range<3, 3>::iterator cell_it = lcc.one_dart_per_cell<3>().begin(), cell_end_it = lcc.one_dart_per_cell<3>().end();
                  cell_it != cell_end_it; ++cell_it) {
                //questo è quello gusto if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it) || this->has_3_collinear_vertices(lcc, cell_it)) {
-                if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it)) {
+
+                //if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it)) {
+                if (!this->has_coplanar_facet_vertices(lcc, cell_it)) {
                     degenerate_elements.emplace_back(cell_it);
                 }
             }

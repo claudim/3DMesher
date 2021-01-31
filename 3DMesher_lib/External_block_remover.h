@@ -16,6 +16,7 @@
 #include <MyLCC.h>
 #include "Block_maker.h"
 #include "Vertex_location_finder.h"
+#include "External_and_onBoundary_remover.h"
 #include <CGAL/Polyhedral_mesh_domain_with_features_3.h>
 #include <CGAL/Linear_cell_complex_for_combinatorial_map.h>
 #include <CGAL/Linear_cell_complex_constructors.h>
@@ -33,6 +34,8 @@ typedef CGAL::Bbox_3 Bbox;
 //typedef LCC_3::FT FT;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 typedef CGAL::Side_of_triangle_mesh<Polyhedron, K> Point_inside;
+typedef CGAL::Vertex_location_finder Vertex_location_finder;
+
 
 /**
  * @brief Some operations to obtain the initial mesh starting from a grid. The initial mesh is a coarse mesh.
@@ -62,7 +65,8 @@ public:
      * @param polyhedron The polyhedron.
      * @return true if the block is to remove, false otherwise.
      */
-    bool is_block_to_be_removed(const LCC_3& lcc, const Dart_handle& block, const Polyhedron& polyhedron);
+    bool is_block_to_be_removed(const LCC_3 &lcc, const Dart_handle &block, const Polyhedron &polyhedron,
+                                Vertex_location_finder &vertexLocationFinder);
 
     /**
      * @brief Revome all grid blocks that have external points. A point is an external point if is outside the boundary polyhedron.

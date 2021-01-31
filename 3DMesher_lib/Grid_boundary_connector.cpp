@@ -5,6 +5,7 @@ typedef CGAL::Vertex_location_finder Vertex_location_finder ;
 
 //template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
 void CGAL::Grid_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyhedron) {
+    int quanti_cicli = 0 ;
 //void Grid_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyhedron) {
 //    // constructs AABB tree and computes internal KD-tree
 //    // data structure to accelerate distance queries
@@ -15,6 +16,7 @@ void CGAL::Grid_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyhe
         for(LCC_3::One_dart_per_incident_cell_range<0,3>::iterator vertex_iterator = lcc.one_dart_per_incident_cell<0,3>(block_iterator).begin(),
                     end_it = lcc.one_dart_per_incident_cell<0,3>(block_iterator).end(); vertex_iterator != end_it; ++vertex_iterator)
         {
+            quanti_cicli ++;
             Point p = lcc.point(vertex_iterator);
             if(!vertexLocationFinder.is_point_inside_polyhedron(p) &&
                !vertexLocationFinder.is_point_onBoundary_polyhedron(p)){
@@ -24,4 +26,5 @@ void CGAL::Grid_boundary_connector::connect(LCC_3 &lcc, const Polyhedron &polyhe
             }
         }
     }
+    std::cout << "quanti cicli: "  << quanti_cicli << std::endl;
 }

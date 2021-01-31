@@ -23,8 +23,8 @@ typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 void bad_hex_finder(LCC_3 &lcc);
 
 int main(int argc, char* argv[]) {
-    const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
-    //const std::string data_path = "/home/claudia/CLionProjects/3DMesher/DataInput";
+//    const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
+    const std::string data_path = "/home/claudia/CLionProjects/3DMesher/DataInput";
      std::string name = "bolt";
     //std::string name = "bunny";
     //std::string name = "ellipse";
@@ -54,7 +54,9 @@ int main(int argc, char* argv[]) {
         std::cout<<"fatto"<<std::endl;
 
         //detect the initial mesh
-        Initial_mesh_maker<External_and_onBoundary_remover> initialMeshMaker;
+//        Initial_mesh_maker<External_and_onBoundary_remover> initialMeshMaker;
+//        initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension() * 0.55);
+        External_and_onBoundary_remover initialMeshMaker;
         initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension() * 0.55);
         //initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()* 3/5);
         //initialMeshMaker.removeBlocks(hex_mesh, polyhedron, gridMaker.getGridDimension()* 2/3);
@@ -77,14 +79,17 @@ int main(int argc, char* argv[]) {
        // CGAL::draw(hex_mesh);
 
         //output
-        const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
-        //const std::string out_data_path = "/home/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
+//        const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
+        const std::string out_data_path = "/home/claudia/CLionProjects/3DMesher/MeshOutput/SchneidersHexMeshOutput";
         std::string outputFileName = out_data_path + "/" + name + "_R8_Mesh.mesh";
         std::ofstream medit_file(outputFileName);
         Writer writer;
         writer.output_to_medit(medit_file,hex_mesh);
         medit_file.close();
 
+        outputFileName = out_data_path + "/" + name + "_8Res.vtk";
+        std::ofstream vtk_file(outputFileName);
+        writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
         //draw in cgal the final hex mesh
         //CGAL::draw(hex_mesh);
     }

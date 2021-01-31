@@ -39,17 +39,21 @@ endif (DOXYGEN_FOUND)
 
 #set(VTK_INCLUDE_DIRS "/usr/local/include/vtk-9.0")
 #set(VTK_LIBRARY_DIRS "/usr/local/lib")
+find_package(VTK REQUIRED)
 #find_package(VTK REQUIRED NO_MODULE)
 ##include( ${VTK_USE_FILE} )
-#IF(VTK_FOUND)
-#    message("found VTK. Version:" ${VTK_VERSION}. VTK_DIR: ${VTK_DIR}. VTK_LIBRARIES: ${VTK_USE_FILE}.
-#            VTK_LIBRARY_DIRS: ${VTK_LIBRARY_DIRS})
-#
-#ELSE(VTK_FOUND)
-#    MESSAGE(FATAL_ERROR
-#            "Cannot build the executable without VTK. Please set the
-#VTK_DIR")
-#ENDIF(VTK_FOUND)
+IF(VTK_FOUND)
+    message("found VTK. Version:" ${VTK_VERSION}. VTK_DIR: ${VTK_DIR}. VTK_LIBRARIES: ${VTK_USE_FILE}.
+            VTK_LIBRARY_DIRS: ${VTK_LIBRARY_DIRS})
+    # vtk_module_autoinit is needed
+
+
+    include(${VTK_USE_FILE})
+
+ELSE(VTK_NOT_FOUND)
+    MESSAGE(FATAL_ERROR
+            "Cannot build the executable without VTK. Please set the VTK_DIR")
+ENDIF(VTK_FOUND)
 
 #set(CMAKE_BUILD_TYPE Release) #the debugger does not work
 
@@ -135,20 +139,21 @@ target_link_libraries(3DMesher_lib PUBLIC Verdict::verdict)
 target_link_libraries(3DMesher PUBLIC ${GMSH_LIB} )
 
 #target_link_libraries(3DMesher  PUBLIC ${SMESH_LIBRARIES})
-
+message(ciai ${VTK_LIBRARIES})
 ##Link VTK library
-#if (VTK_VERSION VERSION_LESS "8.90.0")
-#    # old system
-#    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
-#else ()
-#    # include all components
-#    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
-#    # vtk_module_autoinit is needed
-#    vtk_module_autoinit(
-#            TARGETS 3DMesher
-#            MODULES ${VTK_LIBRARIES}
-#    )
-#endif ()
+if (VTK_VERSION VERSION_LESS "8.90.0")
+    # old system
+    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+else ()
+    # vtk_module_autoinit is needed
+    vtk_module_autoinit(
+            TARGETS 3DMesher
+            MODULES ${VTK_LIBRARIES}
+    )
+    # include all components
+    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+
+endif ()
 
 
 add_subdirectory(Catch_tests)

@@ -61,7 +61,9 @@ public:
      * @param polyhedron The input which the mesh must represent.
      * @return true if it is to remove, false otherwise.
      */
-    bool is_block_to_be_removed(const LCC_3& lcc, const Dart_handle& block, const Polyhedron& polyhedron);
+    bool is_block_to_be_removed(const LCC_3 &lcc, const Dart_handle &block,
+                                const Polyhedron &polyhedron,
+                                Vertex_location_finder &vertexLocationFinder);
 };
 
 

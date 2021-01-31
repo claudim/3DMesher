@@ -23,7 +23,7 @@ set(SOURCE_TESTS_FILES
         Volume_validator_tests.cpp
         Degenerate_element_finder_tests.cpp
         Writer_tests.cpp
-        #VTK_manager_tests.cpp
+        VTK_manager_tests.cpp
         )
 
 set(HEADER_TESTS_FILES

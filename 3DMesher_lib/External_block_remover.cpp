@@ -1,10 +1,11 @@
 #include <CGAL/Mesh_polyhedron_3.h>
 #include "External_block_remover.h"
 
-typedef CGAL::Vertex_location_finder Vertex_location_finder;
 
 // i cicli for su lcc lanciano un'eccezione quando lcc è vuoto per questo ho aggiunto l'if not empty
-bool External_block_remover::is_block_to_be_removed(const LCC_3& lcc, const Dart_handle& block, const Polyhedron& polyhedron){
+bool
+External_block_remover::is_block_to_be_removed(const LCC_3 &lcc, const Dart_handle &block, const Polyhedron &polyhedron,
+                                               Vertex_location_finder &vertexLocationFinder) {
     bool toRemove = false;
     int number_of_internal_points = 0;
 //    if(!lcc.is_empty()) {
@@ -21,7 +22,7 @@ bool External_block_remover::is_block_to_be_removed(const LCC_3& lcc, const Dart
 
 //it is necessary for univaq algorithm
     if(!lcc.is_empty()) {
-        Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
+//        Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
         // per tutti i vertici del cubo
         for (LCC_3::One_dart_per_incident_cell_const_range<0, 3>::const_iterator
                      it = lcc.one_dart_per_incident_cell<0,3>(block).begin(),
@@ -51,10 +52,11 @@ bool External_block_remover::is_block_to_be_removed(const LCC_3& lcc, const Dart
 void External_block_remover::removeBlocks(LCC_3& lcc, const Polyhedron& polyhedron) {
     if(!lcc.is_empty())
     {
+        Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
         for (LCC_3::One_dart_per_cell_range<3, 3>::iterator lcc_cells_iterator = lcc.one_dart_per_cell<3, 3>().begin(),
                      lcc_cells_end_iterator = lcc.one_dart_per_cell<3, 3>().end();
              lcc_cells_iterator != lcc_cells_end_iterator; ++lcc_cells_iterator) {
-            if (is_block_to_be_removed(lcc, lcc_cells_iterator, polyhedron)) {
+            if (is_block_to_be_removed(lcc, lcc_cells_iterator, polyhedron, vertexLocationFinder)) {
                 //removeBlock(lcc, lcc_cells_iterator);
                 lcc.remove_cell<3>(lcc_cells_iterator);
             }
