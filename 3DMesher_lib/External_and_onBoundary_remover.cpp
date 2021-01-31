@@ -13,6 +13,7 @@ void External_and_onBoundary_remover::removeBlocks(LCC_3 &lcc, const Polyhedron 
         }
     }
 
+    //può essere eliminato quello che segue??
     OnBoundary_block_remover onBoundaryBlockRemover = OnBoundary_block_remover();
     onBoundaryBlockRemover.removeBlocks(lcc, polyhedron);
 }
@@ -29,9 +30,16 @@ void External_and_onBoundary_remover::removeBlocks(LCC_3 &lcc, const Polyhedron 
             }
         }
     }
+    // ho già eliminato i blocchi esterni e quelli sul boundary
 
     OnBoundary_block_remover onBoundaryBlockRemover = OnBoundary_block_remover();
     onBoundaryBlockRemover.removeBlocks(lcc, polyhedron, distance);
+
+//    if(distance > this->_block_dimension)
+//    {onBoundaryBlockRemover.removeBlocks(lcc, polyhedron, distance);}
+//    else {
+//        onBoundaryBlockRemover.removeBlocks_afterRemovedExternalBlocks(lcc, polyhedron, distance);
+//    }
 }
 
 void External_and_onBoundary_remover::removeBlock(LCC_3& lcc, Dart_handle& blockToRemove) {
@@ -54,4 +62,8 @@ bool External_and_onBoundary_remover::is_block_to_be_removed(const LCC_3 &lcc, c
         }
     }
     return toRemove;
+}
+
+void External_and_onBoundary_remover::setBlockDimension(double blockDimension) {
+    _block_dimension = blockDimension;
 }

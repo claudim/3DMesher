@@ -118,9 +118,9 @@ endif()
 
 
 #set(SOURCE_FILES main.cpp)
-#set(SOURCE_FILES SchneidersHexMeshMain.cpp)
+set(SOURCE_FILES SchneidersHexMeshMain.cpp)
 #set(SOURCE_FILES DelaunayTetMeshMain.cpp)
-set(SOURCE_FILES UnivaqHexMeshMain.cpp)
+#set(SOURCE_FILES UnivaqHexMeshMain.cpp)
 #set(SOURCE_FILES main_gmsh.cpp)
 #set(SOURCE_FILES main_getBBox.cpp)
 add_executable(3DMesher ${SOURCE_FILES})

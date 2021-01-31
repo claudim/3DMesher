@@ -12,11 +12,12 @@ TEST_CASE("check on boundary block"){
     LCC_3 lcc;
     Block_maker blockMaker = Block_maker();
     OnBoundary_block_remover blockRemover = OnBoundary_block_remover();
+    Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
 
     SECTION( "must_check_onBoundary_block" ) {
         Point onBoundaryBasePoint = Point(0,0,0);  FT lg = 2;
         Dart_handle onBoundary_block = blockMaker.make_cube(lcc, onBoundaryBasePoint, lg);
-        REQUIRE(blockRemover.is_block_on_boundary(lcc,onBoundary_block, polyhedron) == true );
+        REQUIRE(blockRemover.is_block_on_boundary(lcc, onBoundary_block, polyhedron, vertexLocationFinder) == true );
     }
 }
 
@@ -26,7 +27,7 @@ TEST_CASE("check if one block is too close to the boundary 2"){
     Polyhedron polyhedron = reader.read(fileName);
     LCC_3 lcc;
     OnBoundary_block_remover blockRemover = OnBoundary_block_remover();
-
+    Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
     FT distance = 2;
     Point basepoint = Point(2,2,2);  FT lg1 = 2;
 
@@ -46,7 +47,8 @@ TEST_CASE("check if one block is too close to the boundary 2"){
                         Traits::Construct_translated_point()
                                 (basepoint, Traits::Vector(lg1, lg1, 3)));
 
-    REQUIRE(blockRemover.is_block_too_close_to_the_boundary2(lcc, too_close_block, polyhedron, distance) == true );
+    REQUIRE(blockRemover.is_block_too_close_to_the_boundary2(lcc, too_close_block, polyhedron, distance,
+                                                             vertexLocationFinder) == true );
     LCC_3 lcc1;
     Dart_handle not_too_close_block = lcc1.make_hexahedron(basepoint,
                                                       Traits::Construct_translated_point()
@@ -63,7 +65,8 @@ TEST_CASE("check if one block is too close to the boundary 2"){
                                                               (basepoint, Traits::Vector(lg1, 0, 3)),
                                                       Traits::Construct_translated_point()
                                                               (basepoint, Traits::Vector(lg1, lg1, lg1)));
-    REQUIRE(blockRemover.is_block_too_close_to_the_boundary2(lcc1, not_too_close_block, polyhedron, distance) == false );
+    REQUIRE(blockRemover.is_block_too_close_to_the_boundary2(lcc1, not_too_close_block, polyhedron, distance,
+                                                             vertexLocationFinder) == false );
 }
 
 TEST_CASE("remove_all_onBoundary_blocks","[OnBoundary_block_remover]"){
@@ -324,17 +327,17 @@ TEST_CASE("remove 3cells too close to the boundary according to a passed distanc
     
     double distance = 2;
     bool isBlockTooCloseToTheBoundary = blockRemover.is_block_too_close_to_the_boundary(lcc, block_handle, polyhedron,
-                                                                                        distance);
+                                                                                        distance,vertexLocationFinder);
     REQUIRE(isBlockTooCloseToTheBoundary == false);
 
     distance = 3;
     isBlockTooCloseToTheBoundary = blockRemover.is_block_too_close_to_the_boundary(lcc, block_handle, polyhedron,
-                                                                                   distance);
+                                                                                   distance, vertexLocationFinder);
     REQUIRE(isBlockTooCloseToTheBoundary == true);
     
     distance = 4;
     isBlockTooCloseToTheBoundary = blockRemover.is_block_too_close_to_the_boundary(lcc, block_handle, polyhedron,
-                                                                                   distance);
+                                                                                   distance, vertexLocationFinder);
     REQUIRE(isBlockTooCloseToTheBoundary == true);
 
 }

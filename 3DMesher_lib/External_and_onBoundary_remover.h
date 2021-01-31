@@ -26,6 +26,13 @@ typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
  * The External_and_onBoundary_remover is one of the concrete strategy class in the Strategy design pattern.
  */
 class External_and_onBoundary_remover {
+private:
+    /**
+     * Dimension of a single block
+     */
+    double _block_dimension;
+public:
+    void setBlockDimension(double blockDimension);
 
 public:
 /**

@@ -19,6 +19,7 @@
 #include <CGAL/Linear_cell_complex_operations.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include "External_facet_finder.h"
+#include "More_external_block_finder.h"
 
 
 typedef CGAL::Vertex_location_finder Vertex_location_finder;
@@ -60,12 +61,19 @@ public:
                                 const Polyhedron &polyhedron,
                                 const double &distance);
 
-    bool is_block_too_close_to_the_boundary(const LCC_3 &lcc,const Dart_handle& block,const Polyhedron &polyhedron,const double &distance);
-    bool is_block_too_close_to_the_boundary2(const LCC_3 &lcc,const Dart_handle& block,const Polyhedron &polyhedron,const double &distance);
+    bool is_block_too_close_to_the_boundary(const LCC_3 &lcc, const Dart_handle &block,
+                                            const Polyhedron &polyhedron, const double &distance,
+                                            Vertex_location_finder& vertexLocationFinder);
+    bool is_block_too_close_to_the_boundary2(const LCC_3 &lcc, const Dart_handle &block,
+                                             const Polyhedron &polyhedron, const double &distance,
+                                             Vertex_location_finder &vertexLocationFinder);
 
 
     //template<typename allocator, typename allocator, typename Linear_cell_complex_traits, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
-    bool is_block_on_boundary(const LCC_3 &lcc, const Dart_handle &block, const Polyhedron &polyhedron);
+    bool is_block_on_boundary(const LCC_3 &lcc, const Dart_handle &block, const Polyhedron &polyhedron,
+                              Vertex_location_finder &vertexLocationFinder);
+
+    void removeBlocks_afterRemovedExternalBlocks(LCC_3 &lcc, const Polyhedron &polyhedron, const double &distance);
 };
 
 
