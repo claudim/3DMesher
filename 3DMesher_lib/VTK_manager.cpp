@@ -1,6 +1,6 @@
 #include "VTK_manager.h"
 
-vtkSmartPointer<vtkUnstructuredGrid> readUnstructuredGrid(std::string const& fileName) {
+vtkSmartPointer<vtkUnstructuredGrid> VTK_manager::readUnstructuredGrid(std::string const& fileName) {
     vtkSmartPointer <vtkUnstructuredGrid> unstructuredGrid;
     std::string extension = "";
     if (fileName.find_last_of(".") != std::string::npos) {
@@ -12,6 +12,7 @@ vtkSmartPointer<vtkUnstructuredGrid> readUnstructuredGrid(std::string const& fil
                    ::tolower);
 
     if (extension == ".vtu") {
+        std::cout<<"vtu"<<endl;
         vtkNew <vtkXMLUnstructuredGridReader> reader;
         reader->SetFileName(fileName.c_str());
         reader->Update();
@@ -19,8 +20,15 @@ vtkSmartPointer<vtkUnstructuredGrid> readUnstructuredGrid(std::string const& fil
     } else if (extension == ".vtk") {
         vtkNew <vtkUnstructuredGridReader> reader;
         reader->SetFileName(fileName.c_str());
-        reader->Update();
-        unstructuredGrid = reader->GetOutput();
+        if(reader->IsFileValid("unstructured_grid"))
+        {
+            reader->Update();
+            unstructuredGrid = reader->GetOutput();
+        } else
+        {
+            std::cout<<"The vtk file is not valid "<<std::endl;
+        }
+
     } else {
         //impossible to read
         std::cout<<"Impossible to read the file "<< fileName <<std::endl;
@@ -28,56 +36,117 @@ vtkSmartPointer<vtkUnstructuredGrid> readUnstructuredGrid(std::string const& fil
     return unstructuredGrid;
 }
 
-void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std::map<std::string, int> &statistics,
+void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std::map<int, int> &statistics,
                                                bool doStatisticsWriteOnFile) {
     vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = readUnstructuredGrid(fileName);
+
     vtkIdType numberOfCells = unstructuredGrid->GetNumberOfCells();
-    statistics["CELLS_NUMBER"] = numberOfCells;
-    std::cout<<"Number of cells"<< numberOfCells<<std::endl;
-    int hexes_number = 0;
-    int tetra_number = 0;
-    int wedges_number = 0;
-    int pyramids_number = 0;
-    int voxels_number = 0;
-    int other_polyhedron_number = 0;
-    for(vtkIdType i = 0; i< numberOfCells; i++ )
+    std::cout << "------------------------" << std::endl;
+    std::cout << "The inside dataset contains a " << std::endl
+              << unstructuredGrid->GetClassName()
+              <<  " that has " << numberOfCells << " cells" << std::endl;
+
+    for (vtkIdType i = 0; i < numberOfCells; i++)
     {
-        int cell_type = unstructuredGrid->GetCellType(i);
-        switch (cell_type) {
-            case VTK_HEXAHEDRON:
-                hexes_number++;
-                break;
-            case VTK_TETRA:
-                tetra_number++;
-                break;
-            case VTK_WEDGE:
-                wedges_number++;
-                break;
-            case VTK_PYRAMID:
-                pyramids_number++;
-                break;
-            case VTK_VOXEL:
-                voxels_number++;
-                break;
-            default:
-                other_polyhedron_number++;
-                break;
-        }
+        statistics[unstructuredGrid->GetCellType(i)]++;
     }
-    //unstructuredGrid->GetCellTypes((vtkCellTypes *) list);
-    statistics["CELLS_NUMBER"] = numberOfCells;
-    statistics["HEXES_NUMBER"] = hexes_number;
-    statistics["VOXELS_NUMBER"] = voxels_number;
-    statistics["TETRA_NUMBER"] = tetra_number;
-    statistics["WEDGES_NUMBER"] = wedges_number;
-    statistics["PYRAMIDS_NUMBER"] = pyramids_number;
-    statistics["OTHER_3D_CELLS_NUMBER"]= other_polyhedron_number;
 
     if (doStatisticsWriteOnFile)
     {
-        this->writeStatisticsOnFile(statistics, fileName);
+        try {
+            std::string fileName_without_extension = "";
+            if (fileName.find_last_of("/") != std::string::npos) {
+                fileName_without_extension = fileName.substr((fileName.find_last_of("/")+1));
+                fileName_without_extension.replace(fileName_without_extension.size()-4, 4,"" );
+            }
+            std::ofstream statisticsFile;
+            std::string statistics_file_name =  fileName_without_extension + "_statistics.txt";
+            statisticsFile.open(statistics_file_name, std::ios::out);
+            statisticsFile << "This is the statistics file of the mesh stored in " << fileName << ".\n";
+            statisticsFile << "\n";
+
+            for (auto c : statistics)
+            {
+                statisticsFile << "\tCell type "
+                          << vtkCellTypes::GetClassNameFromTypeId(c.first)
+                          << " occurs " << c.second << " times." << std::endl;
+            }
+            statisticsFile.close();
+
+        }catch(std::ios::failure exception){
+            std::cout<<"Error while writing statistics file" <<std::endl;
+        }
     }
+
 }
+
+void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std::map<int, int> &statistics,
+                                               bool doStatisticsWriteOnFile, std::string const &outputFolderPath) {
+    vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = readUnstructuredGrid(fileName);
+
+    vtkIdType numberOfCells = unstructuredGrid->GetNumberOfCells();
+    std::cout << "------------------------" << std::endl;
+    std::cout << "The inside dataset contains a " << std::endl
+              << unstructuredGrid->GetClassName()
+              <<  " that has " << numberOfCells << " cells" << std::endl;
+
+    for (vtkIdType i = 0; i < numberOfCells; i++)
+    {
+        statistics[unstructuredGrid->GetCellType(i)]++;
+    }
+
+    if (doStatisticsWriteOnFile)
+    {
+        try {
+            std::string fileName_without_extension = "";
+            if (fileName.find_last_of("/") != std::string::npos) {
+                fileName_without_extension = fileName.substr((fileName.find_last_of("/")+1));
+                fileName_without_extension.replace(fileName_without_extension.size()-4, 4,"" );
+            }
+            std::ofstream statisticsFile;
+            std::string statistics_file_name = outputFolderPath +  fileName_without_extension + "_statistics.txt";
+            statisticsFile.open(statistics_file_name, std::ios::out);
+            statisticsFile << "This is the statistics file of the mesh stored in " << fileName << ".\n";
+            statisticsFile << "\n";
+
+            for (auto c : statistics)
+            {
+                statisticsFile << "\tCell type "
+                               << vtkCellTypes::GetClassNameFromTypeId(c.first)
+                               << " occurs " << c.second << " times." << std::endl;
+            }
+            statisticsFile.close();
+
+        }catch(std::ios::failure exception){
+            std::cout<<"Error while writing statistics file" <<std::endl;
+        }
+    }
+
+}
+
+//bool VTK_manager::generateStatistics(vtkSmartPointer<vtkUnstructuredGrid> &unstructuredGrid) {
+//    // Generate a report
+//    vtkIdType numberOfCells = unstructuredGrid->GetNumberOfCells();
+//    std::cout << "------------------------" << std::endl;
+//    std::cout << "The inside dataset contains a " << std::endl
+//              << unstructuredGrid->GetClassName()
+//              <<  " that has " << numberOfCells << " cells" << std::endl;
+//    typedef std::map<int,int> CellContainer;
+//    CellContainer cellMap;
+//    for (vtkIdType i = 0; i < numberOfCells; i++)
+//    {
+//        cellMap[unstructuredGrid->GetCellType(i)]++;
+//    }
+//
+//    for (auto c : cellMap)
+//    {
+//        std::cout << "\tCell type "
+//                  << vtkCellTypes::GetClassNameFromTypeId(c.first)
+//                  << " occurs " << c.second << " times." << std::endl;
+//    }
+//    return true;
+//}
+
 
 
 bool VTK_manager::writeStatisticsOnFile(const std::map<std::string, int> &statistics, std::string const &vtkFileName) {

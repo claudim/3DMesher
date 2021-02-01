@@ -125,7 +125,8 @@ endif()
 
 
 #set(SOURCE_FILES main.cpp)
-set(SOURCE_FILES SchneidersHexMeshMain.cpp)
+set(SOURCE_FILES mainWriteStatistics.cpp)
+#set(SOURCE_FILES SchneidersHexMeshMain.cpp)
 #set(SOURCE_FILES DelaunayTetMeshMain.cpp)
 #set(SOURCE_FILES UnivaqHexMeshMain.cpp)
 #set(SOURCE_FILES main_gmsh.cpp)

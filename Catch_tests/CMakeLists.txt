@@ -41,3 +41,18 @@ include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 add_executable(Catch_tests_run ${SOURCE_TESTS_FILES}  ${HEADER_TESTS_FILES})
 target_link_libraries(Catch_tests_run 3DMesher_lib)
 
+##Link VTK library
+message (STATUS "VTK_VERSION: ${VTK_VERSION}")
+if (VTK_VERSION VERSION_LESS "8.90.0")
+    # old system
+    target_link_libraries(Catch_tests_run ${VTK_LIBRARIES})
+else ()
+    # include all components
+    target_link_libraries(Catch_tests_run ${VTK_LIBRARIES})
+    # vtk_module_autoinit is needed
+    vtk_module_autoinit(
+            TARGETS Catch_tests_run
+            MODULES ${VTK_LIBRARIES}
+    )
+endif ()
+

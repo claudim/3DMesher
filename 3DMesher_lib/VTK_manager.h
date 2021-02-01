@@ -15,10 +15,14 @@
 #include <iostream>
 #include <map>
 #include <fstream>
-#include "vtk-9.0/vtkUnstructuredGrid.h"
+#include "vtk-9.0/vtkSmartPointer.h"
+#include "vtk-9.0/vtkUnstructuredGridAlgorithm.h"
 #include "vtk-9.0/vtkXMLUnstructuredGridReader.h"
 #include "vtk-9.0/vtkUnstructuredGridReader.h"
+#include "vtk-9.0/vtkUnstructuredGrid.h"
 #include "vtk-9.0/vtkCellType.h"
+#include "vtk-9.0/vtkCellTypes.h"
+#include <algorithm>
 
 class VTK_manager {
 
@@ -38,12 +42,23 @@ public:
      * as the number of hexahedra or the number of tetrahedra or the number of wedges.
      *
      * @param fileName The name of the file to read.
-     * @param statistics A map where the key is a name like NUMB_HEXES (number of hexahedra) while the value is the number associated to the key.
-     * A key could be 3D_CELLS_NUMBER (number of 3D elements), HEXES_NUMBER (number of hexahedra), TETRA_NUMBER (number of tetrahedra), and so on.
+     * @param statistics A map where the key is a int (the vtk Cell Type, for example 12=VTK_HEXAHEDRON) while the value is the number associated to the key.
      * @param doStatisticsWriteOnFile true if statistics must be written on the file, false otherwise.
      */
-    void get_statistics_from_vtk_file(std::string const &fileName, std::map<std::string, int> &statistics,
+    void get_statistics_from_vtk_file(std::string const &fileName, std::map<int, int> &statistics,
                                       bool doStatisticsWriteOnFile);
+
+    /**
+     * \brief Read from a .vtu file or .vtk file where is stored an unstructured grid and get some statistics on it
+     * as the number of hexahedra or the number of tetrahedra or the number of wedges.
+     *
+     * @param fileName The name of the file to read.
+     * @param statistics A map where the key is a int (the vtk Cell Type, for example 12=VTK_HEXAHEDRON) while the value is the number associated to the key.
+     * @param doStatisticsWriteOnFile true if statistics must be written on the file, false otherwise.
+     * @param outputFolderPath Path to a folder where write the statistics file text.
+     */
+    void get_statistics_from_vtk_file(std::string const &fileName, std::map<int, int> &statistics,
+                                                   bool doStatisticsWriteOnFile, std::string const &outputFolderPath);
 
     /**
      * @brief Write the statistics related to the vtk file where is stored the mesh.
@@ -53,6 +68,15 @@ public:
      * @return true if the text file has been generated, false otherwise.
      */
     bool writeStatisticsOnFile(const std::map<std::string, int> &statistics, std::string const &vtkFileName);
+//
+//    /**
+//     * @brief Generate Statistics from a unstructured grid passed as parameters.
+//     *
+//     * @param unstructuredGrid  The unstructured grid.
+//     * @return true if statistics are generated, false otherwise.
+//     */
+//    bool generateStatistics(vtkSmartPointer<vtkUnstructuredGrid> &unstructuredGrid);
+
 };
 
 

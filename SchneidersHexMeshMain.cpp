@@ -23,6 +23,8 @@ typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
 void bad_hex_finder(LCC_3 &lcc);
 
+bool generateStatistics(vtkSmartPointer<vtkUnstructuredGrid> &unstructuredGrid);
+
 int main(int argc, char* argv[]) {
     const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
    // const std::string data_path = "/home/claudia/CLionProjects/3DMesher/DataInput";
@@ -109,13 +111,10 @@ int main(int argc, char* argv[]) {
         medit_file.close();
 
         outputFileName = out_data_path + "/" + name + "_8Res.vtk";
+        std::string outputFileName2 = out_data_path + "/" + name + "2_8Res.vtk";
         std::ofstream vtk_file(outputFileName);
         writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
-        //draw in cgal the final hex mesh
-        //CGAL::draw(hex_mesh);
-
-        VTK_manager vtk_manager;
-        vtk_manager.readUnstructuredGrid(outputFileName);
+        writer.output_to_legacy_vtk_ascii_unstructured(outputFileName2, hex_mesh);
 
 
     }
@@ -124,3 +123,5 @@ int main(int argc, char* argv[]) {
     }
     return EXIT_SUCCESS;
 }
+
+
