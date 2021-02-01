@@ -39,21 +39,33 @@ endif (DOXYGEN_FOUND)
 
 #set(VTK_INCLUDE_DIRS "/usr/local/include/vtk-9.0")
 #set(VTK_LIBRARY_DIRS "/usr/local/lib")
-find_package(VTK REQUIRED)
-#find_package(VTK REQUIRED NO_MODULE)
-##include( ${VTK_USE_FILE} )
+#find_package(VTK REQUIRED) #all vtk modules
+find_package(VTK REQUIRED COMPONENTS
+        CommonCore
+        CommonDataModel
+        FiltersCore
+        FiltersSources
+        IOLegacy
+        IOXML
+        )
+
 IF(VTK_FOUND)
     message("found VTK. Version:" ${VTK_VERSION}. VTK_DIR: ${VTK_DIR}. VTK_LIBRARIES: ${VTK_USE_FILE}.
             VTK_LIBRARY_DIRS: ${VTK_LIBRARY_DIRS})
-    # vtk_module_autoinit is needed
 
-
-    include(${VTK_USE_FILE})
+    IF (VTK_VERSION VERSION_LESS "8.90.0")
+        # old system
+        include(${VTK_USE_FILE})
+    ENDIF (VTK_VERSION VERSION_LESS "8.90.0")
 
 ELSE(VTK_NOT_FOUND)
     MESSAGE(FATAL_ERROR
             "Cannot build the executable without VTK. Please set the VTK_DIR")
+    message("${VTK_NOT_FOUND_MESSAGE}")
+
 ENDIF(VTK_FOUND)
+
+
 
 #set(CMAKE_BUILD_TYPE Release) #the debugger does not work
 
@@ -104,17 +116,12 @@ endif()
 #        vtkIOLegacy
 #        vtkIOXML
 #        vtkInteractionStyle
-#        QUIET
 #        )
 #if (NOT VTK_FOUND)
 #    message("${VTK_NOT_FOUND_MESSAGE}")
 #    # return ()
 #endif()
-#message (STATUS "VTK_VERSION: ${VTK_VERSION}")
-#if (VTK_VERSION VERSION_LESS "8.90.0")
-#    # old system
-#    include(${VTK_USE_FILE})
-#endif ()
+
 
 
 #set(SOURCE_FILES main.cpp)
@@ -128,6 +135,23 @@ add_executable(3DMesher ${SOURCE_FILES})
 include_directories(3DMesher_lib )
 add_subdirectory(3DMesher_lib )
 
+
+##Link VTK library
+message (STATUS "VTK_VERSION: ${VTK_VERSION}")
+if (VTK_VERSION VERSION_LESS "8.90.0")
+    # old system
+    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+else ()
+    # include all components
+    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+    # vtk_module_autoinit is needed
+    vtk_module_autoinit(
+            TARGETS 3DMesher
+            MODULES ${VTK_LIBRARIES}
+    )
+endif ()
+
+
 # Link 3DMesher_lib with 3DMesher
 target_link_libraries(3DMesher PUBLIC 3DMesher_lib)
 
@@ -139,21 +163,8 @@ target_link_libraries(3DMesher_lib PUBLIC Verdict::verdict)
 target_link_libraries(3DMesher PUBLIC ${GMSH_LIB} )
 
 #target_link_libraries(3DMesher  PUBLIC ${SMESH_LIBRARIES})
-message(ciai ${VTK_LIBRARIES})
-##Link VTK library
-if (VTK_VERSION VERSION_LESS "8.90.0")
-    # old system
-    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
-else ()
-    # vtk_module_autoinit is needed
-    vtk_module_autoinit(
-            TARGETS 3DMesher
-            MODULES ${VTK_LIBRARIES}
-    )
-    # include all components
-    target_link_libraries(3DMesher PUBLIC ${VTK_LIBRARIES})
+message(cia0 ${VTK_LIBRARIES})
 
-endif ()
 
 
 add_subdirectory(Catch_tests)

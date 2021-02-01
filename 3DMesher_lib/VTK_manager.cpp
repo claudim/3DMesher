@@ -23,7 +23,7 @@ vtkSmartPointer<vtkUnstructuredGrid> readUnstructuredGrid(std::string const& fil
         unstructuredGrid = reader->GetOutput();
     } else {
         //impossible to read
-        std::cout<<"Impossible to readthe file "<< fileName <<std::endl;
+        std::cout<<"Impossible to read the file "<< fileName <<std::endl;
     }
     return unstructuredGrid;
 }
