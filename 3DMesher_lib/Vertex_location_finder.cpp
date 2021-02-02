@@ -1,5 +1,8 @@
 #include "Vertex_location_finder.h"
 
+/**
+ * @brief Get the AABB tree.
+ */
 const Tree &CGAL::Vertex_location_finder::getAabbTree(){
     return this->AABB_tree;
 }

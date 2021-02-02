@@ -33,19 +33,38 @@ typedef CGAL::Bbox_3 Bbox;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 typedef CGAL::Side_of_triangle_mesh<Polyhedron, K> Point_inside;
 
+/**
+ * @brief Some operations to remove blocks that intersect the boundary or too close to the boundary.
+ *
+ * @file OnBoundary_block_remover.h
+ * @class OnBoundary_block_remover
+ */
 class OnBoundary_block_remover {
 
 public:
     /**
      * @brief Remove all blocks that intersect the polyhedron boundary.
      *
-     * @param lcc The mesh to remove the block from.
+     * @param lcc The mesh where remove the block from.
      * @param polyhedron The polyhedron.
      */
     void removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron);
 
+    /**
+     * @brief Remove all blocks that intersect the polyhedron boundary and blocks that are less close than the distance passed.
+     *
+     * @param lcc The mesh where remove the block from.
+     * @param polyhedron The polyhedron.
+     * @param distance How far a block must be from the polyhedron to be removed.
+     */
     void removeBlocks(LCC_3 &lcc, const Polyhedron &polyhedron, const double &distance);
 
+    /**
+     * @brief Remove the single block.
+     *
+     * @param lcc The mesh where remove the block from.
+     * @param blockToRemove The block to remove.
+     */
     void removeBlock(LCC_3& lcc, Dart_handle& blockToRemove);
 
     //template<typename Linear_cell_complex_traits, typename allocator, typename allocator, typename Linear_cell_complex_traits>
