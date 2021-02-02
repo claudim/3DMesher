@@ -1,3 +1,13 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Write the hex mesh on a file.
+//******************************************************************************
+
 #ifndef INC_3DMESHER_WRITER_H
 #define INC_3DMESHER_WRITER_H
 
@@ -11,40 +21,41 @@
 #include "vtk-9.0/vtkVersion.h"
 #include "vtk-9.0/vtkSmartPointer.h"
 #include "vtk-9.0/vtkPoints.h"
-//#include <vtk-9.0/vtkCellArray.h>
-//#include <vtk-9.0/vtkType.h>
-//#include <vtk-9.0/vtkPointData.h>
 #include "vtk-9.0/vtkHexahedron.h"
-//#include <vtk-9.0/vtkIdList.h>
 #include "vtk-9.0/vtkUnstructuredGrid.h"
 #include "vtk-9.0/vtkUnstructuredGridWriter.h"
-//#include <vtk-9.0/vtkDataSetMapper.h>
-//#include <vtk-9.0/vtkPolyDataWriter.h>
 
-//typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-//typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
-//typedef LCC_3::Dart_handle Dart_handle;
-//typedef LCC_3::Point Point;
 typedef CGAL::Bbox_3 Bbox;
-//typedef LCC_3::Traits Traits;
-//typedef LCC_3::FT FT;
 
-
+/**
+ * @brief Class responsible to write the hex mesh on a file.
+ *
+ * @file Writer.h
+ * @class Writer
+ */
 class Writer {
 
 public:
+    /**
+     * @brief Write the hex_mesh in a .mesh file.
+     *
+     * @param os Where store the output.
+     * @param lcc The mesh.
+     */
     void output_to_medit(std::ostream& os, const LCC_3& lcc);
 
     /**
-     * \brief Write the hex_mesh in a .vtk file without using the vtk library.
+     * @brief Write the hex_mesh in a .vtk file without using the vtk library.
      *
+     * @param os Where store the output.
      * @param hex_mesh The hexahedral mesh to write in the vtk file format.
      */
     void output_to_legacy_vtk_ascii_unstructured(std::ostream& os, const LCC_3& hex_mesh);
 
     /**
-    * \brief Write the hex_mesh in a .vtk file using the vtk library.
+    * @brief Write the hex_mesh in a .vtk file using the vtk library.
     *
+    * @param outputFileName The path file name where store the output.
     * @param hex_mesh The hexahedral mesh to write in the vtk file format.
     */
     void output_to_legacy_vtk_ascii_unstructured(const std::string outputFileName, const LCC_3& hex_mesh);
