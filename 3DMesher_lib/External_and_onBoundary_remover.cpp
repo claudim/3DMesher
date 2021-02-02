@@ -31,7 +31,6 @@ void External_and_onBoundary_remover::removeBlocks(LCC_3 &lcc, const Polyhedron 
         }
     }
     // ho già eliminato i blocchi esterni e quelli sul boundary
-
     OnBoundary_block_remover onBoundaryBlockRemover = OnBoundary_block_remover();
     onBoundaryBlockRemover.removeBlocks(lcc, polyhedron, distance);
 

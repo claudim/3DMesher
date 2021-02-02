@@ -28,12 +28,12 @@ bool generateStatistics(vtkSmartPointer<vtkUnstructuredGrid> &unstructuredGrid);
 int main(int argc, char* argv[]) {
     const std::string data_path = "/Users/claudia/CLionProjects/3DMesher/DataInput";
    // const std::string data_path = "/home/claudia/CLionProjects/3DMesher/DataInput";
-    // std::string name = "bolt";
+     std::string name = "bolt";
     //std::string name = "bunny";
     //std::string name = "ellipse";
     //std::string name = "cube100x100axisAligned";
     //std::string name = "cube100x100rotated";
-    std::string name = "sphere";
+    //std::string name = "sphere";
     //std::string name = "rotatedTrapezoid";
 
     //std::string name = "sphere";
@@ -111,10 +111,10 @@ int main(int argc, char* argv[]) {
         medit_file.close();
 
         outputFileName = out_data_path + "/" + name + "_8Res.vtk";
-        std::string outputFileName2 = out_data_path + "/" + name + "2_8Res.vtk";
-        std::ofstream vtk_file(outputFileName);
-        writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
-        writer.output_to_legacy_vtk_ascii_unstructured(outputFileName2, hex_mesh);
+        //std::string outputFileName2 = out_data_path + "/" + name + "2_8Res.vtk";
+        //std::ofstream vtk_file(outputFileName);
+       // writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
+        writer.output_to_legacy_vtk_ascii_unstructured(outputFileName, hex_mesh);
 
 
     }

@@ -58,6 +58,10 @@ bool CGAL::Vertex_location_finder::is_point_external_polyhedron(const Point &poi
 //template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
 void CGAL::Vertex_location_finder::findExternalVertices(const LCC_3 &lcc, int &number_of_external_vertices,
                                                   const double &tolerance) {
+    if(tolerance != this->point_internal_check_tolerance)
+    {
+        this->point_internal_check_tolerance = tolerance;
+    }
     number_of_external_vertices = 0;
     for(LCC_3::One_dart_per_cell_const_range<3,3>::const_iterator block_iterator = lcc.one_dart_per_cell<3,3>().begin(),
             end_iterator = lcc.one_dart_per_cell<3,3>().end(); block_iterator!=end_iterator; ++block_iterator){
