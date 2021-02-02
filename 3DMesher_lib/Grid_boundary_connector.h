@@ -43,7 +43,6 @@ namespace CGAL {
     class Grid_boundary_connector {
 
     public:
-        //template<typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits>
         /**
          * @brief Foreach grid block, move all the external points of the grid block to points belonging to the polyhedron boundary.
          *

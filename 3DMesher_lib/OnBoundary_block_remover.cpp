@@ -40,6 +40,31 @@ void OnBoundary_block_remover::removeBlocks(LCC_3 &lcc, const Polyhedron &polyhe
 //    }
 }
 
+void OnBoundary_block_remover::removeBlocks2(LCC_3 &lcc, const Polyhedron &polyhedron, const double &distance) {
+    Vertex_location_finder vertexLocationFinder = Vertex_location_finder(polyhedron);
+//    //remove all onBoundary blocks
+//    if(!lcc.is_empty())
+//    {
+//        for (LCC_3::One_dart_per_cell_range<3, 3>::iterator lcc_cells_iterator = lcc.one_dart_per_cell<3, 3>().begin(),
+//                     lcc_cells_end_iterator = lcc.one_dart_per_cell<3, 3>().end();
+//             lcc_cells_iterator != lcc_cells_end_iterator; ++lcc_cells_iterator) {
+//            if(is_block_on_boundary(lcc, lcc_cells_iterator, polyhedron)){
+//                removeBlock(lcc, lcc_cells_iterator);
+//            }
+//        }
+
+    //remove all onBoundary blocks and all blocks too close to the boundary.
+    if(!lcc.is_empty()){
+        for (LCC_3::One_dart_per_cell_range<3, 3>::iterator lcc_cells_iterator = lcc.one_dart_per_cell<3, 3>().begin(),
+                     lcc_cells_end_iterator = lcc.one_dart_per_cell<3, 3>().end(); lcc_cells_iterator != lcc_cells_end_iterator; ++lcc_cells_iterator) {
+            if(is_block_too_close_to_the_boundary2(lcc, lcc_cells_iterator, polyhedron, distance, vertexLocationFinder)){
+                removeBlock(lcc, lcc_cells_iterator);
+            }
+        }
+    }
+//    }
+}
+
 
 bool
 OnBoundary_block_remover::is_block_on_boundary(const LCC_3 &lcc, const Dart_handle &block, const Polyhedron &polyhedron,
@@ -102,13 +127,6 @@ bool OnBoundary_block_remover::is_block_too_close_to_the_boundary(const LCC_3 &l
     }
     return block_too_close;
 }
-
-
-
-
-
-
-
 
 
 //precondition: every on-boundary block have already been removed

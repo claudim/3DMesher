@@ -196,7 +196,7 @@ TEST_CASE("remove blocks using 3 points approach", "[OnBoundary_block_remover]")
                                 (basepoint, Traits::Vector(lg1, lg1, 3)));
 
     OnBoundary_block_remover blockRemover = OnBoundary_block_remover();
-    blockRemover.removeBlocks(lcc, polyhedron, lg1);
+    blockRemover.removeBlocks2(lcc, polyhedron, lg1);
 
     REQUIRE(lcc.is_empty() == true);
 
@@ -216,7 +216,7 @@ TEST_CASE("remove blocks using 3 points approach", "[OnBoundary_block_remover]")
                         Traits::Construct_translated_point()
                                 (basepoint, Traits::Vector(lg1, lg1, 3)));
 
-    blockRemover.removeBlocks(lcc, polyhedron, lg1);
+    blockRemover.removeBlocks2(lcc, polyhedron, lg1);
 
     REQUIRE(lcc.is_empty() == true);
 
@@ -236,7 +236,7 @@ TEST_CASE("remove blocks using 3 points approach", "[OnBoundary_block_remover]")
                         Traits::Construct_translated_point()
                                 (basepoint, Traits::Vector(lg1, lg1, lg1)));
 
-    blockRemover.removeBlocks(lcc, polyhedron, lg1);
+    blockRemover.removeBlocks2(lcc, polyhedron, lg1);
 
     REQUIRE(lcc.is_empty() == false);
     REQUIRE(lcc.one_dart_per_cell<3>().size() == 1);
@@ -257,7 +257,7 @@ TEST_CASE("remove blocks using 3 points approach", "[OnBoundary_block_remover]")
                                 (basepoint, Traits::Vector(lg1, 0, lg1)),
                         Traits::Construct_translated_point()
                                 (basepoint, Traits::Vector(lg1, lg1, lg1)));
-    blockRemover.removeBlocks(lcc2, polyhedron, lg1);
+    blockRemover.removeBlocks2(lcc2, polyhedron, lg1);
     REQUIRE(lcc2.is_empty() == false);
     REQUIRE(lcc2.one_dart_per_cell<3>().size() == 1);
 
@@ -277,7 +277,7 @@ TEST_CASE("remove blocks using 3 points approach", "[OnBoundary_block_remover]")
                                  (basepoint, Traits::Vector(lg1, 0, lg1)),
                          Traits::Construct_translated_point()
                                  (basepoint, Traits::Vector(lg1, lg1, lg1)));
-    blockRemover.removeBlocks(lcc3, polyhedron, lg1);
+    blockRemover.removeBlocks2(lcc3, polyhedron, lg1);
     REQUIRE(lcc3.is_empty() == false);
     REQUIRE(lcc3.one_dart_per_cell<3>().size() == 1);
 
@@ -298,7 +298,7 @@ TEST_CASE("remove blocks using 3 points approach", "[OnBoundary_block_remover]")
                                  (basepoint, Traits::Vector(lg1, 0, lg1)),
                          Traits::Construct_translated_point()
                                  (basepoint, Traits::Vector(lg1, lg1, 3)));
-    blockRemover.removeBlocks(lcc4, polyhedron, lg1);
+    blockRemover.removeBlocks2(lcc4, polyhedron, lg1);
     REQUIRE(lcc4.is_empty() == false);
     REQUIRE(lcc4.one_dart_per_cell<3>().size() == 1);
 

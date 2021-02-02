@@ -128,10 +128,16 @@ public:
              }
              if (vertices.size() != 8) {
                  has_8_different_vertices = false;
-                 this->is_a_pyramid(replicated_vertices, blockToCheck);
-                 this->is_a_tetrahedron(replicated_vertices, blockToCheck);
-                 this->is_a_wedge(replicated_vertices, blockToCheck);
-                 this->is_a_quadrilateral(replicated_vertices, blockToCheck);
+                 if(vertices.size() ==4) {
+                     this->is_a_quadrilateral(replicated_vertices, blockToCheck);
+                     this->is_a_tetrahedron(replicated_vertices, blockToCheck);
+                 }
+                 if(vertices.size() == 5) {
+                     this->is_a_pyramid(replicated_vertices, blockToCheck);
+                 }
+                 if(vertices.size() == 6) {
+                     this->is_a_wedge(replicated_vertices, blockToCheck);
+                 }
              }
          }
         return has_8_different_vertices;
@@ -176,30 +182,67 @@ public:
     bool has_3_collinear_vertices(LCC_3 &lcc, Dart_handle &blockToCheck)
     {
         bool has_3_collinear_vertices = false;
+        std::vector<Dart_handle> hexahedron_vertices;
         if(!lcc.is_empty()) {
-            LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 3>(
-                    blockToCheck).begin(), vertex_it3_end = lcc.one_dart_per_incident_cell<0, 3>(blockToCheck).end();
-            LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator vertex_it2 = vertex_it,  vertex_it3 = vertex_it;
-            LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator vertex_it_end = vertex_it3_end, vertex_it2_end = vertex_it3_end;
-            while(vertex_it != vertex_it_end && !has_3_collinear_vertices)
+            for(LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 3>(
+                    blockToCheck).begin(), vertex_it_end = lcc.one_dart_per_incident_cell<0, 3>(blockToCheck).end(); vertex_it != vertex_it_end; ++vertex_it)
             {
-                vertex_it2 = vertex_it; vertex_it2++;
-                while(vertex_it2 != vertex_it2_end && !has_3_collinear_vertices)
+                hexahedron_vertices.emplace_back(vertex_it);
+            }
+            int i = 0, j = i, k = j;
+            Dart_handle vertex_it;
+            Dart_handle vertex_it2;
+            Dart_handle vertex_it3;
+//            LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 3>(
+//                    blockToCheck).begin(), vertex_it3_end = lcc.one_dart_per_incident_cell<0, 3>(blockToCheck).end();
+//            LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator vertex_it2 = vertex_it,  vertex_it3 = vertex_it;
+//            LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator vertex_it_end = vertex_it3_end, vertex_it2_end = vertex_it3_end;
+            while(i < 6 && !has_3_collinear_vertices)
+            {
+                j = i; j++;
+                vertex_it = hexahedron_vertices.at(i);
+                vertex_it2 = hexahedron_vertices.at(j);
+                while(j < 7 && !has_3_collinear_vertices)
                 {
-                    vertex_it3 = vertex_it2; vertex_it3++;
-                    while(vertex_it3 != vertex_it3_end && !has_3_collinear_vertices)
+                    k = j; k++;
+                    vertex_it3 = hexahedron_vertices.at(k);
+                    while(k < 8 && !has_3_collinear_vertices)
                     {
                         if(CGAL::collinear(lcc.point(vertex_it),lcc.point(vertex_it2), lcc.point(vertex_it3) ))
                         {
                             has_3_collinear_vertices = true;
                         }
-                        vertex_it3++;
+                        k++;
                     }
-                    vertex_it2++;
+                    j++;
                 }
-                vertex_it++;
+                i++;
             }
         }
+//        if(!lcc.is_empty()) {
+//            LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 3>(
+//                    blockToCheck).begin(), vertex_it3_end = lcc.one_dart_per_incident_cell<0, 3>(blockToCheck).end();
+//            LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator vertex_it2 = vertex_it,  vertex_it3 = vertex_it;
+//            LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator vertex_it_end = vertex_it3_end, vertex_it2_end = vertex_it3_end;
+//            while(vertex_it != vertex_it_end && !has_3_collinear_vertices)
+//            {
+//                vertex_it2 = vertex_it; vertex_it2++;
+//                while(vertex_it2 != vertex_it2_end && !has_3_collinear_vertices)
+//                {
+//                    vertex_it3 = vertex_it2; vertex_it3++;
+//                    while(vertex_it3 != vertex_it3_end && !has_3_collinear_vertices)
+//                    {
+//                        if(CGAL::collinear(lcc.point(vertex_it),lcc.point(vertex_it2), lcc.point(vertex_it3) ))
+//                        {
+//                            has_3_collinear_vertices = true;
+//                        }
+//                        vertex_it3++;
+//                    }
+//                    vertex_it2++;
+//                }
+//                vertex_it++;
+//            }
+//        }
         return has_3_collinear_vertices;
     }
 
@@ -233,10 +276,10 @@ public:
             // for every mesh block
             for (LCC_3::One_dart_per_cell_range<3, 3>::iterator cell_it = lcc.one_dart_per_cell<3>().begin(), cell_end_it = lcc.one_dart_per_cell<3>().end();
                  cell_it != cell_end_it; ++cell_it) {
-               //questo è quello gusto if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it) || this->has_3_collinear_vertices(lcc, cell_it)) {
+                if(!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it) || this->has_3_collinear_vertices(lcc, cell_it)) {
 
                 //if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it)) {
-                if (!this->has_coplanar_facet_vertices(lcc, cell_it)) {
+                //if (!this->has_coplanar_facet_vertices(lcc, cell_it)) {
                     degenerate_elements.emplace_back(cell_it);
                 }
             }
