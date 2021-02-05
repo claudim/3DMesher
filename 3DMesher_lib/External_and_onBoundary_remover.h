@@ -32,10 +32,14 @@ private:
      */
     double _block_dimension;
 public:
+    /**
+     * @brief Set the block dimension.
+     *
+     * @param blockDimension The block dimension to set.
+     */
     void setBlockDimension(double blockDimension);
 
-public:
-/**
+    /**
      * @brief Remove Remove external and on boundary blocks from lcc.
      *
      * @param lcc A grid that contains the polyhedron input. The mesh to improve.
