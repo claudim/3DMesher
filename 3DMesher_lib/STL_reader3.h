@@ -17,7 +17,7 @@
 #include "CGAL/IO/STL_reader.h"
 #include "CGAL/Polygon_mesh_processing/polygon_soup_to_polygon_mesh.h"
 #include "CGAL/Polygon_mesh_processing/corefinement.h"
-#include <CGAL/Polygon_mesh_processing/repair_polygon_soup.h>
+//#include <CGAL/Polygon_mesh_processing/repair_polygon_soup.h>
 #include <CGAL/IO/STL_writer.h>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
@@ -77,10 +77,6 @@ public:
 //                }
 
 
-
-
-
-
             vertices.clear();
             triangles.clear();
             if (!CGAL::read_STL(input, vertices, triangles, true)) //if the reading process did not go well
@@ -92,18 +88,18 @@ public:
                 if (CGAL::Polygon_mesh_processing::is_polygon_soup_a_polygon_mesh(triangles)) {
                     std::cout << "It is a polygon soup" << std::endl;
                     CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(vertices, triangles, polyhedron2);
-                     bool b = CGAL::Polygon_mesh_processing::corefine_and_compute_union(polyhedron, polyhedron2, polyhedron);
+                    bool b = CGAL::Polygon_mesh_processing::corefine_and_compute_union(polyhedron, polyhedron2, polyhedron);
                     if(b)
                     {
                         std::cout<<"unione effettuata"<<std::endl;
                     }
                     else
-                    {std::cout<<"unione non effettuata"<<std::endl;}
+                    {
+                        std::cout<<"unione non effettuata"<<std::endl;}
                     }
-                 else {
+                else{
                     std::cout << "It is not a polygon soup" << std::endl;
                 }
-
             }
             if(!input.eof())
             {
@@ -111,9 +107,9 @@ public:
                 input >> s;
                 std::cout <<s<<std::endl;
             }
-            std::ofstream out("/Users/claudia/Desktop/ProvaPol.stl", std::ios::out);
-            CGAL::set_mode(out, CGAL::IO::ASCII);
-            CGAL::write_STL(polyhedron, out);
+//            std::ofstream out("/Users/claudia/Desktop/ProvaPol.stl", std::ios::out);
+//            CGAL::set_mode(out, CGAL::IO::ASCII);
+//            CGAL::write_STL(polyhedron, out);
         }
         if(!polyhedron.is_valid() && !polyhedron.is_pure_triangle())
         {

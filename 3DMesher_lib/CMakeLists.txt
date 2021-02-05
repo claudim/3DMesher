@@ -28,7 +28,7 @@ set(HEADER_FILES
         Volume_Validator.h
         Degenerate_element_finder.h
         VTK_manager.h
-        ../STL_reader3.h)
+        STL_reader3.h)
 
 set(SOURCE_FILES
         OFF_Reader.cpp
