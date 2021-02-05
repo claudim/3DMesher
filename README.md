@@ -41,11 +41,15 @@ To use the executable:
 -  Move to the build directory
 
 -  Digit
+
     `./3DMesher path/to/the/STLfile/filename.stl  path/to/the/output/filename.vtk resolution`
+    
     or 
+    
     `./3DMesher path/to/the/STLfile/filename.stl  path/to/the/output/filename.mesh resolution`
     
     Example:
+    
     `./3DMesher /Users/claudia/CLionProjects/3DMesher/DataInput/bolt.stl  /Users/claudia/CLionProjects/3DMesher/MeshOutput/bolt.mesh 8`
     
 ## Authors
