@@ -5,7 +5,7 @@
 //
 //******************************************************************************
 // File Description :
-// Manage a vtk file. For example, it can count how many hexahedra or tetrahedra are in the file.
+// Manage a vtk file. For example, it can count how many hexahedra or _tetrahedra are in the file.
 //******************************************************************************
 
 
@@ -39,7 +39,7 @@ public:
 
     /**
      * \brief Read from a .vtu file or .vtk file where is stored an unstructured grid and get some statistics on it
-     * as the number of hexahedra or the number of tetrahedra or the number of wedges.
+     * as the number of hexahedra or the number of _tetrahedra or the number of _wedges.
      *
      * @param fileName The name of the file to read.
      * @param statistics A map where the key is a int (the vtk Cell Type, for example 12=VTK_HEXAHEDRON) while the value is the number associated to the key.
@@ -50,7 +50,7 @@ public:
 
     /**
      * \brief Read from a .vtu file or .vtk file where is stored an unstructured grid and get some statistics on it
-     * as the number of hexahedra or the number of tetrahedra or the number of wedges.
+     * as the number of hexahedra or the number of _tetrahedra or the number of _wedges.
      *
      * @param fileName The name of the file to read.
      * @param statistics A map where the key is a int (the vtk Cell Type, for example 12=VTK_HEXAHEDRON) while the value is the number associated to the key.

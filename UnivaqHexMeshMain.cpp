@@ -51,15 +51,23 @@ int main(int argc, char* argv[]) {
 
             size_t startIndex = inputPathFileName.find_last_of(".");
             std::string fileName_extension = inputPathFileName.substr((startIndex + 1), (inputPathFileName.size()));
-            if (fileName_extension == "stl") {
+            if (fileName_extension == "stl" || fileName_extension == "off") {
 
                 // Get starting timepoint
                 //  auto start_reading = std::chrono::high_resolution_clock::now();
 
                 // read input from file
                 //OFF_Reader reader;
-                STL_reader reader;
-                const Polyhedron polyhedron = reader.read(inputPathFileName);
+                Polyhedron polyhedron;
+                if (fileName_extension == "stl") {
+                    STL_reader reader;
+                    polyhedron = reader.read(inputPathFileName);
+                }
+                //const Polyhedron polyhedron = reader.read(inputPathFileName);
+                if (fileName_extension == "off") {
+                    OFF_Reader reader;
+                    polyhedron = reader.read(inputPathFileName);
+                }
 
                 // Get ending timepoint
 //        auto stop_reading = std::chrono::high_resolution_clock::now();
@@ -132,49 +140,21 @@ int main(int argc, char* argv[]) {
 //        std::cout << "Time taken by mesh generation is : "
 //                  << duration2.count() << " microseconds" << std::endl;
 
-//        //get the number of hex_mesh element
-//        int number_of_element = 0;
-//        for(LCC_3::One_dart_per_cell_range<3,3>::iterator cell_it = hex_mesh.one_dart_per_cell<3,3>().begin(),
-//                cell_it_end = hex_mesh.one_dart_per_cell<3,3>().end(); cell_it != cell_it_end; ++cell_it)
-//        {
-//            number_of_element++;
-//        }
-//        std::cout<<"Number of element "<< number_of_element<<std::endl;
-
-                Degenerate_element_finder degenerateElementFinder;
-                std::vector<Dart_handle> degenerateElements = degenerateElementFinder.find_degenerate_elements(
-                        hex_mesh);
-                std::cout << "Degenerate elements are " << degenerateElements.size() << std::endl;
-                std::cout << "Pyramid elements are " << degenerateElementFinder.getPyramids().size() << std::endl;
-                std::cout << "Tet elements are " << degenerateElementFinder.getTetrahedra().size() << std::endl;
-                std::cout << "Wedge elements are " << degenerateElementFinder.getWedges().size() << std::endl;
-                std::cout << "Quadrilateral elements are " << degenerateElementFinder.getQuadrilaterals().size()
-                          << std::endl;
-//       for(Dart_handle wedge : degenerateElementFinder.getWedges()) {
-//           std::cout << "Nuovo wedge " << std::endl;
-//           //Dart_handle wedge = degenerateElementFinder.getWedges().at(0);
-//           for (LCC_3::One_dart_per_incident_cell_range<0, 3>::iterator vertex_it = hex_mesh.one_dart_per_incident_cell<0, 3, 3>(
-//                   wedge).begin(),
-//                        vertex_end = hex_mesh.one_dart_per_incident_cell<0, 3, 3>(wedge).end();
-//                vertex_it != vertex_end; ++vertex_it) {
-//               std::cout << "Punto: " << hex_mesh.point(vertex_it) << std::endl;
-//           }
-//       }
-
-//        for(Dart_handle wedge : degenerateElements) {
-//            std::cout << "Nuovo elemento degenere " << std::endl;
-//            //Dart_handle wedge = degenerateElementFinder.getWedges().at(0);
-//            for (LCC_3::One_dart_per_incident_cell_range<0, 3>::iterator vertex_it = hex_mesh.one_dart_per_incident_cell<0, 3, 3>(
-//                    wedge).begin(),
-//                         vertex_end = hex_mesh.one_dart_per_incident_cell<0, 3, 3>(wedge).end();
-//                 vertex_it != vertex_end; ++vertex_it) {
-//                std::cout << "Punto: " << hex_mesh.point(vertex_it) << std::endl;
-//            }
-//        }
+//
+//                Degenerate_element_finder degenerate_element_finder;
+//                std::vector<Dart_handle> degenerate_element = degenerate_element_finder.find_degenerate_elements(hex_mesh);
+//                std::cout<< "Quadrilaterals: " <<degenerate_element_finder.getQuadrilaterals().size()<<std::endl;
+//                std::cout<< "Pyramids: " <<degenerate_element_finder.getPyramids().size()<<std::endl;
+//                std::cout<< "Tets: " <<degenerate_element_finder.getTetrahedra().size()<<std::endl;
+//                std::cout<< "Wedges: " <<degenerate_element_finder.getWedges().size()<<std::endl;
+//                std::cout<< "Degeneri: " <<degenerate_element.size()<<std::endl;
+//                std::cout<< "Blocks with 3 collinear vertices: " <<degenerate_element_finder.getBlockWith3CollinearVertices().size()<<std::endl;
+//                std::cout<< "Blocks with no facets vertices coplanar: " <<degenerate_element_finder.getBlockWithNotCoplanarFacetsVertices().size()<<std::endl;
+//
 
 
                 //output
-                if (argc == 3 || argc == 4) {
+              //  if (argc == 3 || argc == 4) {
 
                     std::string outputPathFileName = argv[2]; // filename is path to filename with extension of the output
                     //size_t startIndex  = outputPathFileName.find_last_of("/");
@@ -187,7 +167,8 @@ int main(int argc, char* argv[]) {
                                                                                   outputPathFileName.size());
                     if (output_file_extension == "vtk") {
                         std::ofstream vtk_file(outputPathFileName);
-                        writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
+                        //writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
+                        writer.output_to_legacy_vtk_ascii_unstructured(outputPathFileName, hex_mesh);
                         vtk_file.close();
                     }
                     if (output_file_extension == "mesh") {
@@ -217,10 +198,19 @@ int main(int argc, char* argv[]) {
 
 
             }
-        }
+        //}
         catch (std::ios_base::failure e) {
+            std::cout<<e.what()<<std::endl;
             std::cerr << "Exception opening/reading/closing file\n";
+            return EXIT_FAILURE;
         }
+    }
+    else{
+        if(argc<3)
+            std::cerr << "Too few input parameters. At least : path to the STL file input; path to the output file\n";
+        if(argc>4)
+            std::cerr << "Too many input parameters. At most : path to the STL file input; path to the output file; the integer grid resolution\n";
+        return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
 

@@ -1,18 +1,38 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Find degenerate hexahedra in the mesh.
+//******************************************************************************
+
 #ifndef INC_3DMESHER_DEGENERATE_ELEMENT_FINDER_H
 #define INC_3DMESHER_DEGENERATE_ELEMENT_FINDER_H
 
 #include "MyLCC.h"
 
+/**
+ * @brief Find degenerate hexahedra in the mesh.
+ *
+ * @file Degenerate_element_finder.h
+ * @class Degenerate_element_finder
+ */
 class Degenerate_element_finder {
 private:
-    std::vector<Dart_handle> pyramids;
-    std::vector<Dart_handle> tetrahedra;
-    std::vector<Dart_handle> wedges;
-    std::vector<Dart_handle> quadrilaterals;
+    std::vector<Dart_handle> _pyramids;
+    std::vector<Dart_handle> _tetrahedra;
+    std::vector<Dart_handle> _wedges;
+    std::vector<Dart_handle> _quadrilaterals;
+    std::vector<Dart_handle> _block_with_not_coplanar_facets_vertices;
+
+private:
+    std::vector<Dart_handle> _block_with_3_collinear_vertices;
 
 public:
     /**
-     * \brief Check if a mesh block is a pyramid and if it is a pyramid add it to pyramids vector.
+     * \brief Check if a mesh block is a pyramid and if it is a pyramid add it to _pyramids vector.
      *
      * @param replicated_vertices Map of replicated vertices with how many time they are replicated.
      * @param blockToCheck Block to chek.
@@ -24,7 +44,7 @@ public:
         {
             if(replicated_vertices.begin()->second == 4)
             {
-                pyramids.emplace_back(blockToCheck);
+                _pyramids.emplace_back(blockToCheck);
                 is_a_pyramid = true;
             }
         }
@@ -44,7 +64,7 @@ public:
         {
             if(replicated_vertices.begin()->second == 3 && replicated_vertices.rbegin()->second == 3  )
             {
-                tetrahedra.emplace_back(blockToCheck);
+                _tetrahedra.emplace_back(blockToCheck);
                 is_a_tetrahedron = true;
             }
         }
@@ -52,7 +72,7 @@ public:
     }
 
     /**
-     * \brief Check if a mesh block is a wedge and if it is a wedge add it to wedges vector.
+     * \brief Check if a mesh block is a wedge and if it is a wedge add it to _wedges vector.
      *
      * @param replicated_vertices Map of replicated vertices with how many time they are replicated.
      * @param blockToCheck Block to chek.
@@ -64,7 +84,7 @@ public:
         {
             if(replicated_vertices.begin()->second == 2 && replicated_vertices.rbegin()->second == 2 )
             {
-                wedges.emplace_back(blockToCheck);
+                _wedges.emplace_back(blockToCheck);
                 is_a_wedge = true;
             }
         }
@@ -72,7 +92,7 @@ public:
     }
 
     /**
-     * \brief Check if a mesh block is a quadrilateral and if it is a quadrilateral add it to quadrilaterals vector.
+     * \brief Check if a mesh block is a quadrilateral and if it is a quadrilateral add it to _quadrilaterals vector.
      *
      * @param replicated_vertices Map of replicated vertices with how many time they are replicated.
      * @param blockToCheck Block to chek.
@@ -93,7 +113,7 @@ public:
             }
             if(is_a_quadrilateral)
             {
-                quadrilaterals.emplace_back(blockToCheck);
+                _quadrilaterals.emplace_back(blockToCheck);
             }
         }
         return is_a_quadrilateral;
@@ -165,6 +185,7 @@ public:
                 }
                 if (!CGAL::coplanar(facet_points[0], facet_points[1], facet_points[2], facet_points[3])) {
                     has_coplanar_vertices = false;
+                    this->_block_with_not_coplanar_facets_vertices.emplace_back(blockToCheck);
                     break;
                 }
             }
@@ -211,6 +232,7 @@ public:
                         if(CGAL::collinear(lcc.point(vertex_it),lcc.point(vertex_it2), lcc.point(vertex_it3) ))
                         {
                             has_3_collinear_vertices = true;
+                            this->_block_with_3_collinear_vertices.emplace_back(blockToCheck);
                         }
                         k++;
                     }
@@ -247,19 +269,27 @@ public:
     }
 
     std::vector<Dart_handle>& getPyramids() {
-        return pyramids;
+        return _pyramids;
     }
 
     std::vector<Dart_handle>& getTetrahedra() {
-        return tetrahedra;
+        return _tetrahedra;
     }
 
     std::vector<Dart_handle>& getWedges() {
-        return wedges;
+        return _wedges;
     }
 
     std::vector<Dart_handle>& getQuadrilaterals(){
-        return quadrilaterals;
+        return _quadrilaterals;
+    }
+
+    std::vector<Dart_handle> &getBlockWithNotCoplanarFacetsVertices() {
+        return _block_with_not_coplanar_facets_vertices;
+    }
+
+     std::vector<Dart_handle> &getBlockWith3CollinearVertices() {
+        return _block_with_3_collinear_vertices;
     }
 
     /**

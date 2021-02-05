@@ -47,17 +47,23 @@ public:
         if (fileName.size() == 0) {
             std::cerr << "The file you are trying to load is empty." << std::endl;;
         }
-        input.exceptions(std::ifstream::failbit |
-                         std::ifstream::badbit); //if a bit in the mask becomes set in the error flags, then an exception of type std::ios_base::failure is thrown.
+        input.exceptions(std::ifstream::badbit); //if a bit in the mask becomes set in the error flags, then an exception of type std::ios_base::failure is thrown.
         std::vector <std::array<double, 3>> vertices;
         std::vector <std::array<int, 3>> triangles;
-        if (!CGAL::read_STL(input, vertices, triangles)) //if the reading process did not go well
+        while(!input.eof())
         {
-            std::cerr << "Error: invalid STL file" << std::endl;
+
+            if (!CGAL::read_STL(input, vertices, triangles, true)) //if the reading process did not go well
+            {
+                std::cerr << "Error: invalid STL file" << std::endl;
+                break;
+            }
         }
 
-        if (CGAL::Polygon_mesh_processing::is_polygon_soup_a_polygon_mesh(triangles))
-            CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(vertices, triangles, polyhedron);
+//        if (CGAL::Polygon_mesh_processing::is_polygon_soup_a_polygon_mesh(triangles))
+//            CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(vertices, triangles, polyhedron);
+
+        CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(vertices, triangles, polyhedron);
         if(!polyhedron.is_valid() && !polyhedron.is_pure_triangle())
         {
             std::cerr << "Error: Polyhedron not valid or not composed of all triangles " << std::endl;
