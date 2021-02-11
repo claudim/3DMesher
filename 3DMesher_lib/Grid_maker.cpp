@@ -163,8 +163,8 @@ LCC_3 Grid_maker::turn_box_into_grid(){
         }
     }
 
-    std::cout << "griglia realizzata" << std::endl;
-    lcc.display_characteristics(std::cout);
+//    std::cout << "griglia realizzata" << std::endl;
+//    lcc.display_characteristics(std::cout);
     return lcc;
 }
 

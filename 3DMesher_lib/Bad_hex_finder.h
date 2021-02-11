@@ -22,14 +22,31 @@ const float SCALED_JACOBIAN_THRESHOLD = 0.1;
 
 /**
  * @brief Find degenerate or bad shaped hexahedra.
+ *
+ * @file Bad_hex_finder.h
+ * @class Bad_hex_finder
  */
 class Bad_hex_finder {
+
+private:
+
+    /**
+     * Value of scaled jacobian below that a hex is considered invalid
+     */
+    float scaled_jacobian_threshold = 0;
 
 
 public:
 
     /**
-     * @brief Check if a provided hexahedron is not of the desired quality.
+     * @brief Setter for scaled jacobian value.
+     *
+     * @param scaledJacobianThreshold Value of scaled jacobian below that a hex is considered invalid.
+     */
+    void setScaledJacobianThreshold(float scaledJacobianThreshold);
+
+    /**
+     * @brief Check if a provided hexahedron is not of the desired quality based on scaled jacobian.
      *
      * @param aHex hexahedron to be checked.
      * @return true if the provided hexahedron not fulfill the quality requirment.
@@ -43,7 +60,6 @@ public:
      * @param lcc linear cell complex where find bad hexahedra on.
      * @param bad_hexes vector of bad hexahedra to fill.
      */
-//    template<typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename allocator, typename Linear_cell_complex_traits, typename Linear_cell_complex_traits, typename allocator>
     void find_bad_hexes(LCC_3 &lcc, std::vector<Dart_handle> &bad_hexes);
 };
 

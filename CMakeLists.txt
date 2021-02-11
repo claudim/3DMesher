@@ -5,7 +5,6 @@ project(3DMesher VERSION 1.0
 
 set(CMAKE_CXX_STANDARD 20)
 
-
 include(CTest)
 enable_testing()
 
@@ -39,15 +38,15 @@ endif (DOXYGEN_FOUND)
 
 #set(VTK_INCLUDE_DIRS "/usr/local/include/vtk-9.0")
 #set(VTK_LIBRARY_DIRS "/usr/local/lib")
-#find_package(VTK REQUIRED) #all vtk modules
-find_package(VTK REQUIRED COMPONENTS
-        CommonCore
-        CommonDataModel
-        FiltersCore
-        FiltersSources
-        IOLegacy
-        IOXML
-        )
+find_package(VTK REQUIRED) #all vtk modules
+#find_package(VTK REQUIRED COMPONENTS
+#        CommonCore
+#        CommonDataModel
+#        FiltersCore
+#        FiltersSources
+#        IOLegacy
+#        IOXML
+#        )
 
 IF(VTK_FOUND)
     message("found VTK. Version:" ${VTK_VERSION}. VTK_DIR: ${VTK_DIR}. VTK_LIBRARIES: ${VTK_USE_FILE}.

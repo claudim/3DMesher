@@ -66,14 +66,14 @@ TEST_CASE("must find if a face is composed by 4 coplanar vertices", "[is_a_copla
 
     SECTION("must find coplanar vertices for a cube facet"){
 
-        bool has_coplanar_vertices= degenerateElementFinder.has_coplanar_facet_vertices(lcc, block);
+        bool has_coplanar_vertices= degenerateElementFinder.has_hex_a_folded_facet(lcc, block);
         REQUIRE(has_coplanar_vertices == true);
     }
 
     SECTION("must not find coplanar vertices for a hexahedron without coplanar vertices for each facet"){
         lcc.point(block) = Point(0,0,0.5);
 
-        bool has_coplanar_vertices= degenerateElementFinder.has_coplanar_facet_vertices(lcc, block);
+        bool has_coplanar_vertices= degenerateElementFinder.has_hex_a_folded_facet(lcc, block);
         REQUIRE(has_coplanar_vertices == false);
     }
 }

@@ -15,6 +15,7 @@
 #include <CGAL/Polyhedral_mesh_domain_with_features_3.h>
 #include <CGAL/IO/STL_reader.h>
 #include <CGAL/Polygon_mesh_processing/polygon_soup_to_polygon_mesh.h>
+#include <CGAL/IO/STL_writer.h>
 
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
@@ -58,6 +59,14 @@ public:
                 std::cerr << "Error: invalid STL file" << std::endl;
                 break;
             }
+            if(!input.eof())
+            {
+                std::string s;
+                input >> s;
+                std::cout <<s<<std::endl;
+            }
+
+
         }
 
 //        if (CGAL::Polygon_mesh_processing::is_polygon_soup_a_polygon_mesh(triangles))
@@ -67,8 +76,14 @@ public:
         if(!polyhedron.is_valid() && !polyhedron.is_pure_triangle())
         {
             std::cerr << "Error: Polyhedron not valid or not composed of all triangles " << std::endl;
+
         }
         input.close();
+        size_t startIndex = fileName.find_last_of(".");
+        std::string fileName_stl_to_write = fileName.substr(0, startIndex) + "3.stl";
+        std::ofstream out(fileName_stl_to_write, std::ios::out);
+        CGAL::set_mode(out, CGAL::IO::ASCII);
+        CGAL::write_STL(polyhedron, out);
         return polyhedron;
     }
 

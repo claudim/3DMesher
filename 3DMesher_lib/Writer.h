@@ -58,7 +58,7 @@ public:
     * @param outputFileName The path file name where store the output.
     * @param hex_mesh The hexahedral mesh to write in the vtk file format.
     */
-    void output_to_legacy_vtk_ascii_unstructured(const std::string outputFileName, const LCC_3& hex_mesh);
+//    void output_to_legacy_vtk_ascii_unstructured(const std::string outputFileName, const LCC_3& hex_mesh);
 
     int get();
 

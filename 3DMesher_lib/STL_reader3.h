@@ -13,11 +13,12 @@
 #define INC_3DMESHER_STL_READER3_H
 
 #include <fstream>
-#include "CGAL/Polyhedral_mesh_domain_with_features_3.h"
-#include "CGAL/IO/STL_reader.h"
-#include "CGAL/Polygon_mesh_processing/polygon_soup_to_polygon_mesh.h"
-#include "CGAL/Polygon_mesh_processing/corefinement.h"
-#include <CGAL/Polygon_mesh_processing/repair_polygon_soup.h>
+#include <CGAL/Polyhedral_mesh_domain_with_features_3.h>
+#include <CGAL/IO/STL_reader.h>
+#include <CGAL/Polygon_mesh_processing/polygon_soup_to_polygon_mesh.h>
+#include <CGAL/Polygon_mesh_processing/corefinement.h>
+
+//#include <CGAL/Polygon_mesh_processing/repair_polygon_soup.h>
 #include <CGAL/IO/STL_writer.h>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
@@ -54,33 +55,9 @@ public:
         std::vector <std::array<double, 3>> vertices;
         std::vector <std::array<int, 3>> triangles;
 
-
+int i=0;
         while(!input.eof())
         {
-//            if (!CGAL::read_STL(input, vertices, triangles, true)) //if the reading process did not go well
-//            {
-//                std::cerr << "Error: invalid STL file" << std::endl;
-//            }
-//            if(!input.eof())
-//            {
-//                std::string s;
-//                input >> s;
-//                std::cout <<s <<std::endl;
-//            }
-//                if (CGAL::Polygon_mesh_processing::is_polygon_soup_a_polygon_mesh(triangles)) {
-//                    std::cout << "It is a polygon soup" << std::endl;
-//                    CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(vertices, triangles, polyhedron);
-//                } else {
-//                    std::cout << "It is not a polygon soup" << std::endl;
-//                    CGAL::Polygon_mesh_processing::repair_polygon_soup(vertices, triangles);
-//                    CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(vertices, triangles, polyhedron);
-//                }
-
-
-
-
-
-
             vertices.clear();
             triangles.clear();
             if (!CGAL::read_STL(input, vertices, triangles, true)) //if the reading process did not go well
@@ -98,7 +75,7 @@ public:
                         std::cout<<"unione effettuata"<<std::endl;
                     }
                     else
-                    {std::cout<<"unione non effettuata"<<std::endl;}
+                    {std::cout<<"unione non effettuata"<<std::endl; i++;}
                     }
                  else {
                     std::cout << "It is not a polygon soup" << std::endl;
@@ -111,7 +88,9 @@ public:
                 input >> s;
                 std::cout <<s<<std::endl;
             }
-            std::ofstream out("/Users/claudia/Desktop/ProvaPol.stl", std::ios::out);
+            size_t startIndex = fileName.find_last_of(".");
+            std::string fileName_stl_to_write = fileName.substr(0, startIndex) + "2.stl";
+            std::ofstream out(fileName_stl_to_write, std::ios::out);
             CGAL::set_mode(out, CGAL::IO::ASCII);
             CGAL::write_STL(polyhedron, out);
         }
@@ -120,6 +99,7 @@ public:
             std::cerr << "Error: Polyhedron not valid or not composed of all triangles " << std::endl;
         }
         input.close();
+        std::cout <<"Solidi non uniti "<< i <<std::endl;
         return polyhedron;
     }
 

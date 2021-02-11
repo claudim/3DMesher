@@ -21,16 +21,30 @@
  */
 class Degenerate_element_finder {
 private:
+
+    int _precision = 6;
+
+private:
     std::vector<Dart_handle> _pyramids;
     std::vector<Dart_handle> _tetrahedra;
     std::vector<Dart_handle> _wedges;
     std::vector<Dart_handle> _quadrilaterals;
-    std::vector<Dart_handle> _block_with_not_coplanar_facets_vertices;
+    std::vector<Dart_handle> _block_with_folded_facets;
+    std::vector<Dart_handle> _degenerate_elements;
 
 private:
     std::vector<Dart_handle> _block_with_3_collinear_vertices;
 
 public:
+    /**
+     * @brief Set the precision of digits numbers.
+     *
+     * @param precision The precision of decimal numbers.
+     */
+    void setPrecision(int precision) {
+        _precision = precision;
+    }
+
     /**
      * \brief Check if a mesh block is a pyramid and if it is a pyramid add it to _pyramids vector.
      *
@@ -136,21 +150,28 @@ public:
              for (LCC_3::One_dart_per_incident_cell_range<0, 3, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 3>(
                      blockToCheck).begin(), vertex_it_end = lcc.one_dart_per_incident_cell<0, 3>(blockToCheck).end();
                   vertex_it != vertex_it_end; ++vertex_it) {
-                 if (std::find(vertices.begin(), vertices.end(), lcc.point(vertex_it)) == vertices.end()) {
+                 FT x_coord = int((lcc.point(vertex_it).x() * pow(10,_precision)))/pow(10,_precision);
+                 FT y_coord = int((lcc.point(vertex_it).y() * pow(10,_precision)))/pow(10,_precision);
+                 FT z_coord = int((lcc.point(vertex_it).z() * pow(10,_precision)))/pow(10,_precision);
+                 Point point  = Point (x_coord, y_coord, z_coord);
+                 if (std::find(vertices.begin(), vertices.end(), point) == vertices.end()) {
                      vertices.emplace_back(lcc.point(vertex_it));
                  }
                  else{
-                     if( replicated_vertices[lcc.point(vertex_it)] == 0)
-                     {replicated_vertices[lcc.point(vertex_it)] = 2 + replicated_vertices[lcc.point(vertex_it)];}
+                     if( replicated_vertices[point] == 0)
+                     {replicated_vertices[point] = 2;}
                      else
-                     {replicated_vertices[lcc.point(vertex_it)] = 1 + replicated_vertices[lcc.point(vertex_it)];}
+                     {replicated_vertices[point] = 1 + replicated_vertices[point];}
                  }
              }
              if (vertices.size() != 8) {
                  has_8_different_vertices = false;
-                 if(vertices.size() ==4) {
-                     this->is_a_quadrilateral(replicated_vertices, blockToCheck);
-                     this->is_a_tetrahedron(replicated_vertices, blockToCheck);
+                 if(vertices.size() == 4) {
+                     bool isAQuadrilateral = this->is_a_quadrilateral(replicated_vertices, blockToCheck);
+                     if(!isAQuadrilateral)
+                     {
+                         this->is_a_tetrahedron(replicated_vertices, blockToCheck);
+                     }
                  }
                  if(vertices.size() == 5) {
                      this->is_a_pyramid(replicated_vertices, blockToCheck);
@@ -165,13 +186,13 @@ public:
 
 
     /**
-     * \brief Check if all faces of a block are made up of coplanar vertices.
+     * \brief Check if all faces of a block are made up of coplanar vertices that is check if a hexahedron has at least a folded facet.
      *
      * @param lcc The mesh.
      * @param blockToCheck The mesh element/block/3-cell to check.
      * @return True if all faces of a block are made up of coplanar vertices, false otherwise.
      */
-    bool has_coplanar_facet_vertices(LCC_3 &lcc, Dart_handle &blockToCheck) {
+    bool has_hex_a_folded_facet(LCC_3 &lcc, Dart_handle &blockToCheck) {
         bool has_coplanar_vertices = true;
         if(!lcc.is_empty()) {
             for (LCC_3::One_dart_per_incident_cell_range<2, 3, 3>::iterator facet_it = lcc.one_dart_per_incident_cell<2, 3, 3>(
@@ -185,7 +206,7 @@ public:
                 }
                 if (!CGAL::coplanar(facet_points[0], facet_points[1], facet_points[2], facet_points[3])) {
                     has_coplanar_vertices = false;
-                    this->_block_with_not_coplanar_facets_vertices.emplace_back(blockToCheck);
+                    this->_block_with_folded_facets.emplace_back(blockToCheck);
                     break;
                 }
             }
@@ -285,7 +306,7 @@ public:
     }
 
     std::vector<Dart_handle> &getBlockWithNotCoplanarFacetsVertices() {
-        return _block_with_not_coplanar_facets_vertices;
+        return _block_with_folded_facets;
     }
 
      std::vector<Dart_handle> &getBlockWith3CollinearVertices() {
@@ -306,10 +327,10 @@ public:
             // for every mesh block
             for (LCC_3::One_dart_per_cell_range<3, 3>::iterator cell_it = lcc.one_dart_per_cell<3>().begin(), cell_end_it = lcc.one_dart_per_cell<3>().end();
                  cell_it != cell_end_it; ++cell_it) {
-                if(!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it) || this->has_3_collinear_vertices(lcc, cell_it)) {
+                if(!this->has_8_different_vertices(lcc, cell_it) || !this->has_hex_a_folded_facet(lcc, cell_it) || this->has_3_collinear_vertices(lcc, cell_it)) {
 
-                //if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it)) {
-                //if (!this->has_coplanar_facet_vertices(lcc, cell_it)) {
+                //if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_hex_a_folded_facet(lcc, cell_it)) {
+                //if (!this->has_hex_a_folded_facet(lcc, cell_it)) {
                     degenerate_elements.emplace_back(cell_it);
                 }
             }
@@ -332,7 +353,7 @@ public:
             // for every mesh block
             for (LCC_3::One_dart_per_cell_range<3, 3>::iterator cell_it = lcc.one_dart_per_cell<3>().begin(), cell_end_it = lcc.one_dart_per_cell<3>().end();
                  cell_it != cell_end_it; ++cell_it) {
-                if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_coplanar_facet_vertices(lcc, cell_it) ||
+                if (!this->has_8_different_vertices(lcc, cell_it) || !this->has_hex_a_folded_facet(lcc, cell_it) ||
                     this->has_3_collinear_vertices(lcc, cell_it)) {
                     degenerate_elements.emplace_back(cell_it);
                 }

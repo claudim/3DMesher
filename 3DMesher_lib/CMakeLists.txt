@@ -27,8 +27,8 @@ set(HEADER_FILES
         L_facet_detector.h
         Volume_Validator.h
         Degenerate_element_finder.h
-        VTK_manager.h
-        ../STL_reader3.h)
+#        VTK_manager.h
+        STL_reader3.h)
 
 set(SOURCE_FILES
         OFF_Reader.cpp
@@ -52,10 +52,11 @@ set(SOURCE_FILES
         Intersecting_polyhedron_finder.cpp
         Hexahedron_fitter.cpp
         L_facet_detector.cpp
-        VTK_manager.cpp
-        STL_reader2.h)
+#        VTK_manager.cpp
+        )
 
-include_directories(${PROJECT_SOURCE_DIR}/3DMesher_lib/3D_hex_mesh_algorithms)
+#include_directories(${PROJECT_SOURCE_DIR}/3DMesher_lib/3D_hex_mesh_algorithms)
+
 
 # You get to pick a type of library, STATIC, SHARED, or MODULE. If you leave this choice off, the value of BUILD_SHARED_LIBS will be used to pick between STATIC and SHARED.
 #add_library(3DMesher_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

@@ -88,17 +88,17 @@ int main(int argc, char* argv[]) {
 //        std::cout<<"fatto"<<std::endl;
 
                 //remove external blocks
-                auto start_reading = std::chrono::high_resolution_clock::now();
+//                auto start_reading = std::chrono::high_resolution_clock::now();
 
 //        Initial_mesh_maker<External_block_remover> initialMeshMaker;
 //        initialMeshMaker.removeBlocks(hex_mesh, polyhedron);
                 External_block_remover externalBlockRemover = External_block_remover();
                 externalBlockRemover.removeBlocks(hex_mesh, polyhedron);
-                auto stop_reading = std::chrono::high_resolution_clock::now();
-                auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop_reading - start_reading);
-
-                std::cout << "Time taken by remove block function is : "
-                          << duration.count() << " microseconds" << std::endl;
+//                auto stop_reading = std::chrono::high_resolution_clock::now();
+//                auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop_reading - start_reading);
+//
+//                std::cout << "Time taken by remove block function is : "
+//                          << duration.count() << " microseconds" << std::endl;
                 std::cout << "rimossi i blocchi esterni" << std::endl;
 
                 hex_mesh.display_characteristics(std::cout);
@@ -113,19 +113,20 @@ int main(int argc, char* argv[]) {
 //        }
 //        std::cout<<"Number of initial mesh element "<< number_of_int_element<<std::endl;
 
-                auto start_reading_connect = std::chrono::high_resolution_clock::now();
+//                auto start_reading_connect = std::chrono::high_resolution_clock::now();
 
 
                 //fit on boundary blocks to polyhedron boundary
                 CGAL::Grid_boundary_connector gridBoundaryConnector;
                 gridBoundaryConnector.connect(hex_mesh, polyhedron);
+//                std::cout << "connessione eseguita "<< std::endl;
 
-                auto stop_reading_connect = std::chrono::high_resolution_clock::now();
-                auto duration_connect = std::chrono::duration_cast<std::chrono::microseconds>(
-                        stop_reading_connect - start_reading_connect);
-
-                std::cout << "Time taken by connect block function is : "
-                          << duration_connect.count() << " microseconds" << std::endl;
+//                auto stop_reading_connect = std::chrono::high_resolution_clock::now();
+//                auto duration_connect = std::chrono::duration_cast<std::chrono::microseconds>(
+//                        stop_reading_connect - start_reading_connect);
+//
+//                std::cout << "Time taken by connect block function is : "
+//                          << duration_connect.count() << " microseconds" << std::endl;
 
                 //delete element with Volume <= 0
                 Volume_Validator volumeValidator;
@@ -167,8 +168,8 @@ int main(int argc, char* argv[]) {
                                                                                   outputPathFileName.size());
                     if (output_file_extension == "vtk") {
                         std::ofstream vtk_file(outputPathFileName);
-                        //writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
-                        writer.output_to_legacy_vtk_ascii_unstructured(outputPathFileName, hex_mesh);
+                        writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
+//                        writer.output_to_legacy_vtk_ascii_unstructured(outputPathFileName, hex_mesh);
                         vtk_file.close();
                     }
                     if (output_file_extension == "mesh") {

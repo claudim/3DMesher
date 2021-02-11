@@ -2,7 +2,7 @@
 
 bool Bad_hex_finder::is_hex_bad(const Dart_handle& aHex, LCC_3& lcc) {
 
-    std::vector<std::array<double, 3> > vertices;
+    std::vector<std::array<double, 3> > hex_vertices;
     std::array<double, 3> point{};
     for (LCC_3::One_dart_per_incident_cell_range<0, 3>::iterator vertex_it = lcc.one_dart_per_incident_cell<0, 3>(
             aHex).begin(),
@@ -11,12 +11,12 @@ bool Bad_hex_finder::is_hex_bad(const Dart_handle& aHex, LCC_3& lcc) {
         point[0] = lcc.point(vertex_it).x();
         point[1] = lcc.point(vertex_it).y();
         point[2] = lcc.point(vertex_it).z();
-        vertices.emplace_back(point);
+        hex_vertices.emplace_back(point);
     }
     HexMetricVals vals{};
-    std::array<double, 3> *pArray = vertices.data();
-    v_hex_quality(vertices.size(), reinterpret_cast<const double (*)[3]>(pArray), V_HEX_SCALED_JACOBIAN, &vals);
-    if(vals.scaled_jacobian <= SCALED_JACOBIAN_THRESHOLD){
+    std::array<double, 3> *pArray = hex_vertices.data();
+    v_hex_quality(hex_vertices.size(), reinterpret_cast<const double (*)[3]>(pArray), V_HEX_SCALED_JACOBIAN, &vals);
+    if(vals.scaled_jacobian <= scaled_jacobian_threshold){
         return true;
     }else{
         return false;
@@ -32,4 +32,8 @@ void Bad_hex_finder::find_bad_hexes(LCC_3 &lcc, std::vector<Dart_handle> &bad_he
             bad_hexes.emplace_back(hex_it);
         }
     }
+}
+
+void Bad_hex_finder::setScaledJacobianThreshold(float scaledJacobianThreshold) {
+    scaled_jacobian_threshold = scaledJacobianThreshold;
 }
