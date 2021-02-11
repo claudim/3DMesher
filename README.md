@@ -17,9 +17,41 @@ A C++ implementation of full automatic tool for 3D Meshing.
 
 
 ### Installing
+- From terminal, move to the 3DMesher directory
+
+- Create a build folder
+    `mkdir build`
+    
+- Navigate to the newly build folder  
+    `cd build` 
+    
+- di    
+`cmake ..`
+
+- di
+`make` or `make -j6`
+
  
 ### Usage
 
+To use the executable:
+
+-  Open terminal
+
+-  Move to the build directory
+
+-  Digit
+
+    `./3DMesher path/to/the/STLfile/filename.stl  path/to/the/output/filename.vtk resolution`
+    
+    or 
+    
+    `./3DMesher path/to/the/STLfile/filename.stl  path/to/the/output/filename.mesh resolution`
+    
+    Example:
+    
+    `./3DMesher /Users/claudia/CLionProjects/3DMesher/DataInput/bolt.stl  /Users/claudia/CLionProjects/3DMesher/MeshOutput/bolt.mesh 8`
+    
 ## Authors
 
  * Claudia Di Marco
