@@ -79,11 +79,11 @@ public:
 
         }
         input.close();
-        size_t startIndex = fileName.find_last_of(".");
-        std::string fileName_stl_to_write = fileName.substr(0, startIndex) + "3.stl";
-        std::ofstream out(fileName_stl_to_write, std::ios::out);
-        CGAL::set_mode(out, CGAL::IO::ASCII);
-        CGAL::write_STL(polyhedron, out);
+//        size_t startIndex = fileName.find_last_of(".");
+//        std::string fileName_stl_to_write = fileName.substr(0, startIndex) + "3.stl";
+//        std::ofstream out(fileName_stl_to_write, std::ios::out);
+//        CGAL::set_mode(out, CGAL::IO::ASCII);
+//        CGAL::write_STL(polyhedron, out);
         return polyhedron;
     }
 

@@ -1,7 +1,10 @@
 
+#include <Block_maker.h>
+#include <Writer.h>
 #include "../Include/catch.hpp"
 #include "test_config.h"
 #include "VTK_manager.h"
+#include "MyLCC.h"
 
 
 TEST_CASE("must find statistics from a vtk or vtu file", "[get_statistics_from_vtk_file][VTK_manager]") {
@@ -57,7 +60,26 @@ TEST_CASE("must read a vtk or vtu file", "[readUnstructuredGrid][VTK_manager]"){
         REQUIRE(297081 == unstructuredGrid->GetNumberOfPoints());
 
     }
-
-
 }
 
+TEST_CASE("scaled jacobian must be one for a voxel ", "[getQuality][VTK_manager]"){
+    const std::string filename_to_read = "/Users/claudia/CLionProjects/3DMesher/Catch_tests/Data/one_folded_hex.vtk";
+    VTK_manager vtkManager;
+
+//    Point basepoint = Point(2, 2, 2);
+//
+//    FT blockLg = 1;
+//    LCC_3 lcc;
+//    Block_maker blockMaker = Block_maker();
+//    const Dart_handle cube = blockMaker.make_cube(lcc, basepoint, blockLg);
+//    std::string outputPathFileName = filename_to_read;
+//    size_t startIndex = outputPathFileName.find_last_of(".");
+//    Writer writer;
+//    std::string output_file_extension = outputPathFileName.substr(startIndex + 1,
+//                                                                  outputPathFileName.size());
+//    std::ofstream vtk_file(outputPathFileName);
+//    writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, lcc);
+
+
+    REQUIRE(1 == vtkManager.getQuality(filename_to_read));
+}

@@ -22,6 +22,12 @@
 #include "vtk-9.0/vtkUnstructuredGrid.h"
 #include "vtk-9.0/vtkCellType.h"
 #include "vtk-9.0/vtkCellTypes.h"
+#include "vtk-9.0/vtkMeshQuality.h"
+#include "vtk-9.0/vtkPolyData.h"
+#include "vtk-9.0/vtkPointData.h"
+#include "vtk-9.0/vtkCellData.h"
+#include "vtk-9.0/vtkDoubleArray.h"
+#include "vtk-9.0/vtkDataSet.h"
 #include <algorithm>
 
 class VTK_manager {
@@ -77,6 +83,7 @@ public:
 //     */
 //    bool generateStatistics(vtkSmartPointer<vtkUnstructuredGrid> &unstructuredGrid);
 
+    double getQuality(std::string const &fileName);
 };
 
 

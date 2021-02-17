@@ -6,8 +6,19 @@
 #include "MyLCC.h"
 
 int main(int argc, char* argv[]) {
-    const std::string data_path = "/home/claudia/CLionProjects/3DMesher/DataInput";
-    std::string name = "bolt";
+   // const std::string data_path = "/home/claudia/CLionProjects/3DMesher/DataInput";
+    const std::string data_path = "/Users/claudia/Desktop/3DMesher_Dataset/dataset_stl/";
+
+    //std::string name = "sphere";
+    //std::string name = "bolt";
+    //std::string name = "cube";
+    //std::string name = "bone";
+    //std::string name = "bunny";
+    //std::string name = "cube_carved";
+    //std::string name = "hinge";
+    //std::string name = "joint";
+    //std::string name = "torque";
+    std::string name = "wrench";
     std::string fileName = data_path + "/" + name + ".stl";
     try {
         // Get starting timepoint
@@ -42,6 +53,7 @@ int main(int argc, char* argv[]) {
         double delta_z = polyhedron_bbox3.zmax() - polyhedron_bbox3.zmin();
 
         grid_dimension = std::min(std::min(delta_y, delta_z), delta_x) / resolution;
+        std::cout <<"Grid_dimension" << grid_dimension<<std::endl;
 
 
         grid_box = CGAL::Bbox_3(polyhedron_bbox3.xmin() - grid_dimension,
