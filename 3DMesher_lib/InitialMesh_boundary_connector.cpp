@@ -4,7 +4,7 @@
 
 
 void InitialMesh_boundary_connector::connect(LCC_3 &initial_mesh, const Polyhedron &polyhedron) {
-    if(!lcc.is_empty()) {
+    if(!initial_mesh.is_empty()) {
         std::vector<Dart_handle> hexahedra_built;
         // find the external facet because starting from these facets will be built the new hexahedra
         External_facet_finder externalFacetFinder;
