@@ -48,7 +48,7 @@ public:
         }
         Polyhedron polyhedron;
         if (fileName.size() == 0) {
-            std::cerr << "The file you are trying to load is empty." << std::endl;;
+            std::cerr << "The file you are trying to load is empty." << std::endl;
         }
         input.exceptions(std::ifstream::badbit); //if a bit in the mask becomes set in the error flags, then an exception of type std::ios_base::failure is thrown.
         std::vector <std::array<double, 3>> vertices;
@@ -66,15 +66,15 @@ int i=0;
             else {
                 Polyhedron polyhedron2;
                 if (CGAL::Polygon_mesh_processing::is_polygon_soup_a_polygon_mesh(triangles)) {
-                    std::cout << "It is a polygon soup" << std::endl;
+                    //std::cout << "It is a polygon soup" << std::endl;
                     CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(vertices, triangles, polyhedron2);
                     bool b = CGAL::Polygon_mesh_processing::corefine_and_compute_union(polyhedron, polyhedron2, polyhedron);
-                    if(b)
-                    {
-                        std::cout<<"unione effettuata"<<std::endl;
-                    }
-                    else
-                    {std::cout<<"unione non effettuata"<<std::endl; i++;}
+//                    if(b)
+//                    {
+//                        std::cout<<"unione effettuata"<<std::endl;
+//                    }
+//                    else
+//                    {std::cout<<"unione non effettuata"<<std::endl; i++;}
                     }
                 else{
                     std::cout << "It is not a polygon soup" << std::endl;
@@ -84,20 +84,20 @@ int i=0;
             {
                 std::string s;
                 input >> s;
-                std::cout <<s<<std::endl;
+              //  std::cout <<s<<std::endl;
             }
-            size_t startIndex = fileName.find_last_of(".");
-            std::string fileName_stl_to_write = fileName.substr(0, startIndex) + "2.stl";
-            std::ofstream out(fileName_stl_to_write, std::ios::out);
-            CGAL::set_mode(out, CGAL::IO::ASCII);
-            CGAL::write_STL(polyhedron, out);
+//            size_t startIndex = fileName.find_last_of(".");
+//            std::string fileName_stl_to_write = fileName.substr(0, startIndex) + "2.stl";
+//            std::ofstream out(fileName_stl_to_write, std::ios::out);
+//            CGAL::set_mode(out, CGAL::IO::ASCII);
+//            CGAL::write_STL(polyhedron, out);
         }
         if(!polyhedron.is_valid() && !polyhedron.is_pure_triangle())
         {
             std::cerr << "Error: Polyhedron not valid or not composed of all triangles " << std::endl;
         }
         input.close();
-        std::cout <<"Solidi non uniti "<< i <<std::endl;
+        //std::cout <<"Solidi non uniti "<< i <<std::endl;
         return polyhedron;
     }
 

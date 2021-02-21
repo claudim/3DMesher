@@ -33,6 +33,7 @@ endif (DOXYGEN_FOUND)
 # end Doxygen
 
 
+
 #set(VTK_DIR "/usr/local/include/vtk-9.0")
 
 #set(VTK_INCLUDE_DIRS "/usr/local/include/vtk-9.0")
@@ -130,8 +131,8 @@ endif()
 #set(SOURCE_FILES UnivaqHexMeshMain2.cpp)
 #set(SOURCE_FILES main_gmsh.cpp)
 #set(SOURCE_FILES main_getBBox.cpp)
-#set(SOURCE_FILES DelaunayTetMeshMain_Hex.cpp)
-set(SOURCE_FILES Get_Resolution_and_dimension.cpp)
+set(SOURCE_FILES DelaunayTetMeshMain_Hex.cpp)
+#set(SOURCE_FILES Get_Resolution_and_dimension.cpp)
 add_executable(3DMesher ${SOURCE_FILES})
 
 include_directories(3DMesher_lib )
@@ -166,6 +167,7 @@ target_link_libraries(3DMesher PUBLIC ${GMSH_LIB} )
 
 #target_link_libraries(3DMesher  PUBLIC ${SMESH_LIBRARIES})
 message(cia0 ${VTK_LIBRARIES})
+
 
 
 add_subdirectory(Catch_tests)

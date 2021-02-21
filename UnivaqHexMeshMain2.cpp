@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
     if (argc == 3 || argc == 4) {
         try {
 
-            auto time_s =std::chrono::high_resolution_clock::now();
+//            auto time_s =std::chrono::high_resolution_clock::now();
             //get the stl file fileName_without_extension
             std::string inputPathFileName = argv[1]; // filename is path to filename with extension
             size_t startIndex = inputPathFileName.find_last_of(".");
@@ -32,22 +32,23 @@ int main(int argc, char* argv[]) {
             if (fileName_extension == "stl" || fileName_extension == "off") {
 
                 // read input from file
-                //OFF_Reader reader
                 Polyhedron polyhedron;
                 if (fileName_extension == "stl") {
-                    std::cout <<"file "<< inputPathFileName <<std::endl;
                     STL_reader3 reader;
                     polyhedron = reader.read(inputPathFileName);
                 }
-                //const Polyhedron polyhedron = reader.read(inputPathFileName);
-//                if (fileName_extension == "off") {
-//                    OFF_Reader reader;
-//                    polyhedron = reader.read(inputPathFileName);
-//                }
+                else if(fileName_extension == "off") {
+                    OFF_Reader reader;
+                    polyhedron = reader.read(inputPathFileName);
+                }
+                else{
+                    std::cerr << "Output File format not supported.\n";
+                    return EXIT_FAILURE;
+                }
 
                 Grid_maker gridMaker = Grid_maker();
                 if (argc == 4) {
-                    gridMaker.set_resolution(std::stoi(argv[3]));
+                    gridMaker.set_resolution(std::stod(argv[3]));
                 }
                 LCC_3 hex_mesh = gridMaker.make(polyhedron);
 
@@ -89,19 +90,26 @@ int main(int argc, char* argv[]) {
 //                        writer.output_to_legacy_vtk_ascii_unstructured(outputPathFileName, hex_mesh);
                     vtk_file.close();
                 }
-                if (output_file_extension == "mesh") {
+               else if (output_file_extension == "mesh") {
                     std::ofstream medit_file(outputPathFileName);
                     writer.output_to_medit(medit_file, hex_mesh);
                     medit_file.close();
+               }
+                else{
+                    std::cerr << "Output File format not supported.\n";
+                    return EXIT_FAILURE;
                 }
-                auto stop = std::chrono::high_resolution_clock::now();
-                auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop -time_s);
-                std::cout<<"duration: "<< duration.count();
+             //   auto stop = std::chrono::high_resolution_clock::now();
+              //  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop -time_s);
+              //  std::cout<<"duration: "<< duration.count();
 
             }
+            else{
+                std::cerr << "Input File format not supported.\n";
+                return EXIT_FAILURE;
+            };
         }
         catch (std::ios_base::failure e) {
-            std::cout<<e.what()<<std::endl;
             std::cerr << "Exception opening/reading/closing file\n";
             return EXIT_FAILURE;
         }
