@@ -15,23 +15,24 @@ typedef CGAL::Mesh_triangulation_3<Mesh_Domain, CGAL::Default>::type Tr;
 
 using namespace CGAL::parameters;
 
+const double LIGHT_SPEED = 0.30; // per 10^9 m/s
 int main(int argc, char* argv[]) {
     try {
         if (argc == 3) {
             std::string inputPathFileName = argv[1]; // filename is path to filename with extension
             double frequency_in_GHz = std::stod(argv[2]);
-            double light_speed = 0.30; // sarebbe 3e8 così posso dividerlo con la frequenza
-            double lambda = light_speed/frequency_in_GHz;
+            double lambda_in_meters = LIGHT_SPEED / frequency_in_GHz;
+            double lambda_in_mm = lambda_in_meters * 1000;
 
-            double grid_dimension1 = lambda/20;
-            double grid_dimension2 = lambda/30;
-            double grid_dimension3 = lambda/40;
-            double grid_dimension4 = lambda/50;
+            double grid_dimension1 = lambda_in_mm / 20;
+            double grid_dimension2 = lambda_in_mm / 30;
+            double grid_dimension3 = lambda_in_mm / 40;
+            double grid_dimension4 = lambda_in_mm / 50;
 
-            std::cout << "lambda su 20: " << grid_dimension1<<std::endl;
-            std::cout << "lambda su 30: " << grid_dimension2<<std::endl;
-            std::cout << "lambda su 40: " << grid_dimension3<<std::endl;
-            std::cout << "lambda su 50: " << grid_dimension4<<std::endl;
+            std::cout << "lambda_in_mm su 20: " << grid_dimension1<<std::endl;
+            std::cout << "lambda_in_mm su 30: " << grid_dimension2<<std::endl;
+            std::cout << "lambda_in_mm su 40: " << grid_dimension3<<std::endl;
+            std::cout << "lambda_in_mm su 50: " << grid_dimension4<<std::endl;
 
             size_t startIndex = inputPathFileName.find_last_of(".");
             std::string fileName_extension = inputPathFileName.substr((startIndex + 1), (inputPathFileName.size()));
@@ -53,12 +54,10 @@ int main(int argc, char* argv[]) {
                 double delta_x = polyhedron_bbox3.xmax() - polyhedron_bbox3.xmin();
                 double delta_y = polyhedron_bbox3.ymax() - polyhedron_bbox3.ymin();
                 double delta_z = polyhedron_bbox3.zmax() - polyhedron_bbox3.zmin();
-                std::cout<<delta_x<<std::endl;
-                //moltiplico per mille perchè lamba è metro/secondo e  delta è in mm
-                double resolution1 = 1000 * std::min(std::min(delta_y, delta_z), delta_x) / grid_dimension1;
-                double resolution2 = 1000 * std::min(std::min(delta_y, delta_z), delta_x) / grid_dimension2;
-                double resolution3 = 1000 * std::min(std::min(delta_y, delta_z), delta_x) / grid_dimension3;
-                double resolution4 = 1000 * std::min(std::min(delta_y, delta_z), delta_x) / grid_dimension4;
+                double resolution1 =  std::min(std::min(delta_y, delta_z), delta_x) / grid_dimension1;
+                double resolution2 =  std::min(std::min(delta_y, delta_z), delta_x) / grid_dimension2;
+                double resolution3 =  std::min(std::min(delta_y, delta_z), delta_x) / grid_dimension3;
+                double resolution4 =  std::min(std::min(delta_y, delta_z), delta_x) / grid_dimension4;
 
                 // path/file.ext
                 std::size_t lastSlashPosition = inputPathFileName.find_last_of("/");
@@ -71,10 +70,16 @@ int main(int argc, char* argv[]) {
                 //file
                 resolution_and_dimesion_file.open(filename + "_resolutions.txt");
                 resolution_and_dimesion_file << "Frequency " + std::to_string(frequency_in_GHz) + "\n";
+
+                resolution_and_dimesion_file << "Box Dimensions : " + std::to_string(delta_x) + " x " + std::to_string(delta_y) + " x " + std::to_string(delta_z) +"\n";
                 resolution_and_dimesion_file << "Resolution L/20: " + std::to_string(resolution1) +  "\n";
                 resolution_and_dimesion_file << "Resolution L/30: " + std::to_string(resolution2) +  "\n";
                 resolution_and_dimesion_file << "Resolution L/40: " + std::to_string(resolution3) +  "\n";
                 resolution_and_dimesion_file << "Resolution L/50: " + std::to_string(resolution4) +  "\n";
+                resolution_and_dimesion_file << "Grid_dimension L/20: " + std::to_string(grid_dimension1) +  "\n";
+                resolution_and_dimesion_file << "Grid_dimension L/30: " + std::to_string(grid_dimension2) +  "\n";
+                resolution_and_dimesion_file << "Grid_dimension L/40: " + std::to_string(grid_dimension3) +  "\n";
+                resolution_and_dimesion_file << "Grid_dimension L/50: " + std::to_string(grid_dimension4) +  "\n";
                 resolution_and_dimesion_file.close();
 
             }

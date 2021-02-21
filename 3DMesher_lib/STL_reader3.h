@@ -86,11 +86,11 @@ int i=0;
                 input >> s;
                 std::cout <<s<<std::endl;
             }
-            size_t startIndex = fileName.find_last_of(".");
-            std::string fileName_stl_to_write = fileName.substr(0, startIndex) + "2.stl";
-            std::ofstream out(fileName_stl_to_write, std::ios::out);
-            CGAL::set_mode(out, CGAL::IO::ASCII);
-            CGAL::write_STL(polyhedron, out);
+//            size_t startIndex = fileName.find_last_of(".");
+//            std::string fileName_stl_to_write = fileName.substr(0, startIndex) + "_unito.stl";
+//            std::ofstream out(fileName_stl_to_write, std::ios::out);
+//            CGAL::set_mode(out, CGAL::IO::ASCII);
+//            CGAL::write_STL(polyhedron, out);
         }
         if(!polyhedron.is_valid() && !polyhedron.is_pure_triangle())
         {
