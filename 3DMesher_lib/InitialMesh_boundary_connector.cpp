@@ -4,65 +4,66 @@
 
 
 void InitialMesh_boundary_connector::connect(LCC_3 &initial_mesh, const Polyhedron &polyhedron) {
-    std::vector<Dart_handle> hexahedra_built;
-    // find the external facet because starting from these facets will be built the new hexahedra
-    External_facet_finder externalFacetFinder;
-    const std::vector<Dart_handle> &externalFacets = externalFacetFinder.findFacets(initial_mesh);
+    if(!lcc.is_empty()) {
+        std::vector<Dart_handle> hexahedra_built;
+        // find the external facet because starting from these facets will be built the new hexahedra
+        External_facet_finder externalFacetFinder;
+        const std::vector<Dart_handle> &externalFacets = externalFacetFinder.findFacets(initial_mesh);
 
-    PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
-    std::vector< std::vector<Point> > hexahedraToCreate;
-    LCC_3 newHexahedraLcc;
-    for( Dart_handle facet : externalFacets){
-        std::vector< Point > hexahedronPoints;
-        Point rounded_point;
-        bool jumpToAnotherFacet = false;
+        PointNormal_boundary_intersectionPoint_finder pointNormalBoundaryIntersectionPointFinder;
+        std::vector<std::vector<Point> > hexahedraToCreate;
+        LCC_3 newHexahedraLcc;
+        for (Dart_handle facet : externalFacets) {
+            std::vector<Point> hexahedronPoints;
+            Point rounded_point;
+            bool jumpToAnotherFacet = false;
 
-        // for each facet point of a external facet find the isomorphic point
-        LCC_3::Dart_of_orbit_range<1>::iterator vertexIt = initial_mesh.darts_of_orbit<1>(facet).begin(),
-                vertexItEnd = initial_mesh.darts_of_orbit<1>(facet).end();
-        while(!jumpToAnotherFacet && vertexIt != vertexItEnd) {
-            boost::optional<Point> boostIntersectionPoint = boost::none;
-            if(!is_the_isomorphic_point_computed(initial_mesh, vertexIt))
-            {   //compute the isomorphic point
-                boostIntersectionPoint = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(initial_mesh, vertexIt, polyhedron);
-                if (boostIntersectionPoint.is_initialized()) // if boostIntersectionPoint is null point
-                {
-                    Point intersectionPoint = boostIntersectionPoint.get();
-                    float rounded_down_x = 0;
-                    float rounded_down_y = 0;
-                    float rounded_down_z = 0;
-                    if (!(intersectionPoint.x() > -0.001 && intersectionPoint.x() < 0.001))
-                        rounded_down_x = intersectionPoint.x();
+            // for each facet point of a external facet find the isomorphic point
+            LCC_3::Dart_of_orbit_range<1>::iterator vertexIt = initial_mesh.darts_of_orbit<1>(facet).begin(),
+                    vertexItEnd = initial_mesh.darts_of_orbit<1>(facet).end();
+            while (!jumpToAnotherFacet && vertexIt != vertexItEnd) {
+                boost::optional<Point> boostIntersectionPoint = boost::none;
+                if (!is_the_isomorphic_point_computed(initial_mesh, vertexIt)) {   //compute the isomorphic point
+                    boostIntersectionPoint = pointNormalBoundaryIntersectionPointFinder.findIntersecionPoint(
+                            initial_mesh, vertexIt, polyhedron);
+                    if (boostIntersectionPoint.is_initialized()) // if boostIntersectionPoint is null point
+                    {
+                        Point intersectionPoint = boostIntersectionPoint.get();
+                        float rounded_down_x = 0;
+                        float rounded_down_y = 0;
+                        float rounded_down_z = 0;
+                        if (!(intersectionPoint.x() > -0.001 && intersectionPoint.x() < 0.001))
+                            rounded_down_x = intersectionPoint.x();
 
-                    if (!(intersectionPoint.y() > -0.001 && intersectionPoint.y() < 0.001))
-                        rounded_down_y = intersectionPoint.y();
+                        if (!(intersectionPoint.y() > -0.001 && intersectionPoint.y() < 0.001))
+                            rounded_down_y = intersectionPoint.y();
 
-                    if (!(intersectionPoint.z() > -0.001 && intersectionPoint.z() < 0.001))
-                        rounded_down_z = intersectionPoint.z();
+                        if (!(intersectionPoint.z() > -0.001 && intersectionPoint.z() < 0.001))
+                            rounded_down_z = intersectionPoint.z();
 
-                    rounded_point = Point(rounded_down_x, rounded_down_y, rounded_down_z);
-                    initial_mesh.info<0>(vertexIt) = rounded_point;
+                        rounded_point = Point(rounded_down_x, rounded_down_y, rounded_down_z);
+                        initial_mesh.info<0>(vertexIt) = rounded_point;
 //                    std::cout<< "punto di intersezione "<<rounded_point<<std::endl;
 //                    std::cout<<"punto"<< lcc.point(vertexIt)<<std::endl;
+                    }
+                } else {
+                    boostIntersectionPoint = initial_mesh.info<0>(vertexIt);
                 }
-            }
-            else {
-                boostIntersectionPoint = initial_mesh.info<0>(vertexIt);
-            }
-            if (boostIntersectionPoint.is_initialized()) // if boostIntersectionPoint is null point
-            {
+                if (boostIntersectionPoint.is_initialized()) // if boostIntersectionPoint is null point
+                {
 
 //                hexahedronPoints.emplace_back(lcc.point(vertexIt));
 //                hexahedronPoints.emplace_back(rounded_point);
-                vertexIt++;
-            } else {
-                jumpToAnotherFacet = true;
+                    vertexIt++;
+                } else {
+                    jumpToAnotherFacet = true;
+                }
             }
-        }
-        if(!jumpToAnotherFacet) {
-            //check for intersections
-            double distance = Grid_maker().getGridDimension(polyhedron)/10;
-            this->replace(initial_mesh, facet, polyhedron, distance); //to improve the hexahedron to build, when the isomorphic point are too close, move one of the isomorphic point.
+            if (!jumpToAnotherFacet) {
+                //check for intersections
+                double distance = Grid_maker().getGridDimension(polyhedron) / 10;
+                this->replace(initial_mesh, facet, polyhedron,
+                              distance); //to improve the hexahedron to build, when the isomorphic point are too close, move one of the isomorphic point.
 
 //            std::vector<Point> newHexahedron;
 //            newHexahedron.emplace_back(hexahedronPoints[0]);
@@ -75,29 +76,29 @@ void InitialMesh_boundary_connector::connect(LCC_3 &initial_mesh, const Polyhedr
 //            newHexahedron.emplace_back(hexahedronPoints[5]);
 //
 //            hexahedraToCreate.emplace_back(newHexahedron);
-        }
+            }
 //        hexahedronPoints.clear();
-    }
-
-    // cannot create the hexahedra from time to time because the normals must be constructed starting from the initial mesh
-    for( Dart_handle facet : externalFacets) {
-        std::vector<Point> hexahedronPointsToCreate;
-        for(LCC_3::Dart_of_orbit_range<1>::iterator vertexIt = initial_mesh.darts_of_orbit<1>(facet).begin(),
-                    vertexItEnd = initial_mesh.darts_of_orbit<1>(facet).end(); vertexIt != vertexItEnd; ++vertexIt)
-        {
-            //todo: problema se non ho un punto della faccia ad esempio nel caso della normale nulla
-            hexahedronPointsToCreate.emplace_back(initial_mesh.point(vertexIt));
-            hexahedronPointsToCreate.emplace_back(initial_mesh.info<0>(vertexIt).get());
-           // std::cout<<"punto "<<lcc.point(vertexIt) <<", punto isomorfo "<< lcc.info<0>(vertexIt).get()<<std::endl;
         }
-        hexahedra_built.emplace_back(initial_mesh.make_hexahedron(hexahedronPointsToCreate[0],
-                                                                  hexahedronPointsToCreate[6],
-                                                                  hexahedronPointsToCreate[4],
-                                                                  hexahedronPointsToCreate[2],
-                                                                  hexahedronPointsToCreate[3],
-                                                                  hexahedronPointsToCreate[1],
-                                                                  hexahedronPointsToCreate[7],
-                                                                  hexahedronPointsToCreate[5]));
+
+        // cannot create the hexahedra from time to time because the normals must be constructed starting from the initial mesh
+        for (Dart_handle facet : externalFacets) {
+            std::vector<Point> hexahedronPointsToCreate;
+            for (LCC_3::Dart_of_orbit_range<1>::iterator vertexIt = initial_mesh.darts_of_orbit<1>(facet).begin(),
+                         vertexItEnd = initial_mesh.darts_of_orbit<1>(facet).end();
+                 vertexIt != vertexItEnd; ++vertexIt) {
+                //todo: problema se non ho un punto della faccia ad esempio nel caso della normale nulla
+                hexahedronPointsToCreate.emplace_back(initial_mesh.point(vertexIt));
+                hexahedronPointsToCreate.emplace_back(initial_mesh.info<0>(vertexIt).get());
+                // std::cout<<"punto "<<lcc.point(vertexIt) <<", punto isomorfo "<< lcc.info<0>(vertexIt).get()<<std::endl;
+            }
+            hexahedra_built.emplace_back(initial_mesh.make_hexahedron(hexahedronPointsToCreate[0],
+                                                                      hexahedronPointsToCreate[6],
+                                                                      hexahedronPointsToCreate[4],
+                                                                      hexahedronPointsToCreate[2],
+                                                                      hexahedronPointsToCreate[3],
+                                                                      hexahedronPointsToCreate[1],
+                                                                      hexahedronPointsToCreate[7],
+                                                                      hexahedronPointsToCreate[5]));
 
 
 
@@ -112,7 +113,7 @@ void InitialMesh_boundary_connector::connect(LCC_3 &initial_mesh, const Polyhedr
 //                                                             hexahedron[6],
 //                                                             hexahedron[7]));
 //        }
-    }
+        }
 
 // controllare che non si intersechino
 //    for (std::vector<Point> hexahedron1 : hexahedraToCreate)
@@ -130,10 +131,10 @@ void InitialMesh_boundary_connector::connect(LCC_3 &initial_mesh, const Polyhedr
 //               hexahedron[7]);
 //    }
 
-    initial_mesh.display_characteristics(std::cout);
-    std::cout<<"creati i blocchi tra init mesh e boundary"<<std::endl;
-    initial_mesh.sew3_same_facets(); // link all blocks in lcc with same facets if they are not linked.
-    initial_mesh.display_characteristics(std::cout);
+        initial_mesh.display_characteristics(std::cout);
+        std::cout << "creati i blocchi tra init mesh e boundary" << std::endl;
+        initial_mesh.sew3_same_facets(); // link all blocks in lcc with same facets if they are not linked.
+        initial_mesh.display_characteristics(std::cout);
 
 //    // for each hexahedron created check if there is intersection.
 //    unsigned long i = 0;
@@ -150,7 +151,7 @@ void InitialMesh_boundary_connector::connect(LCC_3 &initial_mesh, const Polyhedr
 //        }
 //        i++;
 //    }
-
+    }
 }
 
 bool InitialMesh_boundary_connector::is_the_isomorphic_point_computed(LCC_3 &lcc, Dart_handle &vertex_handle) {
