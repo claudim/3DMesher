@@ -84,6 +84,8 @@ public:
 //    bool generateStatistics(vtkSmartPointer<vtkUnstructuredGrid> &unstructuredGrid);
 
     double getQuality(std::string const &fileName);
+
+
 };
 
 

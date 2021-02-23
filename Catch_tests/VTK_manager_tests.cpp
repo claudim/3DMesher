@@ -18,13 +18,6 @@ TEST_CASE("must find statistics from a vtk or vtu file", "[get_statistics_from_v
     vtkManager.get_statistics_from_vtk_file(filename_to_read, statistics, true);
     REQUIRE(statistics[12] == 2);
     REQUIRE(statistics[10] == 2);
-    REQUIRE(statistics[7] == 1);
-    REQUIRE(statistics[6] == 1);
-    REQUIRE(statistics[9] == 1);
-    REQUIRE(statistics[5] == 2);
-    REQUIRE(statistics[3] == 2);
-    REQUIRE(statistics[1] == 1);
-
 }
 
 TEST_CASE("must read a vtk or vtu file", "[readUnstructuredGrid][VTK_manager]"){
