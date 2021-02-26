@@ -48,7 +48,6 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
     double mean = 0;
     double total = 0;
     int numberOfCells = 0;
-    int numberOfCell_for_mean = 0;
     for (vtkIdType i = 0; i < unstructuredGrid->GetNumberOfCells(); i++)
     {
         if(unstructuredGrid->GetCellType(i) == VTK_TETRA ||
@@ -64,7 +63,6 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
         }
     }
 
-    numberOfCell_for_mean = numberOfCells;
     if(numberOfCells == (statistics[VTK_HEXAHEDRON] + statistics[VTK_VOXEL])){
         for (vtkIdType i = 0; i < unstructuredGrid->GetNumberOfCells(); i++)
         {
@@ -86,10 +84,9 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
                 }
                 std::array<double, 3> *pArray = hex_vertices.data();
                 double skew_value = v_hex_skew(8, reinterpret_cast<const double (*)[3]>(hex_vertices.data()));
+                total = total + skew_value;
                 if(skew_value > 1)
                 {
-                    //skew_value = 1;
-                    numberOfCell_for_mean--;
                     max = 1;
                 }
                 else
@@ -107,11 +104,6 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
             }
         }
         mean = total/numberOfCells;
-        //mean = total/numberOfCell_for_mean;
-        std::cout<<"total:" <<total<<std::endl;
-        std::cout<<"celle tot:" <<numberOfCells<<std::endl;
-        std::cout<<"celle del mean:" <<numberOfCell_for_mean<<std::endl;
-
     }
 
     if(numberOfCells == statistics[VTK_TETRA] ){
@@ -379,23 +371,11 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
                                                bool doStatisticsWriteOnFile, std::string const &outputFolderPath) {
     vtkSmartPointer<vtkUnstructuredGrid> unstructuredGrid = readUnstructuredGrid(fileName);
 
-//    vtkIdType numberOfCells = unstructuredGrid->GetNumberOfCells();
-//    std::cout << "------------------------" << std::endl;
-//    std::cout << "The inside dataset contains a " << std::endl
-//              << unstructuredGrid->GetClassName()
-//              <<  " that has " << numberOfCells << " cells" << std::endl;
-//    for (vtkIdType i = 0; i < numberOfCells; i++)
-//    {
-//        statistics[unstructuredGrid->GetCellType(i)]++;
-//    }
-
-    //vtkIdType numberOfCells = unstructuredGrid->GetNumberOfCells();
+    double min = 0;
+    double max = 0;
+    double mean = 0;
+    double total = 0;
     int numberOfCells = 0;
-//    std::cout << "------------------------" << std::endl;
-//    std::cout << "The inside dataset contains a " << std::endl
-//              << unstructuredGrid->GetClassName()
-//              <<  " that has " << numberOfCells << " cells" << std::endl;
-
     for (vtkIdType i = 0; i < unstructuredGrid->GetNumberOfCells(); i++)
     {
         if(unstructuredGrid->GetCellType(i) == VTK_TETRA ||
@@ -411,6 +391,81 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
         }
     }
 
+    if(numberOfCells == (statistics[VTK_HEXAHEDRON] + statistics[VTK_VOXEL])){
+        for (vtkIdType i = 0; i < unstructuredGrid->GetNumberOfCells(); i++)
+        {
+            if(
+                    unstructuredGrid->GetCellType(i) == VTK_VOXEL ||
+                    unstructuredGrid->GetCellType(i) == VTK_HEXAHEDRON)
+            {
+                std::vector<std::array<double, 3> > hex_vertices;
+                std::array<double, 3> point{};
+                vtkPoints *vtk_points = unstructuredGrid->GetCell(i)->GetPoints();
+                for (vtkIdType j = 0; j < vtk_points->GetNumberOfPoints() ; j++)
+                {
+                    double point_coordinates[3];
+                    vtk_points->GetPoint(j, point_coordinates);
+                    point[0] = point_coordinates[0];
+                    point[1] = point_coordinates[1];
+                    point[2] = point_coordinates[2];
+                    hex_vertices.emplace_back(point);
+                }
+                std::array<double, 3> *pArray = hex_vertices.data();
+                double skew_value = v_hex_skew(8, reinterpret_cast<const double (*)[3]>(hex_vertices.data()));
+                total = total + skew_value;
+                if(skew_value > 1)
+                {
+                    max = 1;
+                }
+                else
+                {
+                    if(skew_value < min )
+                    {
+                        min = skew_value;
+                    }
+                    if(skew_value > max )
+                    {
+                        max = skew_value;
+                    }
+                    total = total + skew_value;
+                }
+            }
+        }
+        mean = total/numberOfCells;
+    }
+
+    if(numberOfCells == statistics[VTK_TETRA] ){
+        for (vtkIdType i = 0; i < unstructuredGrid->GetNumberOfCells(); i++)
+        {
+            if(unstructuredGrid->GetCellType(i) == VTK_TETRA)
+            {
+                std::vector<std::array<double, 3> > tet_vertices;
+                std::array<double, 3> point{};
+                vtkPoints *vtk_points = unstructuredGrid->GetCell(i)->GetPoints();
+                for (vtkIdType j = 0; j < vtk_points->GetNumberOfPoints() ; j++)
+                {
+                    double point_coordinates[3];
+                    vtk_points->GetPoint(j, point_coordinates);
+                    point[0] = point_coordinates[0];
+                    point[1] = point_coordinates[1];
+                    point[2] = point_coordinates[2];
+                    tet_vertices.emplace_back(point);
+                }
+                std::array<double, 3> *pArray = tet_vertices.data();
+                double edgeRatio_value = v_tet_edge_ratio(4, reinterpret_cast<const double (*)[3]>(tet_vertices.data()));
+                total = total + edgeRatio_value;
+                if(edgeRatio_value < min )
+                {
+                    min = edgeRatio_value;
+                }
+                if(edgeRatio_value > max )
+                {
+                    max = edgeRatio_value;
+                }
+            }
+        }
+        mean = total/numberOfCells;
+    }
     if (doStatisticsWriteOnFile)
     {
         try {
@@ -428,64 +483,13 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
             statisticsFile << "The mesh has "<< numberOfCells << " cells " << "\n";
             for (auto c : statistics)
             {
-                statisticsFile << "\tCell type "
+                statisticsFile << "Cell type "
                                << vtkCellTypes::GetClassNameFromTypeId(c.first)
-                               << " occurs " << c.second << " times." << std::endl;
+                               << " occurs " << c.second << " times. \n" << std::endl;
             }
-
-            //find skew for hex mesh
-            if((statistics[VTK_HEXAHEDRON] + statistics[VTK_VOXEL] )== numberOfCells) {
-                vtkSmartPointer<vtkMeshQuality> quality_filter = vtkSmartPointer<vtkMeshQuality>::New();
-                quality_filter->SetInputData(unstructuredGrid);
-                quality_filter->SetHexQualityMeasureToSkew();
-                quality_filter->Update();
-                vtkSmartPointer<vtkDoubleArray> qualityHexArray =
-                        //dynamic_cast<vtkDoubleArray*>(quality_filter->GetOutput()->GetCellData()->GetAbstractArray("Quality"));
-                        dynamic_cast<vtkDoubleArray *>(quality_filter->GetOutput()->GetFieldData()->GetArray(
-                                "Mesh Hexahedron Quality"));
-                std::cout << "There are " << qualityHexArray->GetNumberOfTuples() << " values." << std::endl;
-                for (vtkIdType i = 0; i < qualityHexArray->GetNumberOfTuples(); i++) {
-                    std::cout << "tuple " << qualityHexArray->GetNumberOfTuples() << std::endl;
-
-                    statisticsFile << "Min Skew :  "
-                                   << qualityHexArray->GetComponent(i,0) << " \n"<< std::endl;
-                    statisticsFile << "Mean Skew:  "
-                                   << qualityHexArray->GetComponent(i,1) << " \n"<< std::endl;
-                    statisticsFile << "Max Skew:  "
-                                   << qualityHexArray->GetComponent(i,2) << " \n"<< std::endl;
-                    statisticsFile << "Unbiased Variance Skew:  "
-                                   << qualityHexArray->GetComponent(i,3) << " \n"<< std::endl;
-
-                }
-            }
-
-            //find edge_ratio for tet mesh
-            if((statistics[VTK_TETRA])== numberOfCells) {
-                vtkSmartPointer<vtkMeshQuality> quality_filter = vtkSmartPointer<vtkMeshQuality>::New();
-                quality_filter->SetInputData(unstructuredGrid);
-                quality_filter->SetTetQualityMeasureToEdgeRatio();
-                quality_filter->Update();
-                vtkSmartPointer<vtkDoubleArray> qualityTetArray =
-                        //dynamic_cast<vtkDoubleArray*>(quality_filter->GetOutput()->GetCellData()->GetAbstractArray("Quality"));
-                        dynamic_cast<vtkDoubleArray *>(quality_filter->GetOutput()->GetFieldData()->GetArray(
-                                "Mesh Tetrahedron Quality"));
-                std::cout << "There are " << qualityTetArray->GetNumberOfTuples() << " values." << std::endl;
-                for (vtkIdType i = 0; i < qualityTetArray->GetNumberOfTuples(); i++) {
-                    for (vtkIdType i = 0; i < qualityTetArray->GetNumberOfTuples(); i++) {
-                        std::cout << "tuple " << qualityTetArray->GetNumberOfTuples() << std::endl;
-
-                        statisticsFile << "Min Edge_ratio :  "
-                                       << qualityTetArray->GetComponent(i,0) << " \n"<< std::endl;
-                        statisticsFile << "Mean  Edge_ratio:  "
-                                       << qualityTetArray->GetComponent(i,1) << " \n"<< std::endl;
-                        statisticsFile << "Max  Edge_ratio:  "
-                                       << qualityTetArray->GetComponent(i,2) << " \n"<< std::endl;
-                        statisticsFile << "Unbiased Variance  Edge_ratio:  "
-                                       << qualityTetArray->GetComponent(i,3) << " \n"<< std::endl;
-                    }
-                }
-            }
-
+            statisticsFile << "Min:  " << min << " \n"<< std::endl;
+            statisticsFile << "Max:  " << max << " \n"<< std::endl;
+            statisticsFile << "Mean:  "<< mean << " \n"<< std::endl;
             statisticsFile.close();
 
         }catch(std::ios::failure exception){

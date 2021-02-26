@@ -59,9 +59,11 @@ int main(int argc, char* argv[]) {
                 CGAL::Grid_boundary_connector gridBoundaryConnector;
                 gridBoundaryConnector.connect(hex_mesh, polyhedron);
 
-                //delete element with Volume <= 0
+                //delete element with Volume <= volume treshold
+                double volume_treshold = std::pow(gridMaker.getGridDimension(),3)/1000;
                 Volume_Validator volumeValidator;
-                volumeValidator.delete_blocks_with_less_than_or_equal_to_zero(hex_mesh);
+                volumeValidator.setVolumeTreshold(volume_treshold);
+                volumeValidator.delete_blocks_with_less_than_or_equal_to_volume_treshold(hex_mesh);
 //
 //                Degenerate_element_finder degenerate_element_finder;
 //                std::vector<Dart_handle> degenerate_element = degenerate_element_finder.find_degenerate_elements(hex_mesh);

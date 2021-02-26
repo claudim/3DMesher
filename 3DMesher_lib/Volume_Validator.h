@@ -22,14 +22,19 @@
  * @class Volume_Validator
  */
 class Volume_Validator {
+private:
+    double volume_treshold = 0;
+public:
+
+
 public:
 
     /**
-     * @brief Remove/Delete all the hexahedral mesh blocks with a volume <= 0.
+     * @brief Remove/Delete all the hexahedral mesh blocks with a volume <= volume_treshold.
      *
      * @param hex_mesh The hexahedral mesh.
      */
-    void delete_blocks_with_less_than_or_equal_to_zero(LCC_3& hex_mesh){
+    void delete_blocks_with_less_than_or_equal_to_volume_treshold(LCC_3& hex_mesh){
         if(!hex_mesh.is_empty()) {
             for (LCC_3::One_dart_per_cell_range<3, 3>::iterator cell_it = hex_mesh.one_dart_per_cell<3, 3>().begin(),
                          cell_it_end = hex_mesh.one_dart_per_cell<3, 3>().end(); cell_it != cell_it_end; ++cell_it) {
@@ -53,17 +58,17 @@ public:
     }
 
     /**
-     * @brief Check if the mesh block is to remove/delete so check if the mesh block has a volume <= 0.
+     * @brief Check if the mesh block is to remove/delete so check if the mesh block has a volume <= volume_treshold.
      *
      * @param hex_mesh The hexahedral mesh to which the block belongs.
-     * @param blockToCheck The mesh block to check if it has volume <= 0.
+     * @param blockToCheck The mesh block to check if it has volume <= volume_treshold.
      * @return true if the block has volume <= 0 and therefore it is to remove, false otherwise.
      */
     bool is_block_to_remove(LCC_3& hex_mesh, Dart_handle& blockToCheck) {
         bool toRemove = false;
         if(!hex_mesh.is_empty()) {
             double block_volume = this->get_block_volume(hex_mesh, blockToCheck);
-            if (block_volume <= 0) {
+            if (block_volume <= volume_treshold) {
                 toRemove = true;
             }
         }
@@ -94,6 +99,15 @@ public:
         std::array<double, 3> *pArray = vertices.data();
         v_hex_quality(vertices.size(), reinterpret_cast<const double (*)[3]>(pArray), V_HEX_VOLUME, &vals);
         return vals.volume;
+    }
+
+    /**
+     * @brief Set a volume treshold.
+     *
+     * @param volumeTreshold The volume treshold.
+     */
+    void setVolumeTreshold(double volumeTreshold) {
+        volume_treshold = volumeTreshold;
     }
 };
 
