@@ -72,11 +72,12 @@ int main(int argc, char* argv[]) {
                     double desired_edge_size = std::stod(argv[3]);
                     Mesh_Criteria criteria(
                             facet_angle = 30,
-                            facet_size = desired_edge_size / sqrt(3),
-                            facet_distance = (desired_edge_size / sqrt(3)) / 10, //facet_distance = 1/10 R
+//                            facet_size = desired_edge_size / sqrt(3),
+//                            facet_distance = (desired_edge_size / sqrt(3)) / 10, //facet_distance = 1/10 R
                             cell_radius_edge_ratio = 2,
-                            cell_size = desired_edge_size / sqrt(3),
-                            edge_size = desired_edge_size / sqrt(3));
+                            cell_size = desired_edge_size / sqrt(3)
+//                            edge_size = desired_edge_size / sqrt(3)
+                                    );
                     //Mesh generation
                     c3t3 = CGAL::make_mesh_3<C3t3>(domain, criteria, no_perturb(), no_exude());
                 }
