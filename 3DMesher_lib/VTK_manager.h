@@ -29,6 +29,7 @@
 #include "vtk-9.0/vtkDoubleArray.h"
 #include "vtk-9.0/vtkDataSet.h"
 #include <algorithm>
+#include "verdict.h"
 
 class VTK_manager {
 

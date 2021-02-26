@@ -38,11 +38,10 @@ int main(int argc, char* argv[]) {
             // read input from file
             if (fileName_extension == "stl" || fileName_extension == "off") {
 
-                STL_reader3 reader;
                 Polyhedron polyhedron;
 
                 if (fileName_extension == "stl") {
-                    STL_reader reader;
+                    STL_reader3 reader;
                     polyhedron = reader.read(inputPathFileName);
 
                 }
