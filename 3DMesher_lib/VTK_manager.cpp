@@ -56,7 +56,8 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
            unstructuredGrid->GetCellType(i) == VTK_WEDGE ||
            unstructuredGrid->GetCellType(i) == VTK_PYRAMID ||
            unstructuredGrid->GetCellType(i) == VTK_PENTAGONAL_PRISM ||
-           unstructuredGrid->GetCellType(i) == VTK_HEXAGONAL_PRISM)
+           unstructuredGrid->GetCellType(i) == VTK_HEXAGONAL_PRISM ||
+           unstructuredGrid->GetCellType(i) == VTK_POLYHEDRON)
         {
             statistics[unstructuredGrid->GetCellType(i)]++;
             numberOfCells ++;
@@ -84,7 +85,6 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
                 }
                 std::array<double, 3> *pArray = hex_vertices.data();
                 double skew_value = v_hex_skew(8, reinterpret_cast<const double (*)[3]>(hex_vertices.data()));
-                total = total + skew_value;
                 if(skew_value > 1)
                 {
                     max = 1;
@@ -239,7 +239,8 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
 //                   unstructuredGrid->GetCellType(i) == VTK_WEDGE ||
 //                   unstructuredGrid->GetCellType(i) == VTK_PYRAMID ||
 //                   unstructuredGrid->GetCellType(i) == VTK_PENTAGONAL_PRISM ||
-//                   unstructuredGrid->GetCellType(i) == VTK_HEXAGONAL_PRISM)
+//                   unstructuredGrid->GetCellType(i) == VTK_HEXAGONAL_PRISM ||
+//                   unstructuredGrid->GetCellType(i) == VTK_POLYHEDRON)
 //        {
 //            statistics[unstructuredGrid->GetCellType(i)]++;
 //            numberOfCells ++;
@@ -384,7 +385,8 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
            unstructuredGrid->GetCellType(i) == VTK_WEDGE ||
            unstructuredGrid->GetCellType(i) == VTK_PYRAMID ||
            unstructuredGrid->GetCellType(i) == VTK_PENTAGONAL_PRISM ||
-           unstructuredGrid->GetCellType(i) == VTK_HEXAGONAL_PRISM)
+           unstructuredGrid->GetCellType(i) == VTK_HEXAGONAL_PRISM ||
+           unstructuredGrid->GetCellType(i) == VTK_POLYHEDRON)
         {
             statistics[unstructuredGrid->GetCellType(i)]++;
             numberOfCells ++;
@@ -412,7 +414,6 @@ void VTK_manager::get_statistics_from_vtk_file(std::string const &fileName, std:
                 }
                 std::array<double, 3> *pArray = hex_vertices.data();
                 double skew_value = v_hex_skew(8, reinterpret_cast<const double (*)[3]>(hex_vertices.data()));
-                total = total + skew_value;
                 if(skew_value > 1)
                 {
                     max = 1;

@@ -69,9 +69,9 @@ Point Grid_maker::get_grid_centroid(){
 }
 
 LCC_3 Grid_maker::turn_box_into_grid(){
-    const double number_of_x_nodes = round(x_dimension / grid_dimension);
-    const double number_of_y_nodes = round(y_dimension / grid_dimension);
-    const double number_of_z_nodes = round(z_dimension / grid_dimension);
+    const double number_of_x_nodes = ceil(x_dimension / grid_dimension);
+    const double number_of_y_nodes = ceil(y_dimension / grid_dimension);
+    const double number_of_z_nodes = ceil(z_dimension / grid_dimension);
 
 //    std::cout<<"numero nodi x" << number_of_x_nodes  <<std::endl;
 //    std::cout<<"numero nodi y" << number_of_y_nodes  <<std::endl;
