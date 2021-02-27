@@ -74,9 +74,9 @@ int main(int argc, char* argv[]) {
                               grid_box.ymin() + y_dimension / 2,
                               grid_box.zmin() + z_dimension / 2);
 
-        double number_of_x_nodes = round(x_dimension / grid_dimension);
-        double number_of_y_nodes = round(y_dimension / grid_dimension);
-        double number_of_z_nodes = round(z_dimension / grid_dimension);
+        double number_of_x_nodes = ceil(x_dimension / grid_dimension);
+        double number_of_y_nodes = ceil(y_dimension / grid_dimension);
+        double number_of_z_nodes = ceil(z_dimension / grid_dimension);
 
         std::cout << "x_min is : " << polyhedron_bbox3.xmin() << std::endl;
         std::cout << "y_min is : " << polyhedron_bbox3.ymin() << std::endl;
