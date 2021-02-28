@@ -23,8 +23,8 @@ private:
     double x_dimension;
     double y_dimension;
     double z_dimension;
-    int resolution = 8;
-    //int resolution = 24;
+    double resolution = 8;
+    //double resolution = 24;
 
     double grid_dimension;
 
@@ -80,7 +80,7 @@ public:
 
     void wrap_the_object(const Polyhedron &polyhedron);
 
-    void set_resolution(int aResolution){
+    void set_resolution(double aResolution){
         resolution = aResolution;
     }
 

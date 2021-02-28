@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
 //                            facet_size = desired_edge_size / sqrt(3),
 //                            facet_distance = (desired_edge_size / sqrt(3)) / 10, //facet_distance = 1/10 R
                             cell_radius_edge_ratio = 2,
-                            cell_size = desired_edge_size / sqrt(3)
+                            cell_size = desired_edge_size * sqrt(6) / 4
 //                            edge_size = desired_edge_size / sqrt(3)
                                     );
                     //Mesh generation

@@ -31,7 +31,7 @@ void Grid_maker::wrap_the_object(const Polyhedron &polyhedron) {
 
     grid_dimension = std::min(std::min(delta_y, delta_z), delta_x) / resolution;
 
-//    std::cout<<"grid_dimension " << grid_dimension  <<std::endl;
+//    std::cout<<"min_dimension " << std::min(std::min(delta_y, delta_z), delta_x)  <<std::endl;
 
     grid_box = CGAL::Bbox_3(polyhedron_bbox3.xmin() - grid_dimension,
                             polyhedron_bbox3.ymin() - grid_dimension,
@@ -73,6 +73,11 @@ LCC_3 Grid_maker::turn_box_into_grid(){
     const double number_of_y_nodes = ceil(y_dimension / grid_dimension);
     const double number_of_z_nodes = ceil(z_dimension / grid_dimension);
 
+//    std::cout<<"grid    dimension" <<grid_dimension  <<std::endl;
+//    std::cout<<"dimensione x" << x_dimension  <<std::endl;
+//    std::cout<<"dimensione y" << y_dimension  <<std::endl;
+//    std::cout<<"dimensione z" << z_dimension  <<std::endl;
+//
 //    std::cout<<"numero nodi x" << number_of_x_nodes  <<std::endl;
 //    std::cout<<"numero nodi y" << number_of_y_nodes  <<std::endl;
 //    std::cout<<"numero nodi z" << number_of_z_nodes  <<std::endl;
