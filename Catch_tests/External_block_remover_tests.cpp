@@ -76,3 +76,14 @@ TEST_CASE("must_not_remove_on_boundary_blocks","[External_block_remover]"){
 
 }
 
+TEST_CASE("must_find_block_centroid","[External_block_remover]"){
+    Point externalBasePoint = Point(0,0,0);  FT lg = 2;
+    LCC_3 lcc;
+    Block_maker blockMaker = Block_maker();
+    Dart_handle block = blockMaker.make_cube(lcc, externalBasePoint, lg);
+
+    External_block_remover blockRemover = External_block_remover();
+    Point centroid_found = blockRemover.get_block_centroid();
+    Point centroid = Point(1,1,1);
+    REQUIRE(cen)
+}

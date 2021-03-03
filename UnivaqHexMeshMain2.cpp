@@ -88,8 +88,8 @@ int main(int argc, char* argv[]) {
                                                                               outputPathFileName.size());
                 if (output_file_extension == "vtk") {
                     std::ofstream vtk_file(outputPathFileName);
-                    writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
-//                        writer.output_to_legacy_vtk_ascii_unstructured(outputPathFileName, hex_mesh);
+                  //  writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
+                        writer.output_to_legacy_vtk_ascii_unstructured(outputPathFileName, hex_mesh);
                     vtk_file.close();
                 }
                else if (output_file_extension == "mesh") {
