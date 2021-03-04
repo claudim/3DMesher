@@ -36,6 +36,13 @@ External_block_remover::is_block_to_be_removed(const LCC_3 &lcc, const Dart_hand
     }
     if (number_of_internal_points == 0) {
         toRemove = true;
+
+        Point centroid;
+        this->get_const_block_centroid(lcc, block, centroid);
+        if (vertexLocationFinder.is_point_inside_polyhedron(centroid) ||
+            vertexLocationFinder.is_point_onBoundary_polyhedron(centroid)) {
+            toRemove = false;
+        }
     }
     return toRemove;
 }
@@ -69,3 +76,50 @@ void External_block_remover::removeBlock(LCC_3& hex_mesh, Dart_handle& blockToRe
 }
 
 void External_block_remover::removeBlocks(LCC_3& lcc, const Polyhedron& polyhedron, const double &distance) {}
+
+void External_block_remover::get_block_centroid(LCC_3 &hex_mesh, Dart_handle &block, Point &centroid_to_find) {
+    if(!hex_mesh.is_empty()) {
+        Dart_handle opposite_facet = hex_mesh.beta(block, 2, 1, 1, 2);
+        std::vector<Point> facet_points;
+        //for(LCC_3::Dart_of_cell_range<0,3>::iterator it = hex_mesh.darts_of_cell<0,3>(block).begin(), e_it = hex_mesh.darts_of_cell<0,3>(block).end();
+        for(LCC_3::Dart_of_orbit_range<1>::iterator it = hex_mesh.darts_of_orbit<1>(block).begin(), e_it = hex_mesh.darts_of_orbit<1>(block).end();
+        it != e_it; ++it){
+            facet_points.emplace_back(hex_mesh.point(it));
+        }
+        std::vector<Point> opposite_facet_points;
+        for(LCC_3::Dart_of_orbit_range<1>::iterator it = hex_mesh.darts_of_orbit<1>(opposite_facet).begin(), e_it = hex_mesh.darts_of_orbit<1>(opposite_facet).end();
+            it != e_it; ++it){
+            opposite_facet_points.emplace_back(hex_mesh.point(it));
+        }
+        Point facet_centroid = CGAL::centroid(facet_points.at(0), facet_points.at(1), facet_points.at(2),
+                                              facet_points.at(3));
+        Point opposite_facet_centroid = CGAL::centroid(opposite_facet_points.at(0), opposite_facet_points.at(1),
+                                                       opposite_facet_points.at(2), opposite_facet_points.at(3));
+
+        centroid_to_find = CGAL::midpoint(facet_centroid, opposite_facet_centroid);
+    }
+}
+
+void External_block_remover::get_const_block_centroid(const LCC_3& hex_mesh, const Dart_handle& block, Point& centroid_to_find) {
+    if(!hex_mesh.is_empty()) {
+        Dart_const_handle opposite_facet = hex_mesh.beta(block, 2, 1, 1, 2);
+        std::vector<Point> facet_points;
+        //for(LCC_3::Dart_of_cell_range<0,3>::iterator it = hex_mesh.darts_of_cell<0,3>(block).begin(), e_it = hex_mesh.darts_of_cell<0,3>(block).end();
+        for(LCC_3::Dart_of_orbit_const_range<1>::const_iterator it = hex_mesh.darts_of_orbit<1>(block).begin(), e_it = hex_mesh.darts_of_orbit<1>(block).end();
+            it != e_it; ++it){
+            facet_points.emplace_back(hex_mesh.point(it));
+        }
+        std::vector<Point> opposite_facet_points;
+        for(LCC_3::Dart_of_orbit_const_range<1>::const_iterator it = hex_mesh.darts_of_orbit<1>(opposite_facet).begin(), e_it = hex_mesh.darts_of_orbit<1>(opposite_facet).end();
+            it != e_it; ++it){
+            opposite_facet_points.emplace_back(hex_mesh.point(it));
+        }
+        Point facet_centroid = CGAL::centroid(facet_points.at(0), facet_points.at(1), facet_points.at(2),
+                                              facet_points.at(3));
+        Point opposite_facet_centroid = CGAL::centroid(opposite_facet_points.at(0), opposite_facet_points.at(1),
+                                                       opposite_facet_points.at(2), opposite_facet_points.at(3));
+
+        centroid_to_find = CGAL::midpoint(facet_centroid, opposite_facet_centroid);
+    }
+}
+

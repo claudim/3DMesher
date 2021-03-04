@@ -86,6 +86,8 @@ public:
      */
     void removeBlocks(LCC_3& lcc, const Polyhedron& polyhedron, const double &distance);
 
+    void get_block_centroid(LCC_3 &hex_mesh, Dart_handle &block, Point &centroid_to_find);
+    void get_const_block_centroid(const LCC_3& hex_mesh, const Dart_handle& block, Point &centroid_to_find);
 };
 
 
