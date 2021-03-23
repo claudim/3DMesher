@@ -17,21 +17,7 @@ void Grid_maker::wrap_the_object(const Polyhedron &polyhedron) {
     double delta_y = polyhedron_bbox3.ymax() - polyhedron_bbox3.ymin();
     double delta_z = polyhedron_bbox3.zmax() - polyhedron_bbox3.zmin();
 
-//    std::cout<<"x_max " << polyhedron_bbox3.xmax() <<std::endl;
-//    std::cout<<"x_min " << polyhedron_bbox3.xmin() <<std::endl;
-//    std::cout<<"delta_x " << delta_x  <<std::endl;
-//
-//    std::cout<<"y_max " << polyhedron_bbox3.ymax() <<std::endl;
-//    std::cout<<"y_min " << polyhedron_bbox3.ymin() <<std::endl;
-//    std::cout<<"delta_y " << delta_y  <<std::endl;
-//
-//    std::cout<<"z_max " << polyhedron_bbox3.zmax() <<std::endl;
-//    std::cout<<"z_min " << polyhedron_bbox3.zmin() <<std::endl;
-//    std::cout<<"delta_z " << delta_z  <<std::endl;
-
     grid_dimension = std::min(std::min(delta_y, delta_z), delta_x) / resolution;
-
-//    std::cout<<"min_dimension " << std::min(std::min(delta_y, delta_z), delta_x)  <<std::endl;
 
     grid_box = CGAL::Bbox_3(polyhedron_bbox3.xmin() - grid_dimension,
                             polyhedron_bbox3.ymin() - grid_dimension,
@@ -47,18 +33,6 @@ void Grid_maker::wrap_the_object(const Polyhedron &polyhedron) {
     x_dimension = delta_x_grid;
     y_dimension = delta_y_grid;
     z_dimension = delta_z_grid;
-
-//    std::cout<<"x_max dopo grid dimension " << grid_box.xmax() <<std::endl;
-//    std::cout<<"x_min dopo grid dimension" << grid_box.xmin() <<std::endl;
-//    std::cout<<"delta_x dopo grid dimension" << delta_x_grid  <<std::endl;
-//
-//    std::cout<<"y_max dopo grid dimension " << grid_box.ymax() <<std::endl;
-//    std::cout<<"y_min dopo grid dimension" << grid_box.ymin() <<std::endl;
-//    std::cout<<"delta_y dopo grid dimension" << delta_y_grid  <<std::endl;
-//
-//    std::cout<<"z_max dopo grid dimension " << grid_box.zmax() <<std::endl;
-//    std::cout<<"z_min dopo grid dimension" << grid_box.zmin() <<std::endl;
-//    std::cout<<"delta_z dopo grid dimension" << delta_z_grid  <<std::endl;
 }
 
 Point Grid_maker::get_grid_centroid(){
@@ -72,15 +46,6 @@ LCC_3 Grid_maker::turn_box_into_grid(){
     const double number_of_x_nodes = ceil(x_dimension / grid_dimension);
     const double number_of_y_nodes = ceil(y_dimension / grid_dimension);
     const double number_of_z_nodes = ceil(z_dimension / grid_dimension);
-
-//    std::cout<<"grid    dimension" <<grid_dimension  <<std::endl;
-//    std::cout<<"dimensione x" << x_dimension  <<std::endl;
-//    std::cout<<"dimensione y" << y_dimension  <<std::endl;
-//    std::cout<<"dimensione z" << z_dimension  <<std::endl;
-//
-//    std::cout<<"numero nodi x" << number_of_x_nodes  <<std::endl;
-//    std::cout<<"numero nodi y" << number_of_y_nodes  <<std::endl;
-//    std::cout<<"numero nodi z" << number_of_z_nodes  <<std::endl;
 
     const double number_of_nodes = number_of_x_nodes * number_of_y_nodes * number_of_z_nodes;
     LCC_3 lcc;

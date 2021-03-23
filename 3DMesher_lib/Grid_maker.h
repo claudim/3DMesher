@@ -1,3 +1,13 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Generate the grid.
+//******************************************************************************
+
 #ifndef INC_3DMESHER_GRID_MAKER_H
 #define INC_3DMESHER_GRID_MAKER_H
 
@@ -28,6 +38,12 @@ private:
 public:
     Grid_maker();
 
+    /**
+     * @brief Generate a grid that contains the object entirely.
+     *
+     * @param polyhedron The object described by a polyhedron.
+     * @return The grid.
+     */
     LCC_3 make(const Polyhedron& polyhedron);
 
     void set_x_dimension(double xDimension){
@@ -46,6 +62,12 @@ public:
         return z_dimension;
     }
 
+    /**
+     * @brief Compute and get the edge dimension of the grid.
+     *
+     * @param polyhedron The poluhedron
+     * @return The edge dimension
+     */
     double getGridDimension(const Polyhedron &polyhedron){
             const CGAL::Bbox_3 &polyhedron_bbox3 = CGAL::Polygon_mesh_processing::bbox(polyhedron);
 
@@ -69,12 +91,25 @@ public:
 
     Point get_grid_centroid();
 
+    /**
+     * @brief Find the Grid Box that contains the polyhedron.
+     *
+     * @param polyhedron The polyhedron
+     */
     void wrap_the_object(const Polyhedron &polyhedron);
 
+    /**
+     * @brief Set the resolution
+     *
+     * @param aResolution The resolution to set.
+     */
     void set_resolution(double aResolution){
         resolution = aResolution;
     }
 
+    /**
+     * @brief Starting from the grid box, generate the grid.
+     */
     LCC_3 turn_box_into_grid();
 
 };
