@@ -1,6 +1,7 @@
 #include <iostream>
 //#include "test_congif.h" //TODO da aggiungere
-#include "STL_reader.h"
+#include "STL_reader3.h"
+//#include "STL_reader.h"
 //#include "OFF_Reader.h"
 //#include "Features_detector.h"
 #include "Grid_maker.h"
@@ -51,7 +52,7 @@ int main(int argc, char* argv[]) {
 
                 // read input from file
                 //OFF_Reader reader;
-                STL_reader reader;
+                STL_reader3 reader;
                 Polyhedron polyhedron = reader.read(inputPathFileName);
 
 //        Features_detector featuresDetector;
@@ -108,7 +109,7 @@ int main(int argc, char* argv[]) {
 
 //delete element with Volume <= 0
                 Volume_Validator volumeValidator;
-                volumeValidator.delete_blocks_with_less_than_or_equal_to_zero(hex_mesh);
+                volumeValidator.delete_blocks_with_less_than_or_equal_to_volume_treshold(hex_mesh);
                 // CGAL::draw(hex_mesh);
 
                 //output

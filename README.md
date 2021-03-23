@@ -25,10 +25,10 @@ A C++ implementation of full automatic tool for 3D Meshing.
 - Navigate to the newly build folder  
     `cd build` 
     
-- di    
+- digit    
 `cmake ..`
 
-- di
+- digit
 `make` or `make -j6`
 
  

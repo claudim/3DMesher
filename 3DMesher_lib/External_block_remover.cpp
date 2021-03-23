@@ -37,12 +37,12 @@ External_block_remover::is_block_to_be_removed(const LCC_3 &lcc, const Dart_hand
     if (number_of_internal_points == 0) {
         toRemove = true;
 
-        Point centroid;
-        this->get_const_block_centroid(lcc, block, centroid);
-        if (vertexLocationFinder.is_point_inside_polyhedron(centroid) ||
-            vertexLocationFinder.is_point_onBoundary_polyhedron(centroid)) {
-            toRemove = false;
-        }
+//        Point centroid;
+//        this->get_const_block_centroid(lcc, block, centroid);
+//        if (vertexLocationFinder.is_point_inside_polyhedron(centroid) ||
+//            vertexLocationFinder.is_point_onBoundary_polyhedron(centroid)) {
+//            toRemove = false;
+//        }
     }
     return toRemove;
 }
