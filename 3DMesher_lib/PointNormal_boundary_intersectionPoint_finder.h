@@ -25,15 +25,6 @@
 #include "Point_normal_finder.h"
 #include <boost/optional.hpp>
 
-
-//typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-//typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
-//typedef LCC_3::Dart_handle Dart_handle;
-//typedef LCC_3::Dart_const_handle Dart_const_handle;
-//typedef LCC_3::Point Point;
-//typedef LCC_3::Traits Traits;
-//typedef LCC_3::FT FT;
-//typedef LCC_3::Vector Vector;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 typedef CGAL::AABB_face_graph_triangle_primitive<Polyhedron> Primitive;
 typedef CGAL::AABB_traits<K, Primitive> AABB_Traits;

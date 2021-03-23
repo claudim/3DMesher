@@ -6,7 +6,6 @@
 #include "External_block_remover.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-//typedef CGAL::Simple_cartesian<double> K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
 typedef boost::graph_traits<Polyhedron>::edge_descriptor Edge_descriptor;
@@ -15,8 +14,19 @@ typedef boost::graph_traits<Polyhedron>::vertex_descriptor Vertex_descriptor;
 class Features_detector {
 public:
 
+    /**
+     * @brief Detect the geometric features.
+     *
+     * @param polyhedron The polyhedron where detect the geometric features.
+     */
     void detect(Polyhedron &polyhedron);
 
+    /**
+     * @brief Detect the geometric features.
+     *
+     * @param polyhedron The polyhedron where detect the geometric features.
+     * @param featuresPoints Vector where stores vertices.
+     */
     void detect(Polyhedron &polyhedron, std::vector<Point> &featuresPoints);
 };
 

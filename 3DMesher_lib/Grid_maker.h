@@ -10,13 +10,7 @@
 
 #include <CGAL/Polygon_mesh_processing/bbox.h>
 
-//typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-//typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
-//typedef LCC_3::Dart_handle Dart_handle;
-//typedef LCC_3::Point Point;
 typedef CGAL::Bbox_3 Bbox;
-//typedef LCC_3::Traits Traits;
-//typedef LCC_3::FT FT;
 
 class Grid_maker{
 private:
@@ -24,7 +18,6 @@ private:
     double y_dimension;
     double z_dimension;
     double resolution = 8;
-    //double resolution = 24;
 
     double grid_dimension;
 
@@ -54,7 +47,6 @@ public:
     }
 
     double getGridDimension(const Polyhedron &polyhedron){
-//        if(grid_dimension == 0) {
             const CGAL::Bbox_3 &polyhedron_bbox3 = CGAL::Polygon_mesh_processing::bbox(polyhedron);
 
             double delta_x = polyhedron_bbox3.xmax() - polyhedron_bbox3.xmin();
@@ -62,7 +54,6 @@ public:
             double delta_z = polyhedron_bbox3.zmax() - polyhedron_bbox3.zmin();
 
             grid_dimension =  std::min(std::min(delta_y, delta_z), delta_x) / resolution;
-//       }
         return grid_dimension;
     }
 

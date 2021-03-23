@@ -49,7 +49,6 @@ set(SOURCE_FILES
         Point_sorter.cpp
         Block_refiner.cpp
         Bad_hex_finder.cpp
-        Intersecting_polyhedron_finder.cpp
         Hexahedron_fitter.cpp
         L_facet_detector.cpp
         VTK_manager.cpp

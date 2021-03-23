@@ -18,7 +18,6 @@
 #include <CGAL/Linear_cell_complex_operations.h>
 #include "External_facet_finder.h"
 
-//typedef CGAL::Linear_cell_complex_for_combinatorial_map<3> LCC_3;
 
 /**
  * @brief Compute the normal of a 0-cell point.

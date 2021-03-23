@@ -86,7 +86,22 @@ public:
      */
     void removeBlocks(LCC_3& lcc, const Polyhedron& polyhedron, const double &distance);
 
+    /**
+     * @brief Compute and get block centroid.
+     *
+     * @param lcc The grid.
+     * @param block The block
+     * @param centroid_to_find The point where store the centroid.
+     */
     void get_block_centroid(LCC_3 &hex_mesh, Dart_handle &block, Point &centroid_to_find);
+
+    /**
+     * @brief Compute and get block centroid.
+     *
+     * @param lcc The grid.
+     * @param block The block
+     * @param centroid_to_find The point where store the centroid.
+     */
     void get_const_block_centroid(const LCC_3& hex_mesh, const Dart_handle& block, Point &centroid_to_find);
 };
 

@@ -25,7 +25,6 @@
 #include <CGAL/intersections.h>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-//typedef CGAL::Simple_cartesian<double> K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
 template <class Polyhedron = Polyhedron, class LCC = LCC_3 >
@@ -33,16 +32,23 @@ class Intersecting_polyhedron_finder {
 
 public:
     /**
-     * Check if two polyhedra intesect. True if they intersect, false otherwise.
+     * @brief Check if two polyhedra intesect. True if they intersect, false otherwise.
      *
+     * @param polyhedron1 The first polyhedron.
+     * @param polyhedron2 The second polyhedron.
+     * @return true if they intersect, false otherwise.
      */
     bool do_polyhedra_intersect(const Polyhedron& polyhedron1, const Polyhedron& polyhedron2){
         return CGAL::Polygon_mesh_processing::do_intersect(polyhedron1,polyhedron2);
     }
 
     /**
-    * Check if the block facets intersect. True if they intersect, false otherwise.
-    */
+     * @brief Check if the block facets intersect. True if they intersect, false otherwise.
+     *
+     * @param lcc The lcc.
+     * @param block The block to check if their facets intersect.
+     * @param intersecting_facets Vector where store the facets that intersect.
+     */
     bool do_polyhedron_facets_intersect(const LCC& lcc, const typename LCC::Dart_handle& block, std::vector<typename LCC::Dart_const_handle>& intersecting_facets) {
 
         typedef typename LCC::Dart_const_handle Dart_const_handle;
@@ -79,7 +85,13 @@ public:
         return facets_intersect;
     }
 
-
+    /**
+     * @brief Check if the block facets intersect. True if they intersect, false otherwise.
+     *
+     * @param lcc The lcc.
+     * @param block The block to check if their facets intersect.
+     * @param intersecting_facets Vector where store the facets that intersect.
+     */
     bool do_polyhedron_facets_intersect(LCC& lcc, const typename LCC::Dart_handle& block, std::vector<typename LCC::Dart_handle>& intersecting_facets) {
 
         typedef typename LCC::Dart_handle Dart_handle;

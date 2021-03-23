@@ -58,7 +58,6 @@ CGAL::Segment_3<K> L_facet_detector::compute_facet_normal_segment(LCC_3 &lcc, Da
     CGAL::Segment_3<K> facet_segment = CGAL::Segment_3<K>(source, target);
 
     double length = sqrt(facet_segment.squared_length());
-    //double new_length = Grid_maker().getGridDimension();
     double new_length = 0.5;
     Point new_target = source + new_length * (target - source) / length;
     return facet_segment = CGAL::Segment_3<K>(source, new_target);
