@@ -22,6 +22,12 @@
 
 typedef CGAL::Bbox_3 Bbox;
 
+/**
+* @brief Generate the grid.
+*
+* @file Grid_maker.h
+* @class Grid_maker
+*/
 class Grid_maker{
 private:
     double x_dimension;

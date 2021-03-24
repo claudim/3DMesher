@@ -89,12 +89,12 @@ int main(int argc, char* argv[]) {
                 else
                 {
                     Mesh_Criteria criteria(facet_angle = 30, cell_radius_edge_ratio = 2);
-//Mesh generation
+                    //Mesh generation
                     c3t3 = CGAL::make_mesh_3<C3t3>(domain, criteria, no_perturb(), no_exude());
                 }
 
 
-//split tet mesh in all hex mesh
+                //split tet mesh in all hex mesh
                 LCC_3 hex_mesh;
                 HexMesh_from_TetMesh_maker hex_mesh_maker;
                 hex_mesh_maker.split_from_tet(c3t3, hex_mesh);

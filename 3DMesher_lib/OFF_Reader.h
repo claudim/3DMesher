@@ -18,6 +18,12 @@
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
+/**
+ * @brief The OFF file reader.
+ *
+ * @file OFF_Reader.h
+ * @class OFF_Reader
+ */
 class OFF_Reader {
 
 public:

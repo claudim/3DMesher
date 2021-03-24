@@ -23,6 +23,12 @@ typedef std::vector<Point>::iterator iterator;
 typedef std::vector<Point>::const_iterator const_iterator;
 typedef std::vector<iterator>::iterator iterator2;
 
+/**
+ * @brief Sort points.
+ *
+ * @file Point_sorter.h
+ * @class Point_sorter
+ */
 class Point_sorter {
 
 public:

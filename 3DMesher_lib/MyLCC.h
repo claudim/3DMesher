@@ -1,3 +1,13 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// File with all type definitions.
+//******************************************************************************
+
 #ifndef INC_3DMESHER_MYLCC_H
 #define INC_3DMESHER_MYLCC_H
 
@@ -5,7 +15,6 @@
 #include <CGAL/Simple_cartesian.h>
 #include <boost/optional.hpp>
 
-//typedef CGAL::Simple_cartesian<double> K;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 
 //typedef CGAL::Point_3<K> Isomorphic_point;

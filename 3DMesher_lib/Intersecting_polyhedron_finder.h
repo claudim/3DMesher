@@ -27,6 +27,13 @@
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
+/**
+ * @brief Find polyhedra which intersect each other.
+ * In other words if two polyhedra share portion of space, it must be detected.
+ *
+ * @file Intersecting_polyhedron_finder.h
+ * @class Intersecting_polyhedron_finder
+ */
 template <class Polyhedron = Polyhedron, class LCC = LCC_3 >
 class Intersecting_polyhedron_finder {
 

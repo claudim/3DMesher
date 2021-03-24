@@ -29,8 +29,6 @@ typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr> C3t3;
  *
  * @file HexMesh_from_TetMesh_maker.h
  * @class HexMesh_from_TetMesh_maker
- *
- *
  */
 class HexMesh_from_TetMesh_maker {
 public:

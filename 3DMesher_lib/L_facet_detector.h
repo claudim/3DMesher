@@ -16,6 +16,12 @@
 #include "External_facet_finder.h"
 #include "Grid_maker.h"
 
+/**
+ * @brief Find the mesh facets that form an L.
+ *
+ * @file L_facet_detector.h
+ * @class L_facet_detector
+ */
 class L_facet_detector {
 
 public:

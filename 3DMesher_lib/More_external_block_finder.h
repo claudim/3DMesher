@@ -15,6 +15,12 @@
 
 #include "External_facet_finder.h"
 
+/**
+ * @brief Find the mesh blocks more external.
+ *
+ * @file More_external_block_finder.h
+ * @class More_external_block_finder
+ */
 class More_external_block_finder {
 
 public:
