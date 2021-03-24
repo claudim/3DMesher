@@ -22,7 +22,6 @@ set(HEADER_FILES
         Block_refiner.h
         Bad_hex_finder.h
         Intersecting_polyhedron_finder.h
-        Hexahedron_fitter.h
         MyLCC.h
         L_facet_detector.h
         Volume_Validator.h
@@ -49,7 +48,6 @@ set(SOURCE_FILES
         Point_sorter.cpp
         Block_refiner.cpp
         Bad_hex_finder.cpp
-        Hexahedron_fitter.cpp
         L_facet_detector.cpp
         VTK_manager.cpp
         STL_reader2.h HexMesh_from_TetMesh_maker.cpp HexMesh_from_TetMesh_maker.h)

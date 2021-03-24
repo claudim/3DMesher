@@ -1,3 +1,14 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Main file to generate a conforming hexahedral mesh using Univaq Hex Mesh algorithm.
+//******************************************************************************
+
+
 #include <iostream>
 #include <chrono>
 #include "STL_reader.h"
@@ -58,24 +69,8 @@ int main(int argc, char* argv[]) {
                 Volume_Validator volumeValidator;
                 volumeValidator.setVolumeTreshold(volume_treshold);
                 volumeValidator.delete_blocks_with_less_than_or_equal_to_volume_treshold(hex_mesh);
-//
-//                Degenerate_element_finder degenerate_element_finder;
-//                std::vector<Dart_handle> degenerate_element = degenerate_element_finder.find_degenerate_elements(hex_mesh);
-//                std::cout<< "Quadrilaterals: " <<degenerate_element_finder.getQuadrilaterals().size()<<std::endl;
-//                std::cout<< "Pyramids: " <<degenerate_element_finder.getPyramids().size()<<std::endl;
-//                std::cout<< "Tets: " <<degenerate_element_finder.getTetrahedra().size()<<std::endl;
-//                std::cout<< "Wedges: " <<degenerate_element_finder.getWedges().size()<<std::endl;
-//                std::cout<< "Degeneri: " <<degenerate_element.size()<<std::endl;
-//                std::cout<< "Blocks with 3 collinear vertices: " <<degenerate_element_finder.getBlockWith3CollinearVertices().size()<<std::endl;
-//                std::cout<< "Blocks with no facets vertices coplanar: " <<degenerate_element_finder.getBlockWithNotCoplanarFacetsVertices().size()<<std::endl;
-//
-
 
                 std::string outputPathFileName = argv[2]; // filename is path to filename with extension of the output
-                //size_t startIndex  = outputPathFileName.find_last_of("/");
-                //std::string output_fileName_with_extension = outputPathFileName.substr(startIndex + 1,outputPathFileName.size());
-                // std::string fileName_without_extension = output_fileName_with_extension.substr(0,(output_fileName_with_extension.size()-4));
-                // std::string output_file_extension = output_fileName_with_extension.substr((output_fileName_with_extension.size()-3),(output_fileName_with_extension.size()));
                 size_t startIndex = outputPathFileName.find_last_of(".");
                 Writer writer;
                 std::string output_file_extension = outputPathFileName.substr(startIndex + 1,
@@ -95,10 +90,6 @@ int main(int argc, char* argv[]) {
                     std::cerr << "Output File format not supported.\n";
                     return EXIT_FAILURE;
                 }
-             //   auto stop = std::chrono::high_resolution_clock::now();
-              //  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop -time_s);
-              //  std::cout<<"duration: "<< duration.count();
-
             }
             else{
                 std::cerr << "Input File format not supported.\n";

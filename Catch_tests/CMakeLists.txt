@@ -18,7 +18,6 @@ set(SOURCE_TESTS_FILES
         Bad_hex_finder_tests.cpp
         Initial_mesh_maker_tests.cpp
         Intersecting_polyhedron_finder_tests.cpp
-        Hexahedron_fitter_tests.cpp
         L_facet_detector_tests.cpp
         Volume_validator_tests.cpp
         Degenerate_element_finder_tests.cpp

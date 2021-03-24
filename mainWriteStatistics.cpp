@@ -1,3 +1,13 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Main file to write some statistics from a vtk file.
+//******************************************************************************
+
 #include <iostream>
 #include "VTK_manager.h"
 

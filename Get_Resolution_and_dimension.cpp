@@ -1,3 +1,13 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Main file to get the resolution and edge dimension of the grid according to lambda.
+//******************************************************************************
+
 #include <iostream>
 #include "MyLCC.h"
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
@@ -7,10 +17,8 @@
 #include "STL_reader.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-//typedef CGAL::Polyhedron_3<K> Polyhedron;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 typedef CGAL::Polyhedral_mesh_domain_with_features_3<K> Mesh_Domain;
-//typedef CGAL::Polyhedral_mesh_domain_3<Polyhedron,K> Mesh_Domain;
 typedef CGAL::Mesh_triangulation_3<Mesh_Domain, CGAL::Default>::type Tr;
 
 using namespace CGAL::parameters;

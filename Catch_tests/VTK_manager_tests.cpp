@@ -55,7 +55,7 @@ TEST_CASE("must read a vtk or vtu file", "[readUnstructuredGrid][VTK_manager]"){
     }
 }
 
-TEST_CASE("scaled jacobian must be one for a voxel ", "[getQuality][VTK_manager]"){
+TEST_CASE("scaled jacobian must not be one for a folded hex ", "[getQuality][VTK_manager]"){
     const std::string filename_to_read = "/Users/claudia/CLionProjects/3DMesher/Catch_tests/Data/one_folded_hex.vtk";
     VTK_manager vtkManager;
 
@@ -74,5 +74,5 @@ TEST_CASE("scaled jacobian must be one for a voxel ", "[getQuality][VTK_manager]
 //    writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, lcc);
 
 
-    REQUIRE(1 == vtkManager.getQuality(filename_to_read));
+    REQUIRE(1 > vtkManager.getQuality(filename_to_read));
 }

@@ -1,3 +1,12 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Main file to generate a conforming tetrahedral mesh using using CGAL implementation of Dealunay algorithm.
+//******************************************************************************
 
 
 #include <iostream>
@@ -15,10 +24,8 @@
 #include "STL_reader.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-//typedef CGAL::Polyhedron_3<K> Polyhedron;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 typedef CGAL::Polyhedral_mesh_domain_with_features_3<K> Mesh_Domain;
-//typedef CGAL::Polyhedral_mesh_domain_3<Polyhedron,K> Mesh_Domain;
 typedef CGAL::Mesh_triangulation_3<Mesh_Domain, CGAL::Default>::type Tr;
 typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr> C3t3;
 typedef CGAL::Mesh_criteria_3<Tr> Mesh_Criteria;
@@ -59,11 +66,7 @@ int main(int argc, char* argv[]) {
                 Mesh_Domain domain(polyhedron);
 
                 //Get sharp features
-//                domain.detect_features();
-
-
-              //  Mesh_Criteria criteria(facet_angle = 30, cell_radius_edge_ratio = 2);
-//                Mesh_Criteria criteria;
+                domain.detect_features();
 
                 C3t3 c3t3;
                 if(argc == 4)
@@ -75,8 +78,8 @@ int main(int argc, char* argv[]) {
 //                            facet_size = desired_edge_size / sqrt(3),
 //                            facet_distance = (desired_edge_size / sqrt(3)) / 10, //facet_distance = 1/10 R
                             cell_radius_edge_ratio = 2,
-                            cell_size = desired_edge_size * sqrt(6) / 4
-//                            edge_size = desired_edge_size / sqrt(3)
+                            cell_size = desired_edge_size * sqrt(6) / 4,
+                            edge_size = desired_edge_size
                                     );
                     //Mesh generation
                     c3t3 = CGAL::make_mesh_3<C3t3>(domain, criteria, no_perturb(), no_exude());
@@ -109,15 +112,6 @@ int main(int argc, char* argv[]) {
                 std::cerr << "Input File format not supported.\n";
                 return EXIT_FAILURE;
             };
-
-
-////        std::cout << "numero di celle: " << c3t3.number_of_cells() << std::endl;
-////        std::cout << "numero di vertici: " << c3t3.number_of_vertices_in_complex() << std::endl;
-////        std::cout << "numero di corners: " << c3t3.number_of_corners() << std::endl;
-////        std::cout << "numero di edges: " << c3t3.number_of_edges() << std::endl;
-////        std::cout << "numero di facets: " << c3t3.number_of_facets() << std::endl;
-////        std::cout << "numero di facets in complex: " << c3t3.number_of_facets_in_complex() << std::endl;
-
         }
         catch (std::ios_base::failure e) {
             std::cerr << "Exception opening/reading/closing file\n";

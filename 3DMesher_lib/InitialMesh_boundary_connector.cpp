@@ -1,5 +1,4 @@
 #include "InitialMesh_boundary_connector.h"
-#include "Hexahedron_fitter.h"
 #include <CGAL/Segment_3.h>
 
 

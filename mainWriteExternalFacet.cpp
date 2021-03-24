@@ -1,3 +1,13 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Main file to write how many external facets there are in a vtk file.
+//******************************************************************************
+
 #include <iostream>
 #include <array>
 #include <Block_maker.h>
@@ -61,7 +71,6 @@ int main(int argc, char* argv[]) {
             External_facet_finder externalFacetFinder;
             const std::vector<Dart_handle>  external_facets = externalFacetFinder.findFacets(hex_mesh);
             unsigned long numberOfExternalFacets = external_facets.size();
-           // std::cout<< "facce esterne : "<< numberOfExternalFacets <<std::endl;
         std::string fileName_without_extension = "";
         if (inputPathToVTKFileName.find_last_of("/") != std::string::npos) {
             fileName_without_extension = inputPathToVTKFileName.substr((inputPathToVTKFileName.find_last_of("/")+1));

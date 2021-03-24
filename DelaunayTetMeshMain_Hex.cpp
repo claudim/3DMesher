@@ -1,3 +1,12 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Main file to generate a conforming hexahedral mesh using Univaq Split from Tet algorithm.
+//******************************************************************************
 
 #include <iostream>
 
@@ -6,11 +15,8 @@
 #include <CGAL/Mesh_triangulation_3.h>
 #include <CGAL/Mesh_complex_3_in_triangulation_3.h>
 #include <CGAL/Mesh_criteria_3.h>
-#include <CGAL/Polyhedron_3.h>
-#include <CGAL/boost/graph/helpers.h>
 #include <CGAL/Polyhedral_mesh_domain_with_features_3.h>
 #include <CGAL/make_mesh_3.h>
-#include "STL_reader.h"
 #include "OFF_Reader.h"
 #include "STL_reader3.h"
 #include "Writer.h"
@@ -19,12 +25,9 @@
 
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-//typedef CGAL::Polyhedron_3<K> Polyhedron;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 typedef CGAL::Polyhedral_mesh_domain_with_features_3<K> Mesh_Domain;
-//typedef CGAL::Polyhedral_mesh_domain_3<Polyhedron,K> Mesh_Domain;
 typedef CGAL::Mesh_triangulation_3<Mesh_Domain, CGAL::Default>::type Tr;
-//typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr> C3t3;
 typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr> C3t3;
 typedef CGAL::Mesh_criteria_3<Tr> Mesh_Criteria;
 
@@ -65,15 +68,7 @@ int main(int argc, char* argv[]) {
                 Mesh_Domain domain(polyhedron);
 
                 //Get sharp features
-//                domain.detect_features();
-
-               // Mesh_Criteria criteria(cell_size = 2, facet_size = 10);
-                //Mesh_Criteria criteria(facet_size = 10, cell_size = 2,facet_angle = 30, cell_radius_edge_ratio = 2);
-                //bolt criteria
-                // Mesh_Criteria criteria(facet_angle = 30, cell_radius_edge_ratio = 2);
-                //bone criteria
-                //Mesh_Criteria criteria(facet_angle=30, facet_size=0.1, facet_distance=0.025,cell_radius_edge_ratio=2, cell_size=0.1);
-                //Mesh_Criteria criteria(facet_angle=30, cell_radius_edge_ratio=2, facet_size=0.1);
+                domain.detect_features();
 
                 C3t3 c3t3;
                 if(argc == 4)
@@ -102,15 +97,6 @@ int main(int argc, char* argv[]) {
                 LCC_3 hex_mesh;
                 HexMesh_from_TetMesh_maker hex_mesh_maker;
                 hex_mesh_maker.split_from_tet(c3t3, hex_mesh);
-
-                //Output
-                //const std::string out_data_path = "/Users/claudia/CLionProjects/3DMesher/MeshOutput/DelaunayTetMeshOutput";
-//                const std::string out_data_path = "/home/claudia/CLionProjects/3DMesher/MeshOutput/DelaunayTetMeshOutput";
-//                Writer hex_writer;
-//                std::string outputFileName2 = out_data_path + "/" + name + "split_from_tet.mesh";
-//                std::ofstream medit_file2(outputFileName2);
-//                hex_writer.output_to_medit(medit_file2, hex_mesh);
-//                medit_file2.close();
 
                 //Output
                 std::string outputFileName = argv[2]; // outputFileName is path to filename with extension

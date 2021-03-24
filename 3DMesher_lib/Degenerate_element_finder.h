@@ -130,6 +130,9 @@ public:
                 _quadrilaterals.emplace_back(blockToCheck);
             }
         }
+        else{
+            is_a_quadrilateral = false;
+        }
         return is_a_quadrilateral;
     }
 

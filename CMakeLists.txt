@@ -122,15 +122,11 @@ endif()
 
 
 
-#set(SOURCE_FILES main.cpp)
 #set(SOURCE_FILES mainWriteStatistics.cpp)
 #set(SOURCE_FILES SchneidersHexMeshMain.cpp)
 #set(SOURCE_FILES DelaunayTetMeshMain.cpp)
-#set(SOURCE_FILES UnivaqHexMeshMain.cpp)
 #set(SOURCE_FILES UnivaqHexMesh_External_Facet_Finder_Main.cpp)
 #set(SOURCE_FILES UnivaqHexMeshMain2.cpp)
-#set(SOURCE_FILES main_gmsh.cpp)
-#set(SOURCE_FILES main_getBBox.cpp)
 set(SOURCE_FILES DelaunayTetMeshMain_Hex.cpp)
 #set(SOURCE_FILES DelaunayTetMeshMain_Hex_External_Facet.cpp)
 #set(SOURCE_FILES mainWriteExternalFacet.cpp)
@@ -169,7 +165,6 @@ target_link_libraries(3DMesher_lib PUBLIC Verdict::verdict)
 target_link_libraries(3DMesher PUBLIC ${GMSH_LIB} )
 
 #target_link_libraries(3DMesher  PUBLIC ${SMESH_LIBRARIES})
-message(cia0 ${VTK_LIBRARIES})
 
 
 add_subdirectory(Catch_tests)

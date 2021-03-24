@@ -1,3 +1,12 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Main file to get the Hausdorff Distance between the generated mesh and the object.
+//******************************************************************************
 
 #include <cstdlib>
 #include <VTK_manager.h>

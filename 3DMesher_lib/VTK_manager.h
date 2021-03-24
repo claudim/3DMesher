@@ -5,7 +5,7 @@
 //
 //******************************************************************************
 // File Description :
-// Manage a vtk file. For example, it can count how many hexahedra or _tetrahedra are in the file.
+// Manage a vtk file. For example, it can count how many hexahedra or tetrahedra are in the file.
 //******************************************************************************
 
 
@@ -31,6 +31,12 @@
 #include <algorithm>
 #include "verdict.h"
 
+/**
+ * @brief Manage a vtk file. For example, it can count how many hexahedra or tetrahedra are in the file.
+ *
+ * @file VTK_manager.h
+ * @class VTK_manager
+ */
 class VTK_manager {
 
 

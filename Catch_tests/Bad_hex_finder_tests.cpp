@@ -33,6 +33,7 @@ TEST_CASE("cube malformed must be considered bad"){
 
     Dart_handle cube = blockMaker.make_block(lcc, vertices);
     Bad_hex_finder badHexFinder;
+    badHexFinder.setScaledJacobianThreshold(0.5);
     REQUIRE(badHexFinder.is_hex_bad(cube, lcc));
 }
 

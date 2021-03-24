@@ -1,6 +1,6 @@
 #3D Mesher 
 
-A C++ implementation of full automatic tool for 3D Meshing.
+A C++ library implementation of full automatic tool for 3D Meshing.
 
 3D Mesher can create a Tet-mesh or Hex-mesh using CGAL library.
 

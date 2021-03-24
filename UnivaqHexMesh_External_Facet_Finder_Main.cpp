@@ -1,30 +1,36 @@
+// Copyright (c) 2020-2021 Univaq (Italy)
+// All rights reserved.
+//
+// Author(s): Claudia Di Marco <dimarco.claud@gmail.com>, Riccardo Mantini <mantini.riccardo@gmail.com>
+//
+//******************************************************************************
+// File Description :
+// Main file to count the external facets from a conforming hexahedral mesh
+// generated using Univaq Hex Mesh algorithm.
+//******************************************************************************
+
+
 #include <iostream>
 #include <chrono>
 //#include "test_congif.h" //TODO da aggiungere
 #include "STL_reader.h"
-//#include "STL_reader2.h"
 #include "STL_reader3.h"
 #include "OFF_Reader.h"
 #include "Grid_maker.h"
 #include "Initial_mesh_maker.h"
 #include "External_block_remover.h"
 #include "Grid_boundary_connector.h"
-//#include <CGAL/draw_linear_cell_complex.h>
-//#include <CGAL/draw_polyhedron.h>
 #include "Volume_Validator.h"
 #include "Degenerate_element_finder.h"
 #include "Writer.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
-//typedef CGAL::Simple_cartesian<double> K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
 
 int main(int argc, char* argv[]) {
 
     if (argc == 3 || argc == 4) {
         try {
-
-//            auto time_s =std::chrono::high_resolution_clock::now();
             //get the stl file fileName_without_extension
             std::string inputPathFileName = argv[1]; // filename is path to filename with extension
             size_t startIndex = inputPathFileName.find_last_of(".");
@@ -78,7 +84,7 @@ int main(int argc, char* argv[]) {
                 External_facet_finder externalFacetFinder;
                 const std::vector<Dart_handle>  external_facets = externalFacetFinder.findFacets(hex_mesh);
                 unsigned long numberOfExternalFacets = external_facets.size();
-                std::cout<< "facce esterne : "<< numberOfExternalFacets <<std::endl;
+                std::cout<< "external facets : "<< numberOfExternalFacets <<std::endl;
 
             }
             else{

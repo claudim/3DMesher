@@ -23,7 +23,6 @@ bool Bad_hex_finder::is_hex_bad(const Dart_handle& aHex, LCC_3& lcc) {
     }
 }
 
-//template<typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename Linear_cell_complex_traits, typename allocator, typename allocator, typename Linear_cell_complex_traits, typename Linear_cell_complex_traits, typename allocator>
 void Bad_hex_finder::find_bad_hexes(LCC_3 &lcc, std::vector<Dart_handle> &bad_hexes) {
 
     for(LCC_3::One_dart_per_cell_range<3>::iterator hex_it = lcc.one_dart_per_cell<3>().begin(),
