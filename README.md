@@ -2,7 +2,11 @@
 
 A C++ library implementation of full automatic tool for 3D Meshing.
 
-3D Mesher can create a Tet-mesh or Hex-mesh using CGAL library.
+3DMesher can create a Tet-mesh or Hex-mesh using CGAL library.
+
+3DMesher generates a Tet-mesh using CGAL implementation of Delaunay algorithm.
+
+3DMesher generates a Hex-mesh using Univaq Hex mesh or Univaq Split from Tet algorithm.
 
 ## Getting Started
 
@@ -15,9 +19,66 @@ A C++ library implementation of full automatic tool for 3D Meshing.
 5. Verdict library(https://gitlab.kitware.com/verdict/verdict/-/tree/master)
 6. VTK library (https://gitlab.kitware.com/vtk/vtk.git)
 
+###Installing Requirements
 
-### Installing
+####Installing CGAL 
+
+ - on Ubuntu: 
+ 
+    `sudo apt-get install libcgal-dev`
+    
+ - on MAC:
+ 
+    1. `brew install cgal`
+    
+    2. `brew install cgal-qt5`
+    
+    3. Export path:
+    
+        If you need to have qt first in your PATH run:
+        
+        `echo 'export PATH="/usr/local/opt/qt5/bin:$PATH"' >> /Users/userName/.bash_profile`
+    
+        For compilers to find qt you may need to set:
+        
+        `export LDFLAGS="-L/usr/local/opt/qt/lib"`
+        
+        `export CPPFLAGS="-I/usr/local/opt/qt/include"`
+    
+        For pkg-config to find qt you may need to set:
+        
+        `export PKG_CONFIG_PATH="/usr/local/opt/qt/lib/pkgconfig"`
+    
+    4. `brew link cgal`
+    5. `brew link qt5 --force`
+
+####Installing Verdict library
+
+To build with CMake after downloading Verdict library follow https://gitlab.kitware.com/verdict/verdict/-/blob/master/readme.md instructions:
+1. Set up a build directory
+2. Change to this directory
+3. Type `ccmake /path/to/verdict` but replace
+`/path/to/verdict` with the path to the directory
+containing this read-me file.
+4. Fill the required fields and press the 'c' key
+NB: This process is iterative;
+you may need to change values and reconfigure before continuing.
+5. When the 'g' option becomes available, press the 'g' key to generate
+the Makefile and exit CMake.
+6. Build with `make`
+7. Install with `make install`
+
+####Installing VTK library
+
+To buid VTK library follow https://vtk.org/Wiki/VTK/Building instructions.
+
+###Installing 3DMesher Univaq Hex Mesh 
+
 - From terminal, move to the 3DMesher directory
+
+- Open CMakeLists.txt file
+    comment all set(SOURCE_FILES fileName.cpp) instructions;
+    decomment `set(SOURCE_FILES UnivaqHexMeshMain2.cpp)`
 
 - Create a build folder
     `mkdir build`
@@ -32,7 +93,7 @@ A C++ library implementation of full automatic tool for 3D Meshing.
 `make` or `make -j6`
 
  
-### Usage
+### Usage of 3DMesher Univaq Hex Mesh 
 
 To use the executable:
 
@@ -52,6 +113,86 @@ To use the executable:
     
     `./3DMesher /Users/claudia/CLionProjects/3DMesher/DataInput/bolt.stl  /Users/claudia/CLionProjects/3DMesher/MeshOutput/bolt.mesh 8`
     
+###Installing 3DMesher Univaq Split From Tet Hex Mesh 
+
+- From terminal, move to the 3DMesher directory
+
+- Open CMakeLists.txt file
+    comment all set(SOURCE_FILES fileName.cpp) instructions;
+    decomment `set(SOURCE_FILES DelaunayTetMeshMain_Hex.cpp)`
+
+- Create a build folder
+    `mkdir build`
+    
+- Navigate to the newly build folder  
+    `cd build` 
+    
+- digit    
+`cmake ..`
+
+- digit
+`make` or `make -j6`
+
+### Usage of 3DMesher Univaq Split From Tet Hex Mesh 
+
+To use the executable:
+
+-  Open terminal
+
+-  Move to the build directory
+
+-  Digit
+
+    `./3DMesher path/to/the/STLfile/filename.stl  path/to/the/output/filename.vtk edge_dimension`
+    
+    or 
+    
+    `./3DMesher path/to/the/STLfile/filename.stl  path/to/the/output/filename.mesh edge_dimension`
+    
+    Example:
+    
+    `./3DMesher /Users/claudia/CLionProjects/3DMesher/DataInput/bolt.stl  /Users/claudia/CLionProjects/3DMesher/MeshOutput/bolt.mesh 8`
+   
+###Installing 3DMesher Tet Mesh 
+   
+   - From terminal, move to the 3DMesher directory
+   
+   - Open CMakeLists.txt file
+       comment all set(SOURCE_FILES fileName.cpp) instructions;
+       decomment `set(SOURCE_FILES DelaunayTetMeshMain.cpp)`
+   
+   - Create a build folder
+       `mkdir build`
+       
+   - Navigate to the newly build folder  
+       `cd build` 
+       
+   - digit    
+   `cmake ..`
+   
+   - digit
+   `make` or `make -j6`
+   
+### Usage of 3DMesher Tet Mesh 
+
+To use the executable:
+
+-  Open terminal
+
+-  Move to the build directory
+
+-  Digit
+
+    `./3DMesher path/to/the/STLfile/filename.stl  path/to/the/output/filename.vtk edge_dimension`
+    
+    or 
+    
+    `./3DMesher path/to/the/STLfile/filename.stl  path/to/the/output/filename.mesh edge_dimension`
+    
+    Example:
+    
+    `./3DMesher /Users/claudia/CLionProjects/3DMesher/DataInput/bolt.stl  /Users/claudia/CLionProjects/3DMesher/MeshOutput/bolt.mesh 8`
+      
 ## Authors
 
  * Claudia Di Marco
