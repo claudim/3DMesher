@@ -192,6 +192,22 @@ To use the executable:
     Example:
     
     `./3DMesher /Users/claudia/CLionProjects/3DMesher/DataInput/bolt.stl  /Users/claudia/CLionProjects/3DMesher/MeshOutput/bolt.mesh 8`
+   
+###Create 3DMesher Documentation
+
+####Create Doxygen Documentation
+
+- Install Doxygen
+- Move to docs_doxygen directory
+- Digit `doxygen Doxyfile.in` 
+
+####Create Sphinx Documentation
+- Install Doxygen, Sphinx and Breathe
+- Move to docs_sphinx directory
+- Create _build directory
+- Create _static directory
+- Create _templates directory
+- Digit `make html` from docs_sphinx directory
       
 ## Authors
 
