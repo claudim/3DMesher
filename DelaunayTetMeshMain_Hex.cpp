@@ -112,8 +112,8 @@ int main(int argc, char* argv[]) {
                 else if(outputFileName_extension == "vtk")
                 {
                     std::ofstream vtk_file(outputFileName);
-                    hex_writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
-//                        writer.output_to_legacy_vtk_ascii_unstructured(outputPathFileName, hex_mesh);
+                  //  hex_writer.output_to_legacy_vtk_ascii_unstructured(vtk_file, hex_mesh);
+                    hex_writer.output_to_legacy_vtk_ascii_unstructured(outputFileName, hex_mesh);
                     vtk_file.close();
                 }
                 else{
