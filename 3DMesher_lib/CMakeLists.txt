@@ -29,7 +29,8 @@ set(HEADER_FILES
         VTK_manager.h
         STL_reader3.h
         HexMesh_from_TetMesh_maker.h
-        UnivaqHexMeshAlgorithm.h)
+        UnivaqHexMeshAlgorithm.h
+        UnivaqSplitFromTetAlgorithm.h)
 
 set(SOURCE_FILES
         OFF_Reader.cpp
@@ -54,9 +55,10 @@ set(SOURCE_FILES
         VTK_manager.cpp
         STL_reader2.h
         HexMesh_from_TetMesh_maker.cpp
-        UnivaqHexMeshAlgorithm.cpp)
+        UnivaqHexMeshAlgorithm.cpp
+        UnivaqSplitFromTetAlgorithm.cpp)
 
-include_directories(${PROJECT_SOURCE_DIR}/3DMesher_lib/3D_hex_mesh_algorithms)
+#include_directories(${PROJECT_SOURCE_DIR}/3DMesher_lib/3D_hex_mesh_algorithms)
 
 # You get to pick a type of library, STATIC, SHARED, or MODULE. If you leave this choice off, the value of BUILD_SHARED_LIBS will be used to pick between STATIC and SHARED.
 #add_library(3DMesher_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

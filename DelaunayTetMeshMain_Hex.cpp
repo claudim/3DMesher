@@ -12,27 +12,14 @@
 
 #include "MyLCC.h"
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
-#include <CGAL/Mesh_triangulation_3.h>
-#include <CGAL/Mesh_complex_3_in_triangulation_3.h>
-#include <CGAL/Mesh_criteria_3.h>
-#include <CGAL/Polyhedral_mesh_domain_with_features_3.h>
-#include <CGAL/make_mesh_3.h>
 #include "OFF_Reader.h"
 #include "STL_reader3.h"
+#include "UnivaqSplitFromTetAlgorithm.h"
 #include "Writer.h"
-#include "HexMesh_from_TetMesh_maker.h"
-
 
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
-typedef CGAL::Polyhedral_mesh_domain_with_features_3<K> Mesh_Domain;
-typedef CGAL::Mesh_triangulation_3<Mesh_Domain, CGAL::Default>::type Tr;
-typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr> C3t3;
-typedef CGAL::Mesh_criteria_3<Tr> Mesh_Criteria;
-
-template<typename allocator>
-void split_from_tet(const C3t3 &c3t3, LCC_3 &hex_mesh);
 
 using namespace CGAL::parameters;
 
@@ -64,40 +51,20 @@ int main(int argc, char* argv[]) {
                     return EXIT_FAILURE;
                 }
 
-                //Create domain
-                Mesh_Domain domain(polyhedron);
-
-                //Get sharp features
-                domain.detect_features();
-
-                C3t3 c3t3;
+                //mesh generation
+                double desired_edge_size;
+                UnivaqSplitFromTetAlgorithm univaqSplitFromTetAlgorithm;
+                LCC_3 hex_mesh;
                 if(argc == 4)
                 {
-                    double desired_edge_size = std::stod(argv[3]) * 2;
-                    Mesh_Criteria criteria(
-                            facet_angle = 30,
-//                            facet_size = desired_edge_size / sqrt(3),
-//                            facet_distance = (desired_edge_size / sqrt(3)) / 10, //facet_distance = 1/10 R
-                            cell_radius_edge_ratio = 2,
-                            cell_size = desired_edge_size * sqrt(6) / 4,
-                            edge_size = desired_edge_size
-                                    );
-//Mesh generation
-                    c3t3 = CGAL::make_mesh_3<C3t3>(domain, criteria, no_perturb(), no_exude());
-
+                   desired_edge_size = std::stod(argv[3]) * 2;
+                    univaqSplitFromTetAlgorithm.run(polyhedron, hex_mesh, desired_edge_size);
                 }
                 else
                 {
-                    Mesh_Criteria criteria(facet_angle = 30, cell_radius_edge_ratio = 2);
-//Mesh generation
-                    c3t3 = CGAL::make_mesh_3<C3t3>(domain, criteria, no_perturb(), no_exude());
+                    univaqSplitFromTetAlgorithm.run(polyhedron, hex_mesh);
                 }
-
-//split tet mesh in all hex mesh
-                LCC_3 hex_mesh;
-                HexMesh_from_TetMesh_maker hex_mesh_maker;
-                hex_mesh_maker.split_from_tet(c3t3, hex_mesh);
-
+                
                 //Output
                 std::string outputFileName = argv[2]; // outputFileName is path to filename with extension
                 size_t outputStartIndex = outputFileName.find_last_of(".");
