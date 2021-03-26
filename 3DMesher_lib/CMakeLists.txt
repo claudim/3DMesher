@@ -27,7 +27,9 @@ set(HEADER_FILES
         Volume_Validator.h
         Degenerate_element_finder.h
         VTK_manager.h
-        STL_reader3.h HexMesh_from_TetMesh_maker.cpp HexMesh_from_TetMesh_maker.h)
+        STL_reader3.h
+        HexMesh_from_TetMesh_maker.h
+        UnivaqHexMeshAlgorithm.h)
 
 set(SOURCE_FILES
         OFF_Reader.cpp
@@ -50,7 +52,9 @@ set(SOURCE_FILES
         Bad_hex_finder.cpp
         L_facet_detector.cpp
         VTK_manager.cpp
-        STL_reader2.h HexMesh_from_TetMesh_maker.cpp HexMesh_from_TetMesh_maker.h)
+        STL_reader2.h
+        HexMesh_from_TetMesh_maker.cpp
+        UnivaqHexMeshAlgorithm.cpp)
 
 include_directories(${PROJECT_SOURCE_DIR}/3DMesher_lib/3D_hex_mesh_algorithms)
 

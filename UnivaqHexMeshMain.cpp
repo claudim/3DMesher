@@ -8,18 +8,10 @@
 // Main file to generate a conforming hexahedral mesh using Univaq Hex Mesh algorithm.
 //******************************************************************************
 
-
 #include <iostream>
-#include <chrono>
-#include "STL_reader.h"
 #include "STL_reader3.h"
 #include "OFF_Reader.h"
-#include "Grid_maker.h"
-#include "Initial_mesh_maker.h"
-#include "External_block_remover.h"
-#include "Grid_boundary_connector.h"
-#include "Volume_Validator.h"
-#include "Degenerate_element_finder.h"
+#include "UnivaqHexMeshAlgorithm.h"
 #include "Writer.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
@@ -51,25 +43,17 @@ int main(int argc, char* argv[]) {
                     return EXIT_FAILURE;
                 }
 
-                Grid_maker gridMaker = Grid_maker();
+                // execute UnivaqHexMeshAlgorithm
+                LCC_3 hex_mesh;
+                UnivaqHexMeshAlgorithm univaqHexMeshAlgorithm;
                 if (argc == 4) {
-                    gridMaker.set_resolution(std::stod(argv[3]));
+                    univaqHexMeshAlgorithm.run(polyhedron, hex_mesh, std::stod(argv[3]));
                 }
-                LCC_3 hex_mesh = gridMaker.make(polyhedron);
+                else{
+                    univaqHexMeshAlgorithm.run(polyhedron, hex_mesh);
+                }
 
-                External_block_remover externalBlockRemover = External_block_remover();
-                externalBlockRemover.removeBlocks(hex_mesh, polyhedron);
-
-                //fit on boundary blocks to polyhedron boundary
-                CGAL::Grid_boundary_connector gridBoundaryConnector;
-                gridBoundaryConnector.connect(hex_mesh, polyhedron);
-
-                //delete element with Volume <= volume treshold
-                double volume_treshold = std::pow(gridMaker.getGridDimension(),3)/1000;
-                Volume_Validator volumeValidator;
-                volumeValidator.setVolumeTreshold(volume_treshold);
-                volumeValidator.delete_blocks_with_less_than_or_equal_to_volume_treshold(hex_mesh);
-
+                // write on file
                 std::string outputPathFileName = argv[2]; // filename is path to filename with extension of the output
                 size_t startIndex = outputPathFileName.find_last_of(".");
                 Writer writer;

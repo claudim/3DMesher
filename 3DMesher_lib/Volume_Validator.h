@@ -34,7 +34,7 @@ public:
      *
      * @param hex_mesh The hexahedral mesh.
      */
-    void delete_blocks_with_less_than_or_equal_to_volume_treshold(LCC_3& hex_mesh){
+    void delete_blocks_with_less_than_or_equal_to_volume_threshold(LCC_3& hex_mesh){
         if(!hex_mesh.is_empty()) {
             for (LCC_3::One_dart_per_cell_range<3, 3>::iterator cell_it = hex_mesh.one_dart_per_cell<3, 3>().begin(),
                          cell_it_end = hex_mesh.one_dart_per_cell<3, 3>().end(); cell_it != cell_it_end; ++cell_it) {
