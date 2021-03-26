@@ -22,6 +22,7 @@
 #include <OFF_Reader.h>
 #include "STL_reader3.h"
 #include "STL_reader.h"
+#include "DelaunayCGALTetMeshAlgorithm.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
@@ -62,34 +63,46 @@ int main(int argc, char* argv[]) {
                     return EXIT_FAILURE;
                 }
 
-                //Create domain
-                Mesh_Domain domain(polyhedron);
-
-                //Get sharp features
-                domain.detect_features();
-
-                C3t3 c3t3;
+                C3t3 tet_mesh;
+                DelaunayCGALTetMeshAlgorithm delaunayCgalTetMeshAlgorithm;
                 if(argc == 4)
                 {
-
                     double desired_edge_size = std::stod(argv[3]);
-                    Mesh_Criteria criteria(
-                            facet_angle = 30,
-//                            facet_size = desired_edge_size / sqrt(3),
-//                            facet_distance = (desired_edge_size / sqrt(3)) / 10, //facet_distance = 1/10 R
-                            cell_radius_edge_ratio = 2,
-                            cell_size = desired_edge_size * sqrt(6) / 4,
-                            edge_size = desired_edge_size
-                                    );
-                    //Mesh generation
-                    c3t3 = CGAL::make_mesh_3<C3t3>(domain, criteria, no_perturb(), no_exude());
+                    delaunayCgalTetMeshAlgorithm.run(polyhedron, tet_mesh, desired_edge_size);
                 }
                 else
                 {
-                    Mesh_Criteria criteria(facet_angle = 30, cell_radius_edge_ratio = 2);
-                    //Mesh generation
-                    c3t3 = CGAL::make_mesh_3<C3t3>(domain, criteria, no_perturb(), no_exude());
+                    delaunayCgalTetMeshAlgorithm.run(polyhedron, tet_mesh);
                 }
+
+//                //Create domain
+//                Mesh_Domain domain(polyhedron);
+//
+//                //Get sharp features
+//                domain.detect_features();
+//
+//                C3t3 c3t3;
+//                if(argc == 4)
+//                {
+//
+//                    double desired_edge_size = std::stod(argv[3]);
+//                    Mesh_Criteria criteria(
+//                            facet_angle = 30,
+////                            facet_size = desired_edge_size / sqrt(3),
+////                            facet_distance = (desired_edge_size / sqrt(3)) / 10, //facet_distance = 1/10 R
+//                            cell_radius_edge_ratio = 2,
+//                            cell_size = desired_edge_size * sqrt(6) / 4,
+//                            edge_size = desired_edge_size
+//                                    );
+//                    //Mesh generation
+//                    c3t3 = CGAL::make_mesh_3<C3t3>(domain, criteria, no_perturb(), no_exude());
+//                }
+//                else
+//                {
+//                    Mesh_Criteria criteria(facet_angle = 30, cell_radius_edge_ratio = 2);
+//                    //Mesh generation
+//                    c3t3 = CGAL::make_mesh_3<C3t3>(domain, criteria, no_perturb(), no_exude());
+//                }
 
 
                 //Output

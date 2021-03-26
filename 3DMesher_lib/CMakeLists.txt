@@ -30,7 +30,8 @@ set(HEADER_FILES
         STL_reader3.h
         HexMesh_from_TetMesh_maker.h
         UnivaqHexMeshAlgorithm.h
-        UnivaqSplitFromTetAlgorithm.h)
+        UnivaqSplitFromTetAlgorithm.h
+        DelaunayCGALTetMeshAlgorithm.h)
 
 set(SOURCE_FILES
         OFF_Reader.cpp
@@ -56,7 +57,8 @@ set(SOURCE_FILES
         STL_reader2.h
         HexMesh_from_TetMesh_maker.cpp
         UnivaqHexMeshAlgorithm.cpp
-        UnivaqSplitFromTetAlgorithm.cpp)
+        UnivaqSplitFromTetAlgorithm.cpp
+        DelaunayCGALTetMeshAlgorithm.cpp)
 
 #include_directories(${PROJECT_SOURCE_DIR}/3DMesher_lib/3D_hex_mesh_algorithms)
 

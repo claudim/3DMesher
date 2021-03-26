@@ -12,21 +12,12 @@
 #ifndef INC_3DMESHER_UNIVAQSPLITFROMTETALGORITHM_H
 #define INC_3DMESHER_UNIVAQSPLITFROMTETALGORITHM_H
 
-#include <CGAL/Mesh_triangulation_3.h>
-#include <CGAL/Polyhedral_mesh_domain_with_features_3.h>
-#include <CGAL/Mesh_complex_3_in_triangulation_3.h>
-#include <CGAL/Mesh_criteria_3.h>
-#include <CGAL/make_mesh_3.h>
+#include "DelaunayCGALTetMeshAlgorithm.h"
 #include "HexMesh_from_TetMesh_maker.h"
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Mesh_polyhedron_3<K>::type Polyhedron;
-typedef CGAL::Polyhedral_mesh_domain_with_features_3<K> Mesh_Domain;
-typedef CGAL::Mesh_triangulation_3<Mesh_Domain, CGAL::Default>::type Tr;
-typedef CGAL::Mesh_complex_3_in_triangulation_3<Tr> C3t3;
-typedef CGAL::Mesh_criteria_3<Tr> Mesh_Criteria;
 
-using namespace CGAL::parameters;
 /**
  * @brief Execute the Univaq Split From Tet algorithm for the generation of a Hex Mesh.
  *

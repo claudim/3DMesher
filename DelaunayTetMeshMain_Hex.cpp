@@ -58,13 +58,13 @@ int main(int argc, char* argv[]) {
                 if(argc == 4)
                 {
                    desired_edge_size = std::stod(argv[3]) * 2;
-                    univaqSplitFromTetAlgorithm.run(polyhedron, hex_mesh, desired_edge_size);
+                   univaqSplitFromTetAlgorithm.run(polyhedron, hex_mesh, desired_edge_size);
                 }
                 else
                 {
                     univaqSplitFromTetAlgorithm.run(polyhedron, hex_mesh);
                 }
-                
+
                 //Output
                 std::string outputFileName = argv[2]; // outputFileName is path to filename with extension
                 size_t outputStartIndex = outputFileName.find_last_of(".");
