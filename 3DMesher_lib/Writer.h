@@ -19,11 +19,11 @@
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 
 #include "vtk-9.0/vtkVersion.h"
-#include "vtk-9.0/vtkSmartPointer.h"
-#include "vtk-9.0/vtkPoints.h"
-#include "vtk-9.0/vtkHexahedron.h"
-#include "vtk-9.0/vtkUnstructuredGrid.h"
-#include "vtk-9.0/vtkUnstructuredGridWriter.h"
+#include "vtk-9.1/vtkSmartPointer.h"
+#include "vtk-9.1/vtkPoints.h"
+#include "vtk-9.1/vtkHexahedron.h"
+#include "vtk-9.1/vtkUnstructuredGrid.h"
+#include "vtk-9.1/vtkUnstructuredGridWriter.h"
 
 typedef CGAL::Bbox_3 Bbox;
 
