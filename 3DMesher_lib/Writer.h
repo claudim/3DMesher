@@ -18,7 +18,7 @@
 #include <CGAL/Linear_cell_complex_operations.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 
-#include "vtk-9.0/vtkVersion.h"
+#include "vtk-9.1/vtkVersion.h"
 #include "vtk-9.1/vtkSmartPointer.h"
 #include "vtk-9.1/vtkPoints.h"
 #include "vtk-9.1/vtkHexahedron.h"
